@@ -3,15 +3,12 @@ import React, {useState} from 'react'
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { MainStackParams } from '../navigation/MainStackNavigator'
 import { Message } from '../types'
-import { addDoc, collection, doc, serverTimestamp, setDoc } from 'firebase/firestore'
 import { SubmitButton } from '../components/SubmitButton'
-import { auth, firestore } from '../config/firebaseConfig'
+
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 type Props = NativeStackScreenProps<MainStackParams, 'MessageScreen'>
-
-// const newDoc = doc(firestore, 'messages',);
-// setDoc(newDoc, { insertedAt: serverTimestamp()})
-const messagesCol = collection(firestore, 'messages')
 
 export const MessageScreen: React.FC<Props> = ({route}) => {
 
@@ -19,13 +16,13 @@ export const MessageScreen: React.FC<Props> = ({route}) => {
 
     const [message, setMessage] = useState<Partial<Message>>({})
 
-    const handleSendMessage = async () => {
-        try {
-            await addDoc(messagesCol, {...message, senderID: auth.currentUser?.uid, receiverID: id, timeStamp: serverTimestamp()})
+    const handleSendMessage =  () => {
+      firestore().collection('messages').add({...message, senderID: auth().currentUser?.uid, receiverID: id, timeStamp: firestore.Timestamp.now().toDate()})
+      .then(() => {
         setMessage({messageText: ''})
-        }catch (error) {
-            console.error("Error sending message: ", error);
-          }
+      }).catch((error) => {
+        console.error(error);
+      })
     }
 
   return (

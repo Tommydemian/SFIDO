@@ -1,8 +1,9 @@
-import { Auth, createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signOut } from "firebase/auth";
 import React, { createContext, useState, useEffect, useContext } from "react";
-import { auth, firestore } from "../config/firebaseConfig";
 import { Alert } from "react-native";
-import { addDoc, collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
+
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
 
 type AuthProviderProps = {
     children: React.ReactNode
@@ -29,25 +30,25 @@ export const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
  // State
   const [user, setUser] = useState<User>({email:'', uid: '', isLoggedIn: false, loading: false})
 
-  // collection ref
-  const usersCol = collection(firestore, 'users')
 
-
-  // function Sign in
-const handleSignup = (email: string, password: string, navigation?: any, destination?: string) => {
+  // function Sign up
+const handleSignup = (email: string, password: string) => {
     setUser(current => ({...current, loading: true}))
-    createUserWithEmailAndPassword(auth, email, password)
+    auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential):void => {
       // Signed up
       console.log(userCredential, 'user from then');
-      // add user to DB
-      // addDoc(usersCol, {email: userCredential.user.email, uid: userCredential.user.uid})
-      const newDoc = doc(firestore, 'users', userCredential.user.uid);
-      setDoc(newDoc, {email: userCredential.user.email, uid: userCredential.user.uid, insertedAt: serverTimestamp()})
 
-      if (navigation) {
-        navigation.navigate(destination)
-      }
+      firestore().collection('users').add({email: userCredential.user.email, uid: userCredential.user.uid, insertedAt: firestore.Timestamp.now().toDate()}).then(() => {
+        console.log('USER ADDED');
+        
+      }).catch((err) => {
+        console.log(err);
+      })
+
+      // if (navigation) {
+      //   navigation.navigate(destination)
+      // }
 
     })
     .catch((error) => {
@@ -59,11 +60,11 @@ const handleSignup = (email: string, password: string, navigation?: any, destina
       // ..
       setUser(current => ({...current, loading: false}))
   })
- }
+}
 
  // function Signout 
  function signOutUser() {
-  signOut(auth)
+  auth().signOut()
     .then(() => {
       setUser(current => ({...current, isLoggedIn: false, email: '', uid: ''}));
     })
@@ -84,7 +85,7 @@ const handleSignup = (email: string, password: string, navigation?: any, destina
         text: 'Reset Password', 
         onPress: ((emailInput) => {
           setUser(current => ({...current, isLoading: true}))
-          sendPasswordResetEmail(auth, emailInput!)
+          auth().sendPasswordResetEmail(emailInput!)
           .then(() => {
             alert('Reset Password email sent successfully')
           }).catch((error) => {
@@ -101,7 +102,7 @@ const handleSignup = (email: string, password: string, navigation?: any, destina
     }
 
    useEffect(() => {
-  const unsuscribe = onAuthStateChanged(auth, (firebaseUser) => {
+  const subscriber = auth().onAuthStateChanged((firebaseUser) => {
     if (firebaseUser) {
       // Usuario está autenticado
       setUser(current => ({
@@ -123,7 +124,7 @@ const handleSignup = (email: string, password: string, navigation?: any, destina
     }
   });
 
-  return () => unsuscribe();
+  return () => subscriber();
 }, []);
 
 

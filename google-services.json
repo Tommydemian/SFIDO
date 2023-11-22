@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "86924702179",
+    "project_id": "realtimeme-4afc1",
+    "storage_bucket": "realtimeme-4afc1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:86924702179:android:4de0208f7bc17a496430d6",
+        "android_client_info": {
+          "package_name": "com.tommydemian.realtimemessages"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIwjGPhdLYQQhCB6VjYZZnVR5-qVgYkOE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

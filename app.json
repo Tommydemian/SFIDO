@@ -18,13 +18,23 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.tommydemian.realtimemessages"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5cd6af1d-2208-419c-8e3c-dc3669a7948b"
+      }
+    }, 
+    "plugins": [
+      "@react-native-firebase/app"
+    ]
   }
 }

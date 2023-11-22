@@ -1,15 +1,13 @@
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Pressable } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import { SubmitButton } from '../components/SubmitButton';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { signOut } from 'firebase/auth';
-import { auth, firestore } from '../config/firebaseConfig';
-import { AuthContext, AuthProvider } from '../contexts/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../theme';
 import { useForm, SubmitHandler } from "react-hook-form"
 import { InputField } from '../components/InputField';
+import { useAuthContext } from '../hooks/useAuthContext';
 
 type FormData = {
   email: string;
@@ -18,14 +16,10 @@ type FormData = {
 
 export const SignupScreen = () => {
 
-const context = useContext(AuthContext);
+  // context val extraction 
+  const {handleSignup, user, handleForgotPassword, signOutUser} = useAuthContext()
 
-if (!context) {
-  throw new Error('useContext must be used within a AuthProvider');
-}
-
-const { user, handleSignup, handleForgotPassword } = context;
-
+  // useNavigation hook 
   const navigation = useNavigation()
 
     const {control, handleSubmit, formState: {errors}} = useForm<FormData>()
@@ -70,7 +64,7 @@ const { user, handleSignup, handleForgotPassword } = context;
       <Text onPress={handleForgotPassword} style={styles.forgotPassword}>Forgot your password?</Text>
       </TouchableOpacity>
 
-      <SubmitButton onPress={() => signOut(auth)}>
+      <SubmitButton onPress={signOutUser}>
         sign out
       </SubmitButton>
 
