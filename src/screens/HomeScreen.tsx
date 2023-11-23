@@ -8,6 +8,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { MainStackParams } from '../navigation/MainStackNavigator'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import {format} from 'date-fns'
 
 type Props = NativeStackScreenProps<MainStackParams, 'HomeScreen'>
 
@@ -22,7 +23,8 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
     firestore()
     .collection('users')
     .onSnapshot(collectionSnapshot => {
-        const usersData = collectionSnapshot.docs.map(doc => doc.data() as User)
+        const usersData = collectionSnapshot.docs.map(doc => doc.data() as User).
+        filter(user => user.email !== auth().currentUser?.email)
         setUsers(usersData)
     })
 
@@ -37,6 +39,7 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
         users.map(user => (
             <TouchableOpacity key={user.uid} onPress={() => navigation.navigate('MessageScreen', {id: user.uid, email: user.email} )}>
             <Text>{user.email}</Text>
+                <Text>{format(user.insertedAt.toDate(), 'PPP')}</Text>
         </TouchableOpacity>
         ))
       }

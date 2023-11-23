@@ -19,9 +19,10 @@ type User = {
 type AuthContextType = {
     user: User
     setUser: React.Dispatch<React.SetStateAction<User>>
-    handleSignup: (email: string, password: string, navigation?:any, destination?: string) => void;
+    handleSignup: (email: string, password: string) => void;
     signOutUser: () => void;
     handleForgotPassword: () => void  
+    handleSignIn: (email: string, password: string) => void
   }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -37,7 +38,6 @@ const handleSignup = (email: string, password: string) => {
     auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential):void => {
       // Signed up
-      console.log(userCredential, 'user from then');
 
       firestore().collection('users').add({email: userCredential.user.email, uid: userCredential.user.uid, insertedAt: firestore.Timestamp.now().toDate()}).then(() => {
         console.log('USER ADDED');
@@ -45,12 +45,7 @@ const handleSignup = (email: string, password: string) => {
       }).catch((err) => {
         console.log(err);
       })
-
-      // if (navigation) {
-      //   navigation.navigate(destination)
-      // }
-
-    })
+      })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -60,6 +55,18 @@ const handleSignup = (email: string, password: string) => {
       // ..
       setUser(current => ({...current, loading: false}))
   })
+}
+
+// function sign in 
+const handleSignIn = (email: string, password: string) => {
+auth()
+  .signInWithEmailAndPassword(email, password)
+  .then(() => {
+    console.log('Signed in succesfully!');
+  })
+  .catch(error => {
+    console.error(error);
+  });
 }
 
  // function Signout 
@@ -89,7 +96,6 @@ const handleSignup = (email: string, password: string) => {
           .then(() => {
             alert('Reset Password email sent successfully')
           }).catch((error) => {
-            console.log();
             console.error(error.code);
             console.error(error.message);
           }).finally(() => {
@@ -103,6 +109,7 @@ const handleSignup = (email: string, password: string) => {
 
    useEffect(() => {
   const subscriber = auth().onAuthStateChanged((firebaseUser) => {
+    console.log(firebaseUser?.email);
     if (firebaseUser) {
       // Usuario está autenticado
       setUser(current => ({
@@ -128,7 +135,7 @@ const handleSignup = (email: string, password: string) => {
 }, []);
 
 
- return(<AuthContext.Provider value={{user, setUser, handleSignup, signOutUser, handleForgotPassword}}>
+ return(<AuthContext.Provider value={{user, setUser, handleSignup, signOutUser, handleForgotPassword, handleSignIn}}>
         {children}
     </AuthContext.Provider>)
 }

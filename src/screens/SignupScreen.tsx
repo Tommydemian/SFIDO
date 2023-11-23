@@ -2,7 +2,6 @@ import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, Vi
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import { SubmitButton } from '../components/SubmitButton';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { signOut } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../theme';
 import { useForm, SubmitHandler } from "react-hook-form"
@@ -19,13 +18,11 @@ export const SignupScreen = () => {
   // context val extraction 
   const {handleSignup, user, handleForgotPassword, signOutUser} = useAuthContext()
 
-  // useNavigation hook 
-  const navigation = useNavigation()
-
-    const {control, handleSubmit, formState: {errors}} = useForm<FormData>()
+  // useForm hook
+  const {control, handleSubmit, formState: {errors}} = useForm<FormData>()
 
   const onSubmit = handleSubmit((data) => {
-    handleSignup( data.email, data.password, navigation, 'Home' )
+    handleSignup( data.email, data.password)
   })
 
   return (
