@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { COLORS } from '../theme'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { useAuthContext } from '../hooks/useAuthContext'
@@ -7,11 +7,28 @@ import { InputField } from '../components/InputField'
 import { SubmitButton } from '../components/SubmitButton'
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import { useForm, SubmitHandler } from "react-hook-form"
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+
 
 type FormData = {
   email: string;
   password: string;
 }
+
+import auth from '@react-native-firebase/auth';
+
+async function onGoogleButtonPress() {
+  // Get the users ID token
+  const { idToken } = await GoogleSignin.signIn();
+
+  // Create a Google credential with the token
+  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+  // Sign-in the user with the credential
+  return auth().signInWithCredential(googleCredential);
+
+}
+
 
 export const LoginScreen = () => {
 
@@ -24,6 +41,11 @@ export const LoginScreen = () => {
   const onSignIn = handleSubmit((data) => {
     handleSignIn(data.email, data.password)
   })
+
+  useEffect(() => {
+    console.log(auth().currentUser);
+    
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -62,6 +84,10 @@ export const LoginScreen = () => {
 
       <SubmitButton onPress={signOutUser}>
         sign out
+      </SubmitButton>
+
+      <SubmitButton onPress={onGoogleButtonPress}>
+        Google
       </SubmitButton>
 
     </SafeAreaView>

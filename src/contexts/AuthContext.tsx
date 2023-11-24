@@ -4,7 +4,6 @@ import { Alert } from "react-native";
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
-
 type AuthProviderProps = {
     children: React.ReactNode
 }
@@ -30,7 +29,6 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
  // State
   const [user, setUser] = useState<User>({email:'', uid: '', isLoggedIn: false, loading: false})
-
 
   // function Sign up
 const handleSignup = (email: string, password: string) => {

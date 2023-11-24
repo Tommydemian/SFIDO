@@ -9,6 +9,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { COLORS } from '../theme'
 import { format } from 'date-fns';
+import { useMessageContext } from '../hooks/useMessageContext'
 
 type Props = NativeStackScreenProps<MainStackParams, 'MessageScreen'>
 
@@ -17,66 +18,24 @@ export const MessageScreen: React.FC<Props> = ({route}) => {
   // get data from params
     const {email, id} = route.params
 
-    // client side message state
-    const [message, setMessage] = useState<Partial<Message>>({})
-    const [receivedMessages, setReceivedMessages] = useState<Message[]>([])
-    const [sentMessages, setSentMessages] = useState<Message[]>([])
+    const {handleSendMessage, handleSentAndReceivedMessages, message, setMessage, receivedMessages, sentMessages} = useMessageContext()
 
-    // handle Send Message, create document
-    const handleSendMessage =  () => {
-      // clause guard => no text => no message possible sent
-      if (!message.messageText) return;
-
-      firestore().collection('messages').add({...message, senderID: auth().currentUser?.uid, receiverID: id, timeStamp: firestore.Timestamp.now().toDate()})
-      .then(() => {
-        setMessage({messageText: ''})
-      }).catch((error) => {
-        console.error(error);
-      })
+    const onSendMessage = () => {
+      handleSendMessage(id)
     }
 
-    // querying
-
     useEffect(() => {
-      // Ensure currentUser exists and has a uid
-      const currentUserId = auth().currentUser?.uid;
-      if (!currentUserId) return;
-    
-        // Query para mensajes enviados
-        const sentMessagesQuery = firestore()
-        .collection('messages')
-        .where('senderID', '==', currentUserId)
-        .where('receiverID', '==', id); // Agrega esta línea
+      const {receivedMessagesSubscriber, sentMessagesSubscriber} = handleSentAndReceivedMessages(id)
 
-        // Query para mensajes recibidos
-        const receivedMessagesQuery = firestore()
-        .collection('messages')
-        .where('receiverID', '==', currentUserId)
-        .where('senderID', '==', id); // Agrega esta línea
-    
-      const sentMessagesSubscriber = sentMessagesQuery.onSnapshot((snapshot) => {
-        // Process the snapshot data
-        const messagesData = snapshot.docs.reverse().map(doc => doc.data() as Message);
-        setSentMessages(messagesData)
-      });
-    
-      const receivedMessagesSubscriber = receivedMessagesQuery.onSnapshot((snapshot) => {
-        // Process the snapshot data
-        const messagesData = snapshot.docs.reverse().map(doc => doc.data() as Message);
-        setReceivedMessages(messagesData)
-      });
-    
-      // Unsubscribe on cleanup
       return () => {
-        sentMessagesSubscriber();
-        receivedMessagesSubscriber();
-      } ;
-    }, []); // Empty dependency array or stable dependencies
+        receivedMessagesSubscriber(),
+        sentMessagesSubscriber()
+      }
+
+    }, [])
 
     const formatMessageTime = (timestamp: any) => {
-      // Asegúrate de que timestamp es un objeto Date
       const date = timestamp.toDate();
-      // Formatea la fecha y la hora. Puedes cambiar el formato según tus preferencias.
       return format(date, 'PPP, p');
   };
     
@@ -110,7 +69,7 @@ export const MessageScreen: React.FC<Props> = ({route}) => {
       multiline 
       /> 
 
-      <SubmitButton customStyles={styles.submitButton} onPress={handleSendMessage}>Send Message</SubmitButton>
+      <SubmitButton customStyles={styles.submitButton} onPress={onSendMessage}>Send Message</SubmitButton>
       </View>
     </SafeAreaView>
   )
