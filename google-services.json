@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "86924702179-fkg4evrmr3rcu1om8np5gg898v73u5j6.apps.googleusercontent.com",
+          "client_id": "86924702179-6tpiklia9qqaiqoqitrp79k175p8b337.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tommydemian.realtimemessages",
+            "certificate_hash": "4c5d5d5677ad131c4a194b600877ec27609e25f8"
+          }
+        },
+        {
+          "client_id": "86924702179-lpqafqv55t43c0i6bib222v6u3119k62.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
