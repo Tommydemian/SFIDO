@@ -20,3 +20,9 @@ export type User = {
     insertedAt: Timestamp;
     uid: string;
 }
+
+export type Quote = {
+    text: string;
+    author: string;
+    id: number
+}

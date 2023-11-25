@@ -1,12 +1,9 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { MainStackParams } from '../navigation/MainStackNavigator'
-import { Message } from '../types'
 import { SubmitButton } from '../components/SubmitButton'
 
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import { format } from 'date-fns';
 import { useMessageContext } from '../hooks/useMessageContext'
 import { COLORS } from '../../assets/theme'

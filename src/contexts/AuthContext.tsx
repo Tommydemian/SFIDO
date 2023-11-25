@@ -37,7 +37,7 @@ const handleSignup = (email: string, password: string) => {
     .then((userCredential):void => {
       // Signed up
 
-      firestore().collection('users').add({email: userCredential.user.email, uid: userCredential.user.uid, insertedAt: firestore.Timestamp.now().toDate()}).then(() => {
+      firestore().collection('users').add({email: userCredential.user.email, uid: userCredential.user.uid, insertedAt: firestore.Timestamp.now().toDate(), quoteIndex: 1, lastQuoteUpdate: new Date().toLocaleDateString()}).then(() => {
         console.log('USER ADDED');
         
       }).catch((err) => {

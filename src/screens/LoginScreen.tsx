@@ -10,6 +10,8 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import { OrDivider } from '../components/OrDivider'
+import { AuthStackParams } from '../navigation/AuthStackNavigator'
+import {NativeStackScreenProps} from '@react-navigation/native-stack'
 
 GoogleSignin.configure({
   webClientId: '86924702179-fkg4evrmr3rcu1om8np5gg898v73u5j6.apps.googleusercontent.com',
@@ -19,6 +21,8 @@ type FormData = {
   email: string;
   password: string;
 }
+
+type Props = NativeStackScreenProps<AuthStackParams, 'LoginScreen'>
 
 
 async function onGoogleButtonPress() {
@@ -38,7 +42,7 @@ async function onGoogleButtonPress() {
   }
 }
 
-export const LoginScreen = () => {
+export const LoginScreen: React.FC<Props> = ({navigation}) => {
 
   // conext hook
   const {user, handleForgotPassword, handleSignIn, signOutUser} = useAuthContext()
@@ -106,7 +110,7 @@ export const LoginScreen = () => {
     <View style={{flexDirection: 'row'}}>
     <Text>Dont have an account?</Text>
     
-    <Pressable><Text>Sign Up</Text></Pressable>
+    <Pressable onPress={() => navigation.navigate('SignupScreen')}><Text>Sign Up</Text></Pressable>
     </View>
 
     </SafeAreaView>
