@@ -1,7 +1,9 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
-import { Alert } from "react-native";
+import React, { createContext, useState, useEffect } from "react";
+import { addUserToFirestore } from "../services/userService";
+import { sendPasswordResetEmail } from "../services/authService";
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 type AuthProviderProps = {
@@ -20,37 +22,44 @@ type AuthContextType = {
     setUser: React.Dispatch<React.SetStateAction<User>>
     handleSignup: (email: string, password: string) => void;
     signOutUser: () => void;
-    handleForgotPassword: () => void  
+    handleForgotPassword: (email: string) => void  
     handleSignIn: (email: string, password: string) => void
+    onGoogleButtonPress: () => Promise<FirebaseAuthTypes.UserCredential | undefined>
   }
+
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
  // State
   const [user, setUser] = useState<User>({email:'', uid: '', isLoggedIn: false, loading: false})
+  const [initializing, setInitializing] = useState(true);
+
+  GoogleSignin.configure({
+    webClientId: '86924702179-fkg4evrmr3rcu1om8np5gg898v73u5j6.apps.googleusercontent.com',
+  });
 
   // function Sign up
 const handleSignup = (email: string, password: string) => {
     setUser(current => ({...current, loading: true}))
     auth().createUserWithEmailAndPassword(email, password)
-    .then((userCredential):void => {
+    .then((userCredential) => {
       // Signed up
-
-      firestore().collection('users').add({email: userCredential.user.email, uid: userCredential.user.uid, insertedAt: firestore.Timestamp.now().toDate(), quoteIndex: 1, lastQuoteUpdate: new Date().toLocaleDateString()}).then(() => {
-        console.log('USER ADDED');
-        
-      }).catch((err) => {
-        console.log(err);
-      })
-      })
+      const newUser = {
+        email: userCredential.user.email!,
+        uid: userCredential.user.uid,
+        insertedAt: firestore.Timestamp.now().toDate(),
+        quoteIndex: 1,
+        lastQuoteUpdate: new Date().toLocaleDateString()
+      };
+       return addUserToFirestore(newUser);
+    })
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.error(errorCode);
       console.error(errorMessage);
       
-      // ..
       setUser(current => ({...current, loading: false}))
   })
 }
@@ -67,6 +76,25 @@ auth()
   });
 }
 
+// function Sign in with Google
+const onGoogleButtonPress = async () => {
+  try {
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    const response = await GoogleSignin.signIn();
+    console.log('Google Sign-In response:', response);
+
+    if (response && response.idToken) {
+      const googleCredential = auth.GoogleAuthProvider.credential(response.idToken);
+      return auth().signInWithCredential(googleCredential);
+    } else {
+      console.log('No idToken received');
+    }
+  } catch (error) {
+    console.error('Google Sign-In Error: ', error);
+  }
+};
+
+
  // function Signout 
  function signOutUser() {
   auth().signOut()
@@ -79,31 +107,20 @@ auth()
 }
 
 // function Recover password
-   const handleForgotPassword = () => {
-    Alert.prompt('Forgot Password?', 'Enter your email address', 
-    [
-      {
-        text: 'Cancel', 
-        style: 'cancel'
-      }, 
-      {
-        text: 'Reset Password', 
-        onPress: ((emailInput) => {
-          setUser(current => ({...current, isLoading: true}))
-          auth().sendPasswordResetEmail(emailInput!)
-          .then(() => {
-            alert('Reset Password email sent successfully')
-          }).catch((error) => {
-            console.error(error.code);
-            console.error(error.message);
-          }).finally(() => {
-            setUser(current => ({...current, isLoading: false}))
-          })
-        })
-      }
-    ]
-    )
-    }
+const handleForgotPassword = (email: string) => {
+  setUser(current => ({...current, loading: true}));
+  sendPasswordResetEmail(email)
+    .then(() => {
+      alert('Reset Password email sent successfully');
+    })
+    .catch((error) => {
+      console.error(error.code);
+      console.error(error.message);
+    })
+    .finally(() => {
+      setUser(current => ({...current, loading: false}));
+    });
+};
 
    useEffect(() => {
   const subscriber = auth().onAuthStateChanged((firebaseUser) => {
@@ -133,7 +150,7 @@ auth()
 }, []);
 
 
- return(<AuthContext.Provider value={{user, setUser, handleSignup, signOutUser, handleForgotPassword, handleSignIn}}>
+ return(<AuthContext.Provider value={{user, setUser, handleSignup, signOutUser, handleForgotPassword, handleSignIn, onGoogleButtonPress}}>
         {children}
     </AuthContext.Provider>)
 }

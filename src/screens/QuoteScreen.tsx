@@ -61,11 +61,11 @@ export const QuoteScreen: React.FC<Props> = ({navigation}) => {
             console.log(err);    
         })
 
-        // const timer = setTimeout(() => {
-        //     navigation.navigate('HomeScreen');
-        // }, 10000);
+        const timer = setTimeout(() => {
+            navigation.navigate('HomeScreen');
+        }, 10000);
     
-        // return () => clearTimeout(timer); // Clear timer on cleanup
+        return () => clearTimeout(timer); // Clear timer on cleanup
     }, [currentQuoteIndex]) // react to first evaluation
 
     

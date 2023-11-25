@@ -8,7 +8,7 @@ export const useAuthContext = () => {
         throw new Error('useContext must be used within a AuthProvider')
     }
 
-    const {user, handleForgotPassword, handleSignup, handleSignIn, setUser, signOutUser} = context
+    const {user, handleForgotPassword, handleSignup, handleSignIn, setUser, signOutUser, onGoogleButtonPress, initializing} = context
 
-    return {user, handleForgotPassword, handleSignup, handleSignIn, setUser, signOutUser}
+    return {user, handleForgotPassword, handleSignup, handleSignIn, setUser, signOutUser, onGoogleButtonPress, initializing}
 }

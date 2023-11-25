@@ -4,7 +4,7 @@ export type Message = {
     senderID: string; 
     receiverID: string;
     messageText: string;
-    timeStamp: Timestamp | FieldValue;
+    timeStamp: Date;
 }
 
 export type MessageUI = {
@@ -14,11 +14,18 @@ export type MessageUI = {
     timeStamp: string;
 }
 
-
 export type User = {
     email: string;
     insertedAt: Timestamp;
     uid: string;
+}
+
+export type DbUser = {
+    email:  string;
+    uid: string;
+    insertedAt: Date;
+    quoteIndex: number;
+    lastQuoteUpdate: string;
 }
 
 export type Quote = {

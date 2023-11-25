@@ -1,6 +1,7 @@
 import { useAuthContext } from "../hooks/useAuthContext";
-import { MainStackNavigator } from "./MainStackNavigator";
 import { AuthStackNavigator } from "./AuthStackNavigator";
+import { MainStackNavigator } from "./MainStackNavigator";
+import { RootStackNavigator } from "./RootStackNavigator";
 
 
 export const NavResolutionNavigator = () => {

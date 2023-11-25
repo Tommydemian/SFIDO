@@ -1,5 +1,5 @@
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image, Pressable, Button } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { COLORS } from '../../assets/theme'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { useAuthContext } from '../hooks/useAuthContext'
@@ -7,15 +7,10 @@ import { InputField } from '../components/InputField'
 import { SubmitButton } from '../components/SubmitButton'
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import { useForm, SubmitHandler } from "react-hook-form"
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import { OrDivider } from '../components/OrDivider'
 import { AuthStackParams } from '../navigation/AuthStackNavigator'
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
-
-GoogleSignin.configure({
-  webClientId: '86924702179-fkg4evrmr3rcu1om8np5gg898v73u5j6.apps.googleusercontent.com',
-});
 
 type FormData = {
   email: string;
@@ -24,28 +19,10 @@ type FormData = {
 
 type Props = NativeStackScreenProps<AuthStackParams, 'LoginScreen'>
 
-
-async function onGoogleButtonPress() {
-  try {
-    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-    const response = await GoogleSignin.signIn();
-    console.log('Google Sign-In response:', response);
-
-    if (response && response.idToken) {
-      const googleCredential = auth.GoogleAuthProvider.credential(response.idToken);
-      return auth().signInWithCredential(googleCredential);
-    } else {
-      console.log('No idToken received');
-    }
-  } catch (error) {
-    console.error('Google Sign-In Error: ', error);
-  }
-}
-
 export const LoginScreen: React.FC<Props> = ({navigation}) => {
 
   // conext hook
-  const {user, handleForgotPassword, handleSignIn, signOutUser} = useAuthContext()
+  const {user, handleSignIn, onGoogleButtonPress, initializing } = useAuthContext()
 
   // useForm hook
   const {control, handleSubmit, formState: {errors}} = useForm<FormData>()
@@ -56,8 +33,9 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
 
   useEffect(() => {
     console.log(auth().currentUser);
-    
   }, [])
+
+  if (initializing) return <Spinner />
 
   return (
     <SafeAreaView style={styles.container}>
@@ -92,7 +70,7 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
         />
       
       <TouchableOpacity>
-      <Text onPress={handleForgotPassword} style={styles.forgotPassword}>Forgot your password?</Text>
+      <Text onPress={() => navigation.navigate('EmailPromptModal')} style={styles.forgotPassword}>Forgot your password?</Text>
       </TouchableOpacity>
 
       <SubmitButton onPress={onSignIn}>

@@ -4,6 +4,8 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { Message } from "../types";
 
+import { addMessageToFirestore } from "../services/messageService";
+
 type ProviderProps = {
   children: React.ReactNode
 }
@@ -24,7 +26,7 @@ export const MessageProvider: React.FC<ProviderProps> = ({children}) => {
         messageText: '', 
         receiverID: '', 
         senderID: '', 
-        timeStamp: firestore.Timestamp.now()
+        timeStamp: firestore.Timestamp.now().toDate()
     })
     const [receivedMessages, setReceivedMessages] = useState<Message[]>([])
     const [sentMessages, setSentMessages] = useState<Message[]>([])
@@ -33,9 +35,14 @@ export const MessageProvider: React.FC<ProviderProps> = ({children}) => {
      const handleSendMessage =  (id: string) => {
         // clause guard => no text => no message possible sent
         if (!message.messageText) return;
-  
-        firestore().collection('messages').add({...message, senderID: auth().currentUser?.uid, receiverID: id, timeStamp: firestore.Timestamp.now().toDate()})
-        .then(() => {
+
+        addMessageToFirestore({
+          ...message,
+           senderID: auth().currentUser?.uid || '',
+          receiverID: id,
+          timeStamp: firestore.Timestamp.now().toDate()
+        })
+          .then(() => {
           setMessage({...message, messageText: ''})
         }).catch((error) => {
           console.error(error);
@@ -51,13 +58,13 @@ export const MessageProvider: React.FC<ProviderProps> = ({children}) => {
           const sentMessagesQuery = firestore()
           .collection('messages')
           .where('senderID', '==', currentUserId)
-          .where('receiverID', '==', id); // Agrega esta línea
+          .where('receiverID', '==', id);
   
           // Query para mensajes recibidos
           const receivedMessagesQuery = firestore()
           .collection('messages')
           .where('receiverID', '==', currentUserId)
-          .where('senderID', '==', id); // Agrega esta línea
+          .where('senderID', '==', id); 
       
         const sentMessagesSubscriber = sentMessagesQuery.onSnapshot((snapshot) => {
           // Process the snapshot data
