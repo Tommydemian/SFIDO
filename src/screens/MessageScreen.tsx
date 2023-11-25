@@ -7,9 +7,9 @@ import { SubmitButton } from '../components/SubmitButton'
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { COLORS } from '../theme'
 import { format } from 'date-fns';
 import { useMessageContext } from '../hooks/useMessageContext'
+import { COLORS } from '../../assets/theme'
 
 type Props = NativeStackScreenProps<MainStackParams, 'MessageScreen'>
 
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     },
     messageInput: {
       borderWidth: 1,
-      borderColor: COLORS.darkGray,
+      borderColor: COLORS.inputGrayText,
       borderRadius: 5,
       padding: 10,
       flex: 1, // Take up as much space as possible.

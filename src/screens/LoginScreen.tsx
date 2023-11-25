@@ -1,15 +1,15 @@
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image, Button } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image, Pressable, Button } from 'react-native'
 import React, { useEffect } from 'react'
-import { COLORS } from '../theme'
+import { COLORS } from '../../assets/theme'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { InputField } from '../components/InputField'
 import { SubmitButton } from '../components/SubmitButton'
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import { useForm, SubmitHandler } from "react-hook-form"
-// import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
+import { OrDivider } from '../components/OrDivider'
 
 GoogleSignin.configure({
   webClientId: '86924702179-fkg4evrmr3rcu1om8np5gg898v73u5j6.apps.googleusercontent.com',
@@ -38,22 +38,6 @@ async function onGoogleButtonPress() {
   }
 }
 
-
-
-
-// async function onGoogleButtonPress() {
-//   // Get the users ID token
-//   const { idToken } = await GoogleSignin.signIn();
-
-//   // Create a Google credential with the token
-//   const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-//   // Sign-in the user with the credential
-//   return auth().signInWithCredential(googleCredential);
-
-// }
-
-
 export const LoginScreen = () => {
 
   // conext hook
@@ -77,42 +61,53 @@ export const LoginScreen = () => {
 
       <Image style={styles.heroImage} source={require('../../assets/images/loginwolf.png')}></Image>
 
+      <Text>Inner Beast</Text>
+      <Text>Unleash your inner beast</Text>
+
       <InputField
       rules={{required: 'Email is required'}}
       name='email' 
       control={control}
-      label='Email'
-      placeholder='JonhDoe@gmail.com'
+      placeholder='jonhdoe@gmail.com'
       secureTextEntry={false}
       autoCapitalize='none'
       setVisibility={false}
-      leftIcon={<MaterialIcons name="email" size={24} color={COLORS.richBlack} />} />
+      leftIcon={<MaterialIcons name="email" size={24} color={COLORS.textBlack} />} />
       
       <InputField 
       rules={{required: 'Password is required'}}
       name='password'
       setVisibility
       control={control}
-      label='Password'
       placeholder='●●●●●●●●'
       secureTextEntry={true}
+      placeholderTextColor={COLORS.inputGrayText}
       autoCapitalize='none'
-      leftIcon={<Entypo name="lock" size={24} color={COLORS.richBlack} />} 
-      rightIcon={<Entypo name="eye" size={24} color={COLORS.richBlack} />}
+      leftIcon={<Entypo name="lock" size={24} color={COLORS.textBlack} />} 
+      rightIcon={<Entypo name="eye" size={24} color={COLORS.textBlack} />}
         />
       
+      <TouchableOpacity>
+      <Text onPress={handleForgotPassword} style={styles.forgotPassword}>Forgot your password?</Text>
+      </TouchableOpacity>
+
       <SubmitButton onPress={onSignIn}>
         Sing In
       </SubmitButton>
 
-      <TouchableOpacity>
-      <Text onPress={handleForgotPassword} style={styles.forgotPassword}>Forgot your password?</Text>
-      </TouchableOpacity>
+      <OrDivider />
+
 
       <Button
       title="Google Sign-In"
       onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))}
     />
+
+    <View style={{flexDirection: 'row'}}>
+    <Text>Dont have an account?</Text>
+    
+    <Pressable><Text>Sign Up</Text></Pressable>
+    </View>
 
     </SafeAreaView>
   )
@@ -123,14 +118,17 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: '5%', 
     justifyContent: 'center',
-    backgroundColor: 'white'
+    backgroundColor: COLORS.withe,
+    padding: 20
   }, 
   forgotPassword: {
     alignSelf: 'flex-end', 
-    color: COLORS.ruddyBlue
+    color: COLORS.grayText
   }, 
   heroImage: {
-    height: 200, 
-    alignSelf: 'center'
-  }
+  height: 250, // Ajusta según sea necesario
+  resizeMode: 'contain', // Asegúrate de que la imagen se ajuste sin deformarse
+  alignSelf: 'center',
+  marginVertical: 20, // Ajusta el espacio vertical
+}
 })

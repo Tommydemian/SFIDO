@@ -3,7 +3,7 @@ import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import { SubmitButton } from '../components/SubmitButton';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { useNavigation } from '@react-navigation/native';
-import { COLORS } from '../theme';
+import { COLORS } from '../../assets/theme';
 import { useForm, SubmitHandler } from "react-hook-form"
 import { InputField } from '../components/InputField';
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -38,7 +38,7 @@ export const SignupScreen = () => {
       secureTextEntry={false}
       autoCapitalize='none'
       setVisibility={false}
-      leftIcon={<MaterialIcons name="email" size={24} color={COLORS.richBlack} />} />
+      leftIcon={<MaterialIcons name="email" size={24} color={COLORS.textBlack} />} />
       
       <InputField 
       rules={{required: 'Password is required'}}
@@ -49,8 +49,8 @@ export const SignupScreen = () => {
       placeholder='●●●●●●●●'
       secureTextEntry={true}
       autoCapitalize='none'
-      leftIcon={<Entypo name="lock" size={24} color={COLORS.richBlack} />} 
-      rightIcon={<Entypo name="eye" size={24} color={COLORS.richBlack} />}
+      leftIcon={<Entypo name="lock" size={24} color={COLORS.textBlack} />} 
+      rightIcon={<Entypo name="eye" size={24} color={COLORS.textBlack} />}
         />
       
       <SubmitButton onPress={onSubmit}>
@@ -77,6 +77,6 @@ const styles = StyleSheet.create({
   }, 
   forgotPassword: {
     alignSelf: 'flex-end', 
-    color: COLORS.ruddyBlue
+    color: COLORS.bgBlack
   }
 })

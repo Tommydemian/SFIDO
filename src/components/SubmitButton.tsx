@@ -1,5 +1,5 @@
 import { Pressable, PressableProps, Text, StyleSheet } from "react-native"
-import { COLORS } from "../theme"
+import { COLORS } from "../../assets/theme"
 
 type Props = PressableProps & {
     customStyles?: object
@@ -20,13 +20,15 @@ const styles = StyleSheet.create({
   submitButton: {
     marginVertical: 20, 
     paddingVertical: 10, 
-    backgroundColor: COLORS.oxfordBlue, 
+    backgroundColor: COLORS.bgBlack, 
     paddingHorizontal: 10, 
-    borderRadius: 10
+    borderRadius: 30,
+    marginBottom: 20
   }, 
   submitText: {
-    color: COLORS.white, 
+    color: COLORS.withe, 
     fontWeight: 'bold',
-    alignSelf: 'center' 
+    alignSelf: 'center', 
+    textTransform: 'capitalize',
   }
 })
