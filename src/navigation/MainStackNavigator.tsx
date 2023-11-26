@@ -3,7 +3,7 @@ import { HomeScreen } from '../screens/HomeScreen';
 import { MessageScreen } from '../screens/MessageScreen';
 import { QuoteScreen } from '../screens/QuoteScreen';
 import {WelcomeScreen} from '../screens/WelcomeScreen';
-import { InterestSelectionScreen } from '../screens/InterestSelctionScreen';
+import { InterestSelectionScreen } from '../screens/InterestSelectionScreen';
 
 export type MainStackParams = {
     HomeScreen: undefined;
@@ -25,7 +25,7 @@ export const MainStackNavigator = () => {
       <Stack.Screen name="QuoteScreen" component={QuoteScreen} options={{headerShown: false}} />
       <Stack.Screen name="MessageScreen" component={MessageScreen} />
       <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{headerShown: false}} />
-      <Stack.Screen name="InterestSelectionScreen" component={InterestSelectionScreen} options={{headerShown: false}} />
+      <Stack.Screen name="InterestSelectionScreen" component={InterestSelectionScreen} options={{headerTitle: 'Select your interests'}} />
     </Stack.Navigator>
   );
 }

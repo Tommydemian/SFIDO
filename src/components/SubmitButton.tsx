@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   submitButton: {
     marginVertical: 20, 
     paddingVertical: 10, 
-    backgroundColor: COLORS.bgBlack, 
+    backgroundColor: COLORS.blackBg, 
     paddingHorizontal: 10, 
     borderRadius: 30,
     marginBottom: 20

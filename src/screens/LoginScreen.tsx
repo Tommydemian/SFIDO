@@ -22,7 +22,7 @@ type Props = NativeStackScreenProps<AuthStackParams, 'LoginScreen'>
 export const LoginScreen: React.FC<Props> = ({navigation}) => {
 
   // conext hook
-  const {user, handleSignIn, onGoogleButtonPress, initializing } = useAuthContext()
+  const {user, handleSignIn, onGoogleButtonPress } = useAuthContext()
 
   // useForm hook
   const {control, handleSubmit, formState: {errors}} = useForm<FormData>()
@@ -34,8 +34,6 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
   useEffect(() => {
     console.log(auth().currentUser);
   }, [])
-
-  if (initializing) return <Spinner />
 
   return (
     <SafeAreaView style={styles.container}>
