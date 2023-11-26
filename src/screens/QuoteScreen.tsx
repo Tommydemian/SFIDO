@@ -62,7 +62,7 @@ export const QuoteScreen: React.FC<Props> = ({navigation}) => {
         })
 
         const timer = setTimeout(() => {
-            navigation.navigate('HomeScreen');
+            navigation.navigate('WelcomeScreen');
         }, 10000);
     
         return () => clearTimeout(timer); // Clear timer on cleanup
@@ -71,7 +71,7 @@ export const QuoteScreen: React.FC<Props> = ({navigation}) => {
     
     // function redirect
     const handleMoveOn = () => {
-        navigation.navigate('HomeScreen')
+        navigation.navigate('WelcomeScreen')
     }
     
   return (
