@@ -1,15 +1,18 @@
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, StatusBar } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { SubmitButton } from '../components/SubmitButton'
 import { User } from '../types'
 
+import {UpperBarNav} from '../components/UpperBarNav'
+
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {format} from 'date-fns'
 import { BottomTabBarProps, BottomTabNavigationProp, BottomTabScreenProps } from '@react-navigation/bottom-tabs'
 import { TabNavigatorParams,  } from '../navigation/BottomTabsNavigator'
+import { COLORS } from '../../assets/theme'
 
 type Props = BottomTabScreenProps<TabNavigatorParams, 'HomeScreen'>; // Updated Props type
 
@@ -34,7 +37,11 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>HomeScreen</Text>
+            <StatusBar
+        animated={true}
+        backgroundColor={COLORS.blackBg}
+      />
+      <UpperBarNav />
 
       {
         users.map(user => (

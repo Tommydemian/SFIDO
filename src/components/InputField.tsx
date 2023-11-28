@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
   inputFieldContainer: {
-    backgroundColor: COLORS.withe, 
+    backgroundColor: COLORS.whiteText, 
     borderRadius: 30, // Aumenta para más redondez
     paddingVertical: 15, // Aumenta para más altura
     paddingLeft: 20, // Aumenta para más espacio interior

@@ -20,13 +20,13 @@ const styles = StyleSheet.create({
   submitButton: {
     marginVertical: 20, 
     paddingVertical: 10, 
-    backgroundColor: COLORS.blackBg, 
+    backgroundColor: COLORS.orangeWeb, 
     paddingHorizontal: 10, 
     borderRadius: 30,
     marginBottom: 20
   }, 
   submitText: {
-    color: COLORS.withe, 
+    color: COLORS.whiteText, 
     fontWeight: 'bold',
     alignSelf: 'center', 
     textTransform: 'capitalize',

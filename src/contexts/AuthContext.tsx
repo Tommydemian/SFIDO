@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-import { addUserToFirestore } from "../services/userService";
+import { addUserToFirestore, checkIfUserExistsInFirestore } from "../services/userService";
 import { sendPasswordResetEmail } from "../services/authService";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
@@ -15,6 +15,7 @@ type User = {
     uid: string;
     isLoggedIn: boolean;
     loading: boolean;
+    image?: string;
 }
 
 type AuthContextType = {
@@ -25,6 +26,7 @@ type AuthContextType = {
     handleForgotPassword: (email: string) => void  
     handleSignIn: (email: string, password: string) => void
     onGoogleButtonPress: () => Promise<FirebaseAuthTypes.UserCredential | undefined>
+    linkGoogleAccount: (googleCredential: FirebaseAuthTypes.AuthCredential, email: string, password: string) => Promise<void>
   }
 
 
@@ -34,6 +36,7 @@ export const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
  // State
   const [user, setUser] = useState<User>({email:'', uid: '', isLoggedIn: false, loading: false})
   const [initializing, setInitializing] = useState(true);
+  const [isLinking, setIsLinking] = useState(false)
 
   GoogleSignin.configure({
     webClientId: '86924702179-fkg4evrmr3rcu1om8np5gg898v73u5j6.apps.googleusercontent.com',
@@ -52,7 +55,7 @@ const handleSignup = (email: string, password: string) => {
         quoteIndex: 1,
         lastQuoteUpdate: new Date().toLocaleDateString()
       };
-       return addUserToFirestore(newUser);
+       return addUserToFirestore(userCredential.user.uid, newUser);
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -76,6 +79,26 @@ auth()
   });
 }
 
+const linkGoogleAccount = async (googleCredential: FirebaseAuthTypes.AuthCredential, email: string, password: string) => {
+  // Asumiendo que 'User' es el tipo de tu usuario y tiene un campo 'uid'
+  setIsLinking(true)
+  try {
+    const currentUser = await auth().signInWithEmailAndPassword(email, password);
+    if (currentUser) {
+      await currentUser.user.linkWithCredential(googleCredential);
+      console.log('Cuenta de Google vinculada con éxito');
+      setIsLinking(true)
+    } else {
+      console.log('No se pudo iniciar sesión con la cuenta existente');
+    }
+  } catch (error) {
+    console.error('Error al vincular la cuenta de Google: ', error);
+    setIsLinking(true)
+  }
+};
+
+
+
 // function Sign in with Google
 const onGoogleButtonPress = async () => {
   try {
@@ -85,7 +108,15 @@ const onGoogleButtonPress = async () => {
 
     if (response && response.idToken) {
       const googleCredential = auth.GoogleAuthProvider.credential(response.idToken);
-      return auth().signInWithCredential(googleCredential);
+
+      const existingUser = await checkIfUserExistsInFirestore(response.user.email)
+
+      if (existingUser) {
+        return { email: response.user.email, googleCredential: googleCredential};
+        
+      } else {
+        return auth().signInWithCredential(googleCredential);
+      }
     } else {
       console.log('No idToken received');
     }
@@ -125,7 +156,7 @@ const handleForgotPassword = (email: string) => {
    useEffect(() => {
   const subscriber = auth().onAuthStateChanged((firebaseUser) => {
     console.log(firebaseUser?.email);
-    if (firebaseUser) {
+    if (firebaseUser && !isLinking) {
       // Usuario está autenticado
       setUser(current => ({
         ...current, 
@@ -150,7 +181,7 @@ const handleForgotPassword = (email: string) => {
 }, []);
 
 
- return(<AuthContext.Provider value={{user, setUser, handleSignup, signOutUser, handleForgotPassword, handleSignIn, onGoogleButtonPress}}>
+ return(<AuthContext.Provider value={{user, setUser, handleSignup, signOutUser, handleForgotPassword, handleSignIn, onGoogleButtonPress, linkGoogleAccount}}>
         {children}
     </AuthContext.Provider>)
 }

@@ -11,15 +11,28 @@ import auth from '@react-native-firebase/auth';
 import { OrDivider } from '../components/OrDivider'
 import { AuthStackParams } from '../navigation/AuthStackNavigator'
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
+import { FirebaseAuthTypes } from '@react-native-firebase/auth'
+
+import { DialogPopup } from '../components/DialogPopup'
 
 type FormData = {
   email: string;
   password: string;
 }
 
+
 type Props = NativeStackScreenProps<AuthStackParams, 'LoginScreen'>
 
+type DraftUserCredentials = FirebaseAuthTypes.UserCredential & {
+  email: string;
+  googleCredential: FirebaseAuthTypes.AuthCredential;
+}
+
 export const LoginScreen: React.FC<Props> = ({navigation}) => {
+const [visible, setIsVisible] = useState(false)
+const [email, setEmail] = useState('')
+const [password, setPassword] = useState('')
+const [googleCredential, setGoogleCredential] = useState<FirebaseAuthTypes.AuthCredential | null>(null)
 
   // conext hook
   const {user, handleSignIn, onGoogleButtonPress } = useAuthContext()
@@ -35,9 +48,29 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
     console.log(auth().currentUser);
   }, [])
 
+  const handleOnGoogleButtonPress = () => {
+    onGoogleButtonPress()
+    .then((res) => {
+      const response = res as DraftUserCredentials
+      setIsVisible(true)
+      setEmail(response.email)
+      setGoogleCredential(response.googleCredential)
+      console.log(res); 
+    }).catch((err) => {
+      console.log(err);
+    
+    })
+  }
+
+  useEffect(() => {
+    console.log(password);
+  }, [password])
+
   return (
     <SafeAreaView style={styles.container}>
       <Spinner visible={user.loading}/>
+
+      <DialogPopup visible={visible} email={email} setPassword={setPassword} googleCredential={googleCredential!} password={password} />
 
       <Image style={styles.heroImage} source={require('../../assets/images/loginwolf.png')}></Image>
 
@@ -80,7 +113,7 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
 
       <Button
       title="Google Sign-In"
-      onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))}
+      onPress={handleOnGoogleButtonPress}
     />
 
     <View style={{flexDirection: 'row'}}>
@@ -98,12 +131,12 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: '5%', 
     justifyContent: 'center',
-    backgroundColor: COLORS.withe,
+    backgroundColor: COLORS.blackBg,
     padding: 20
   }, 
   forgotPassword: {
     alignSelf: 'flex-end', 
-    color: COLORS.grayText
+    color: COLORS.orangeWeb
   }, 
   heroImage: {
   height: 250, // Ajusta según sea necesario

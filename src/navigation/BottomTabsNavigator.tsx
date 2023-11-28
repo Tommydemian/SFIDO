@@ -16,7 +16,7 @@ const Tab = createBottomTabNavigator<TabNavigatorParams>();
 
 export const BottomTabsNavigator = () =>  {
   return (
-      <Tab.Navigator initialRouteName='HomeScreen' screenOptions={{tabBarShowLabel: false}}>
+      <Tab.Navigator initialRouteName='HomeScreen' screenOptions={{tabBarShowLabel: false, headerShown: false}}>
         <Tab.Screen name="HomeScreen" component={HomeScreen}
         options={{tabBarIcon: ({size, color}) => <Ionicons name="home-outline" size={size} color={color} />}}
         />
