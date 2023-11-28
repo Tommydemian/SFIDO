@@ -4,13 +4,14 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { SubmitButton } from '../components/SubmitButton'
 import { User } from '../types'
-import {NativeStackScreenProps} from '@react-navigation/native-stack'
-import { MainStackParams } from '../navigation/MainStackNavigator'
+
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {format} from 'date-fns'
+import { BottomTabBarProps, BottomTabNavigationProp, BottomTabScreenProps } from '@react-navigation/bottom-tabs'
+import { TabNavigatorParams,  } from '../navigation/BottomTabsNavigator'
 
-type Props = NativeStackScreenProps<MainStackParams, 'HomeScreen'>
+type Props = BottomTabScreenProps<TabNavigatorParams, 'HomeScreen'>; // Updated Props type
 
 export const HomeScreen: React.FC<Props> = ({ navigation }) => {
 

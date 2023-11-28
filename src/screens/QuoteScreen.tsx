@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     }, 
     linkContainer: {
         alignSelf: 'flex-end',
-        backgroundColor: COLORS.bgBlack,
+        backgroundColor: COLORS.blackBg,
         borderRadius: 30
     },
     link: {

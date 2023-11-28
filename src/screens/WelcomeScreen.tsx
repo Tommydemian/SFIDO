@@ -10,6 +10,8 @@ type Props = NativeStackScreenProps<MainStackParams, 'WelcomeScreen'>
 export const WelcomeScreen: React.FC<Props> = ({navigation}) => {
 
     const handleMoveOn = () => {
+        console.log('hola');
+        
         navigation.navigate('InterestSelectionScreen')
     }
 
@@ -53,12 +55,12 @@ const styles = StyleSheet.create({
     },
     subtitle: {
         fontSize: 18,
-        color: COLORS.metalicGray,
+        color: COLORS.silver,
         textAlign: 'center',
         marginBottom: 20,
     },
     highlight: {
-        color: COLORS.subtleAccentRed,
+        color: COLORS.orangeWeb,
         fontWeight: 'bold',
     },
     image: {
@@ -73,9 +75,9 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     ctaButton: {
-        backgroundColor: COLORS.subtleAccentRed,
+        backgroundColor: COLORS.orangeWeb,
         padding: 15,
-        borderRadius: 10,
+        borderRadius: 30,
         alignItems: 'center',
         marginTop: 20,
     },

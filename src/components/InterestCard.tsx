@@ -37,13 +37,13 @@ const styles = StyleSheet.create({
     },
     cardDescription: {
         fontSize: 14,
-        color: COLORS.battleshipGray, // Texto gris para descripción
+        color: COLORS.blackBg, // Texto gris para descripción
     }, 
     selected: {
-        backgroundColor: COLORS.subtleAccentRed, // Cambia el color de fondo para resaltar
+        backgroundColor: COLORS.orangeWeb, // Cambia el color de fondo para resaltar
         borderWidth: 2, // Borde más grueso
-        borderColor: COLORS.vermillon, // Color del borde
-        shadowColor: COLORS.vermillon, // Sombra con un color que resalte
+        borderColor: COLORS.orangeWeb, // Color del borde
+        shadowColor: COLORS.orangeWeb, // Sombra con un color que resalte
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 6,
