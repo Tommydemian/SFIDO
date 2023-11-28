@@ -26,6 +26,7 @@ export type DbUser = {
     insertedAt: Date;
     quoteIndex: number;
     lastQuoteUpdate: string;
+    profilePic?: string;
 }
 
 export type Quote = {

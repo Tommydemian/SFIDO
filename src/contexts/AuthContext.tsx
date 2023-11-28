@@ -15,7 +15,7 @@ type User = {
     uid: string;
     isLoggedIn: boolean;
     loading: boolean;
-    image?: string;
+    profilePic?: string;
 }
 
 type AuthContextType = {
@@ -53,7 +53,8 @@ const handleSignup = (email: string, password: string) => {
         uid: userCredential.user.uid,
         insertedAt: firestore.Timestamp.now().toDate(),
         quoteIndex: 1,
-        lastQuoteUpdate: new Date().toLocaleDateString()
+        lastQuoteUpdate: new Date().toLocaleDateString(), 
+        profilePic: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D'
       };
        return addUserToFirestore(userCredential.user.uid, newUser);
     })
@@ -106,16 +107,38 @@ const onGoogleButtonPress = async () => {
     const response = await GoogleSignin.signIn();
     console.log('Google Sign-In response:', response);
 
+    const newUser = {
+      email: response.user.email,
+      uid: response.user.id,
+      insertedAt: firestore.Timestamp.now().toDate(),
+      quoteIndex: 1,
+      lastQuoteUpdate: new Date().toLocaleDateString(),
+      profilePic: response.user.photo || ''
+    };
+
     if (response && response.idToken) {
       const googleCredential = auth.GoogleAuthProvider.credential(response.idToken);
 
+      const signInMethods = await auth().fetchSignInMethodsForEmail(response.user.email);
+      const isGoogleLinked = signInMethods.includes('google.com');
+
+      if (isGoogleLinked) {
+        console.log('La cuenta de Google ya está vinculada. Iniciando sesión...');
+        return auth().signInWithCredential(googleCredential);
+      }
       const existingUser = await checkIfUserExistsInFirestore(response.user.email)
+
 
       if (existingUser) {
         return { email: response.user.email, googleCredential: googleCredential};
-        
       } else {
-        return auth().signInWithCredential(googleCredential);
+        addUserToFirestore(response.user.id, newUser)
+        .then(() => {
+          return auth().signInWithCredential(googleCredential);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
       }
     } else {
       console.log('No idToken received');
