@@ -10,8 +10,6 @@ type Props = NativeStackScreenProps<MainStackParams, 'WelcomeScreen'>
 export const WelcomeScreen: React.FC<Props> = ({navigation}) => {
 
     const handleMoveOn = () => {
-        console.log('hola');
-        
         navigation.navigate('InterestSelectionScreen')
     }
 

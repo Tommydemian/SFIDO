@@ -7,7 +7,6 @@ import auth from '@react-native-firebase/auth';
 import { Quote } from '../types';
 import { COLORS } from '../../assets/theme';
 
-
 type Props = NativeStackScreenProps<MainStackParams, 'QuoteScreen'>
 
 export const QuoteScreen: React.FC<Props> = ({navigation}) => {
@@ -108,14 +107,14 @@ const styles = StyleSheet.create({
         borderRadius: 30
     },
     link: {
-        color: COLORS.withe,
+        color: COLORS.whiteText,
         fontWeight: 'bold',
         padding: 20,
     },
     quoteText: {
         fontSize: 50, 
         fontWeight: 'bold',
-        color: COLORS.withe, 
+        color: COLORS.whiteText, 
         textAlign: 'center', 
         paddingBottom: 10
     },

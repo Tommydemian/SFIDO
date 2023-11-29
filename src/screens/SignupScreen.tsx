@@ -1,8 +1,7 @@
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View, Pressable } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import { SubmitButton } from '../components/SubmitButton';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../../assets/theme';
 import { useForm, SubmitHandler } from "react-hook-form"
 import { InputField } from '../components/InputField';
@@ -77,6 +76,6 @@ const styles = StyleSheet.create({
   }, 
   forgotPassword: {
     alignSelf: 'flex-end', 
-    color: COLORS.bgBlack
+    color: COLORS.blackBg
   }
 })
