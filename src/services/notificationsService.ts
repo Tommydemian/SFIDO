@@ -1,5 +1,11 @@
 import * as Notifications from 'expo-notifications';
 
+type NotificationContent = {
+  title: string
+  body: string
+  data: {data: string}
+}
+
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowAlert: true,
@@ -8,15 +14,19 @@ Notifications.setNotificationHandler({
     }),
   });
 
-  export const scheduleNotifications = async() => {
-    await Notifications.scheduleNotificationAsync({
-        content: {
-          title: "You've got mail! 📬",
-          body: 'Here is the notification body',
-          data: { data: 'goes here' },
-        },
-        trigger: { seconds: 5 },
-      });
+  export const scheduleNotifications = async({title, body, data}: NotificationContent) => {
+    try {
+      await Notifications.scheduleNotificationAsync({
+          content: {
+            title,
+            body,
+            data
+          },
+          trigger: { seconds: 5 },
+        });
+      } catch (error) {
+        console.log(error);
+      }
   }
 
   export const requestPermissions = () => {
