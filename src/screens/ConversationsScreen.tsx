@@ -1,17 +1,17 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable, Platform } from 'react-native'
-import React, {useState, useCallback} from 'react'
+import React, { useEffect } from 'react'
 import { UpperBarNav } from '../components/UpperBarNav'
-import { useRef, useEffect } from 'react'
-import * as Notifications from 'expo-notifications';
-import DateTimePicker from '@react-native-community/datetimepicker';
-
-
 import { requestPermissions, scheduleNotifications } from '../services/notificationsService'
 import { DateAndTimePicker } from '../components/DateTimePicker';
 import { useSetLocalNotifDate } from '../hooks/useSetLocalNotifDate';
 
 export const ConversationsScreen = () => {
-const {handleChange, localNotifDate, showPicker, togglePickerVisibility, date } = useSetLocalNotifDate();
+const {handleDateChange, localNotifDate, showDatePicker, toggleDatePickerVisibility, date } = useSetLocalNotifDate();
+
+useEffect(() => {
+  console.log(showDatePicker);
+  
+}, [showDatePicker])
 
   return (
     <View>
@@ -21,16 +21,17 @@ const {handleChange, localNotifDate, showPicker, togglePickerVisibility, date } 
       <Text>ConversationsScreen</Text>
 
           {
-            showPicker && (
+            showDatePicker && (
               <DateAndTimePicker
+            mode='date'
             value={date}
-            onChange={handleChange}
+            onChange={handleDateChange}
         />
             )
           }
           {
-            !showPicker && (
-              <Pressable style={styles.pressable} onPress={togglePickerVisibility}>
+            !showDatePicker && (
+              <Pressable style={styles.pressable} onPress={toggleDatePickerVisibility}>
                 <TextInput 
                     placeholder='Select Date'
                     value={localNotifDate.toDateString()}
