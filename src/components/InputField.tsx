@@ -26,10 +26,6 @@ export const InputField: React.FC<Props> = ({label, setVisibility, name,autoCapi
     }
   }
 
-  // useEffect(() => {
-  //   console.log(isPasswordVisible);
-  // }, [isPasswordVisible])
-
   return (
     <Controller 
     control={control}

@@ -5,11 +5,13 @@ import { ConversationsScreen } from '../screens/ConversationsScreen';
 
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { MotivationalMessageScreen } from '../screens/MotivationalMessageScreen';
 
 export type TabNavigatorParams = {
     HomeScreen: undefined;
     UserProfileScreen: undefined;
     ConversationsScreen: undefined;
+    MotivationalMessageScreen: undefined;
 }
 
 const Tab = createBottomTabNavigator<TabNavigatorParams>();
@@ -24,6 +26,9 @@ export const BottomTabsNavigator = () =>  {
         options={{tabBarIcon: ({size, color}) => <AntDesign name="user" size={size} color={color} />}}
         />
         <Tab.Screen name="ConversationsScreen" component={ConversationsScreen}
+        options={{tabBarIcon: ({size, color}) => <Ionicons name="chatbox-outline" size={size} color={color} />}}
+        />
+        <Tab.Screen name="MotivationalMessageScreen" component={MotivationalMessageScreen}
         options={{tabBarIcon: ({size, color}) => <Ionicons name="chatbox-outline" size={size} color={color} />}}
         />
       </Tab.Navigator>

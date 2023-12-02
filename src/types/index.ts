@@ -27,6 +27,7 @@ export type DbUser = {
     quoteIndex: number;
     lastQuoteUpdate: string;
     profilePic?: string;
+    isGoogleAccountLinked: boolean
 }
 
 export type Quote = {

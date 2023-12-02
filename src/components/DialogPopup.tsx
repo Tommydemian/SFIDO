@@ -28,13 +28,13 @@ export const DialogPopup: React.FC<Props> = ({visible, email, password, setPassw
 
   useEffect(() => {
     setModalVisible(visible);
-    console.log(isModalVisible);
+    console.log(isModalVisible, 'here babe');
   }, [visible]);
 
   const handleLinkWithGoogle = () => {
     linkGoogleAccount(googleCredential, email, password)
     .then((res) => {
-      console.log(res);
+      console.log(res, 'atalk to me');
       
     }).catch((err) => {
       console.log(err);

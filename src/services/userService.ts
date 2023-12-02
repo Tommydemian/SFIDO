@@ -19,3 +19,37 @@ export const checkIfUserExistsInFirestore = (email: string) => {
         return false; // O manejar el error de manera más específica
     });
 }
+
+export const setIsGoogleAccountLinkedToTrue = (email: string) => {
+    return firestore().collection('users').where('email', '==', email).get()
+    .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+            const userDoc = querySnapshot.docs[0];
+            userDoc.ref.update({isGoogleAccountLinked: true})
+        } else {
+            console.log('No user found for that email address, sorry');
+            return null 
+        }
+    }).catch((error) => {
+        console.log(error); 
+    } )
+}
+
+export const isUserGoogleAccountLinked = (email: string) => {
+    return firestore().collection('users').where('email', '==', email).get()
+    .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+            const userDoc = querySnapshot.docs[0];
+            console.log(userDoc.data().isGoogleAccountLinked, 'Google log');
+            if (userDoc.data().isGoogleAccountLinked) {
+                console.log('Account linked to Google ');
+                return true
+            } else {
+                console.log('Account not linked');
+                return false
+            }
+        }
+    }).catch((error) => {
+        console.log(error);     
+    })
+}

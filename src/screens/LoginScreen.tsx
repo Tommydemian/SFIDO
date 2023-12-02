@@ -14,6 +14,8 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { FirebaseAuthTypes } from '@react-native-firebase/auth'
 
 import { DialogPopup } from '../components/DialogPopup'
+import { isUserGoogleAccountLinked, setIsGoogleAccountLinkedToTrue } from '../services/userService'
+
 
 type FormData = {
   email: string;
@@ -35,7 +37,7 @@ const [password, setPassword] = useState('')
 const [googleCredential, setGoogleCredential] = useState<FirebaseAuthTypes.AuthCredential | null>(null)
 
   // conext hook
-  const {user, handleSignIn, onGoogleButtonPress } = useAuthContext()
+  const {user, handleSignIn, onGoogleButtonPress, isGoogleLinked } = useAuthContext()
 
   // useForm hook
   const {control, handleSubmit, formState: {errors}} = useForm<FormData>()
@@ -52,15 +54,17 @@ const [googleCredential, setGoogleCredential] = useState<FirebaseAuthTypes.AuthC
     onGoogleButtonPress()
     .then((res) => {
       const response = res as DraftUserCredentials
-      setIsVisible(true)
-      setEmail(response.email)
-      setGoogleCredential(response.googleCredential)
-      console.log(res); 
-    }).catch((err) => {
-      console.log(err);
-    
-    })
-  }
+        if (!isGoogleLinked) {
+          setIsVisible(true)
+          setEmail(response.email)
+          setGoogleCredential(response.googleCredential)
+          setIsGoogleAccountLinkedToTrue(response.email)
+          console.log(res, 'message'); 
+        } else {
+          'Account linked'
+        }
+      })
+    }
 
   useEffect(() => {
     console.log(password);

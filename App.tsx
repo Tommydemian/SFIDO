@@ -1,11 +1,13 @@
-import React, {useEffect, useRef} from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { AuthProvider } from './src/contexts/AuthContext';
 import { NavResolutionNavigator } from './src/navigation/NavResolution';
 import { MessageProvider } from './src/contexts/MessageContext';
 import * as Notifications from 'expo-notifications';
+import {navigate, navigationRef} from './src/navigation/navigationRef'
 
 export default function App() {
+
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
 
@@ -15,7 +17,7 @@ export default function App() {
     });
       
     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response, 'RESPONSE');
+      navigate('MotivationalMessageScreen')
     });
 
     return () => {
@@ -27,7 +29,7 @@ export default function App() {
   return (
     <AuthProvider>
       <MessageProvider>
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <NavResolutionNavigator />
     </NavigationContainer>
     </MessageProvider>
