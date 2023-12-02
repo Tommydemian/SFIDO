@@ -1,11 +1,10 @@
 import * as Notifications from 'expo-notifications';
-import format from 'date-fns/format';
 
 type NotificationContent = {
   title: string
   body: string
   data: {data: string}, 
-  selectedDateString: string
+  selectedDate: Date
 }
 
 Notifications.setNotificationHandler({
@@ -16,29 +15,12 @@ Notifications.setNotificationHandler({
     }),
   });
 
-  export const scheduleNotifications = async({title, body, data, selectedDateString}: NotificationContent) => {
+  export const scheduleNotifications = async({title, body, data, selectedDate}: NotificationContent) => {
     try {
 
-         // Divide la cadena de fecha y hora
-    const [datePart, timePart] = selectedDateString.split(' ');
-    const [year, month, day] = datePart.split('/').map(Number);
-    const [hours, minutes] = timePart.split(':').map(Number);
-      
-    // Crea un objeto Date
-    const selectedDate = new Date(year, month - 1, day, hours, minutes)
-    // console.log(selectedDate, 'SELECTED DATE from func');
-    console.log(format(selectedDate, 'PPpp'), 'SELECTED DATE from func'); // Formatea la fecha en la zona horaria local
-
-    
-      // verify that selectedDate is in the future
-     // Obtiene la fecha y hora actual en la zona horaria local
      const now = new Date();
-  
-     console.log(format(now, 'PPpp'), 'NOW FROM func'); // Formatea la fecha en la zona horaria local
-
-    //  console.log(now.toString(), 'NOW FROM func'); 
-      
-      if (selectedDate) {
+        
+      if (selectedDate > now) {
         console.log('wait for it');
         await Notifications.scheduleNotificationAsync({
           content: {

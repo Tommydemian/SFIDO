@@ -13,49 +13,34 @@ type PickerMode = 'date' | 'time'
 export const ConversationsScreen = () => {
 //const {handleDateChange, localNotifDate, showDatePicker, toggleDatePickerVisibility, date } = useSetLocalNotifDate();
 
-const [selectedDate, setSelectedDate] = useState(new Date())
 // const [showDatePicker, setShowDatePicker] = useState(false)
 // time picker
-const [selectedTime, setSelectedTime] = useState(new Date())
+// const [selectedTime, setSelectedTime] = useState(new Date())
+const [date, setDate] = useState(new Date())
 const [showPicker, setShowPicker] = useState(false)
-
 const [mode, setMode] = useState<PickerMode>('date')
 const [res, setRes] = useState('')
-const [uiRes, setUiRes] = useState('')
 
 const setModeAndShowPicker = (currentMode: PickerMode ) => {
   setShowPicker(true)
   setMode(currentMode)
 }
 
-const handleChange = (event: DateTimePickerEvent, newDate?: Date) => {
-  setShowPicker(Platform.OS === 'ios');
+const handleChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+  const currentDate = selectedDate || date
+  setShowPicker(Platform.OS === 'ios')
+  setDate(currentDate)
 
-  if (mode === 'date') {
-    const updatedDate = newDate ? new Date(newDate.setHours(selectedTime.getHours(), selectedTime.getMinutes())) : selectedDate;
-    setSelectedDate(updatedDate);
-    const formattedDate = `${updatedDate.getFullYear()}/${updatedDate.getMonth() + 1}/${updatedDate.getDate()}`;
-    setRes(formattedDate + ' ' + res.split(' ')[1]); // Actualiza res manteniendo la hora
-    setUiRes(updatedDate.toDateString());
-  } else if (mode === 'time') {
-    const updatedTime = newDate ? new Date(selectedDate.setHours(newDate.getHours(), newDate.getMinutes())) : selectedTime;
-    setSelectedTime(updatedTime);
-    const formattedTime = `${updatedTime.getHours()}:${updatedTime.getMinutes()}`;
-    setRes(res.split(' ')[0] + ' ' + formattedTime); // Actualiza res manteniendo la fecha
-    setUiRes(uiRes + ' ' + updatedTime.toTimeString().split(' ')[0]);
-  }
-};
+  let tempDate = new Date(currentDate)
+  let fullDate =  tempDate.getDate() + '/' + (tempDate.getMonth()) + '/' + tempDate.getFullYear()
+  let fullTime = 'Hour: ' + tempDate.getHours() + ':' + tempDate.getMinutes() 
+  setRes(fullDate + ' ' + fullTime)
 
-
-
-useEffect(() => {
-  console.log(selectedDate);
-  
-}, [selectedDate, selectedTime])
+} 
 
 const handleScheduleNotification = () => {
   scheduleNotifications({
-    selectedDateString: res, // Asegúrate de que res tenga el formato 'YYYY/MM/DD HH:mm'
+    selectedDate: date, 
     body: 'lookSon',
     title: 'lookSon',
     data: {data: 'lookSon'}
@@ -75,7 +60,7 @@ const handleScheduleNotification = () => {
       mode={mode}
       display='default'
       onChange={handleChange}
-      value={selectedDate}
+      value={date}
       is24Hour={true}
       minimumDate={new Date()}
       />)
