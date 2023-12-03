@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image } from 'react-native'
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import React, { useEffect, useState } from 'react'
 import { MainStackParams } from '../navigation/MainStackNavigator'
@@ -11,7 +11,12 @@ type Props = NativeStackScreenProps<MainStackParams, 'QuoteScreen'>
 
 export const QuoteScreen: React.FC<Props> = ({navigation}) => {
     const [currentQuoteIndex, setCurrentQuoteIndex] = useState<number | undefined>(undefined)
-    const [quote, setQuote] = useState<Quote>({text: '', id: -1, author: ''}) 
+    const [quote, setQuote] = useState<Quote>({
+        author: '', 
+        category_id: 0, 
+        id: 0, 
+        text: ''
+    }) 
 
     useEffect(() => {
         const today = new Date().toLocaleDateString();

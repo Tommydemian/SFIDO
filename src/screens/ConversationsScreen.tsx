@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Pressable, Platform } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Pressable, Platform } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { UpperBarNav } from '../components/UpperBarNav'
 import { requestPermissions, scheduleNotifications } from '../services/notificationsService'
@@ -9,6 +9,8 @@ import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/dat
 import { COLORS } from '../../assets/theme';
 
 type PickerMode = 'date' | 'time'
+
+const imageSrc = require('../../assets/images/dobermanbark.jpeg')
 
 export const ConversationsScreen = () => {
 //const {handleDateChange, localNotifDate, showDatePicker, toggleDatePickerVisibility, date } = useSetLocalNotifDate();
@@ -68,6 +70,8 @@ const handleScheduleNotification = () => {
        <Text>{res}</Text>
 
        <TouchableOpacity onPress={() => setModeAndShowPicker('time')}><Text>Open TimePicker</Text></TouchableOpacity>
+
+       <Image source={imageSrc} style={{height: 300}} /> 
     </View>
   )
 }

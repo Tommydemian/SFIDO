@@ -1,9 +1,11 @@
-import { StyleSheet, SafeAreaView, FlatList } from 'react-native'
+import { StyleSheet, SafeAreaView, FlatList, Image } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import { getQuotesFromFirestore } from '../services/quoteService'
 import { Quote } from '../types'
 import Spinner from 'react-native-loading-spinner-overlay'
 import { QuoteCard } from '../components/QuoteCard'
+
+const forestImg = require('../../assets/images/forest.jpg')
 
 export const InspirationScreen = () => {
   const [quotes, setQuotes] = useState<Quote[]>([])
@@ -30,6 +32,9 @@ export const InspirationScreen = () => {
   // TODO: lazy lodad quotes => check FlashList package
   return (
     <SafeAreaView style={styles.container}>
+
+    <Image source={forestImg} style={styles.image} />
+
       <FlatList 
       data={quotes}
       keyExtractor={(item) => item.id.toString()}
@@ -43,5 +48,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, 
     paddingHorizontal: 10
-  }, 
+  },
+  image: {
+    height: 300,
+    alignSelf: 'center',
+    aspectRatio: 16/9,
+    
+  }
 })
