@@ -34,9 +34,10 @@ export type Quote = {
     text: string;
     author: string;
     id: number
+    category_id: number
 }
 
-export type Interest = {
+export type Categorie = {
     title: string;
     description: string;
     id: number

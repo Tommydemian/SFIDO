@@ -4,30 +4,31 @@ import auth from '@react-native-firebase/auth';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { MainStackParams } from '../navigation/MainStackNavigator';
-import { getInterestsFromFirestore } from '../services/interestsService';
-import { Interest } from '../types';
+import { getCategoriesFromFirestore } from '../services/categoriesService';
+import { Categorie } from '../types';
 import { COLORS } from '../../assets/theme';
 
 import { InterestCard } from '../components/InterestCard';
 import { useSelectInterests } from '../hooks/useSelectInterests';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { addIntererstsToFirestoreUser } from '../services/userService';
+import Spinner from 'react-native-loading-spinner-overlay';
 
-type Props = NativeStackScreenProps<MainStackParams, 'InterestSelectionScreen'>
+type Props = NativeStackScreenProps<MainStackParams, 'CategoriesSelectionScreen'>
 
 const windowHeight = Dimensions.get('window').height;
 
-export const InterestSelectionScreen: React.FC<Props> = ({navigation}) => {
-  const [interests, setInterests] = useState<Interest[]>([])
+export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
+  const [interests, setInterests] = useState<Categorie[]>([])
   const [loading, setLoading] = useState(false)
 
   const {signOutUser} = useAuthContext()
 
   useEffect(() => {
     setLoading(true)
-    getInterestsFromFirestore()
+    getCategoriesFromFirestore()
     .then((res) => {
-      const interestsList = res.docs.map(doc => doc.data() as Interest)
+      const interestsList = res.docs.map(doc => doc.data() as Categorie)
       setInterests(interestsList)
     })
     .catch((err) => {
@@ -48,6 +49,13 @@ export const InterestSelectionScreen: React.FC<Props> = ({navigation}) => {
       })
     }
   }
+
+  
+  // loading return
+  if (loading) {
+    return <Spinner />;
+  }
+  
 
   return (
     <SafeAreaView style={styles.container}>

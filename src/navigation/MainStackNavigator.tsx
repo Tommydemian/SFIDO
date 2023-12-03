@@ -2,8 +2,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MessageScreen } from '../screens/MessageScreen';
 import { QuoteScreen } from '../screens/QuoteScreen';
 import {WelcomeScreen} from '../screens/WelcomeScreen';
-import { InterestSelectionScreen } from '../screens/InterestSelectionScreen';
 import { BottomTabsNavigator } from './BottomTabsNavigator';
+import { CategoriesSelectionScreen } from '../screens/CategoriesSelectionScreen';
 
 export type MainStackParams = {
     QuoteScreen: undefined;
@@ -12,7 +12,7 @@ export type MainStackParams = {
         id: string
     };
     WelcomeScreen: undefined;
-    InterestSelectionScreen: undefined;
+    CategoriesSelectionScreen: undefined;
     BottomTabs: undefined
 }
 
@@ -24,7 +24,7 @@ export const MainStackNavigator = () => {
       <Stack.Screen name="QuoteScreen" component={QuoteScreen} options={{headerShown: false}} />
       <Stack.Screen name="MessageScreen" component={MessageScreen} />
       <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{headerShown: false}} />
-      {/* <Stack.Screen name="InterestSelectionScreen" component={InterestSelectionScreen} options={{headerTitle: 'Select your interests'}} /> */}
+      <Stack.Screen name='CategoriesSelectionScreen' component={CategoriesSelectionScreen} />
       <Stack.Screen name="BottomTabs" component={BottomTabsNavigator} options={{headerShown: false}} />
     </Stack.Navigator>
   );
