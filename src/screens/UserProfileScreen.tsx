@@ -1,124 +1,51 @@
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Modal } from 'react-native'
-import { UpperBarNav } from '../components/UpperBarNav'
-import React, { useEffect, useState } from 'react';
-import DatePicker, {getToday, getFormatedDate} from 'react-native-modern-datepicker';
-import { COLORS } from '../../assets/theme';
-import { scheduleNotifications } from '../services/notificationsService';
+import { View, Text, StyleSheet, Button, Alert } from 'react-native'
+import YoutubePlayer, {YoutubeIframeRef} from "react-native-youtube-iframe";
+import React, {useState, useCallback, useRef, useEffect} from 'react'
+
 
 export const UserProfileScreen = () => {
-  const [selectedDate, setSelectedDate] = useState('');
-  const [isVisible, setIsVisible] = useState(false)
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [playing, setPlaying] = useState(false);
+  
+   const playerRef = useRef<YoutubeIframeRef>(null);
 
-  const today = new Date()
-  const todayTimeStamp = today.setDate(today.getDate());
-  const startDate = getFormatedDate(new Date(todayTimeStamp), 'YYYY-MM-DD');
-
-
-  useEffect(() => {
-    console.log(selectedDate);
-  }, [selectedDate])
-
-  const handleChange = (propDate: string) => {
-   setSelectedDate(propDate)
-  }
-
-  const handleOnPress = () => {
-    setIsModalVisible(current => !current)
-  }
-
-  const handleScheduleNotification = () => {
-    scheduleNotifications({
-      selectedDateString: selectedDate,
-      body: 'main',
-      title: 'main',
-      data: {data: 'main'}})
-  }
-
-  return (
-    <SafeAreaView style={styles.container}>
-
-  <TouchableOpacity onPress={handleOnPress}>
-    <Text>Open</Text>
-  </TouchableOpacity>
-
-  <Modal
-  animationType='slide'
-  transparent={true}
-  visible={isModalVisible}
-  >
-    <View style={styles.centeredView}>
-      <View style={styles.modalView}>
-
-      <DatePicker
-      onSelectedChange={date => setSelectedDate(date)}
-      onDateChange={handleChange}
-      options={{
-        backgroundColor: '#090C08',
-        textHeaderColor: '#FFA25B',
-        textDefaultColor: '#F6E7C1',
-        selectedTextColor: '#fff',
-        mainColor: '#F4722B',
-        textSecondaryColor: '#D6C7A1',
-        borderColor: 'rgba(122, 146, 165, 0.1)',
-      }}
-      minimumDate={startDate}
-      minuteInterval={3}
-      current={startDate}
-      selected={startDate}
-      style={{ borderRadius: 10 }}
-    />
-
-      <TouchableOpacity onPress={handleOnPress}>
-    <Text>Close</Text>
-  </TouchableOpacity>
+  const onStateChange = useCallback((state:string) => {
+    if (state === "ended") {
+      setPlaying(false);
+      Alert.alert("video has finished playing!");
+    }
+  }, []);
 
   
+  const togglePlaying = useCallback(() => {
+    setPlaying((prev) => !prev);
+  }, []);
+  
+  return (
+    <View>
+        <YoutubePlayer
+        ref={playerRef}
+        height={300}
+        play={playing}
+        videoId={"fDujDj1CxIs"}
+        onChangeState={onStateChange}
+        volume={100}
+      />
+      <Button
+        title="log details"
+        onPress={() => {
+          playerRef.current?.getCurrentTime().then(
+            currentTime => console.log({currentTime})
+          );
 
-
-      </View>
+          playerRef.current?.getVolume().then(
+            getVolume => console.log({getVolume})
+          );
+        }}
+      />
     </View>
-
-  </Modal>
-
-  <TouchableOpacity onPress={handleScheduleNotification}>
-    <Text>Shedule Notification</Text>
-  </TouchableOpacity>
-
-
-
-    </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center', 
-    backgroundColor: COLORS.silver
-  }, 
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22
-  },
-  modalView: {
-    margin: 20, 
-    backgroundColor: COLORS.whiteText,
-    borderRadius: 20,
-    width: '90%', 
-    padding: 5,
-    alignItems: 'center', 
-    shadowColor: COLORS.blackBg, 
-    shadowOffset: {
-      width: 0, 
-      height: 2
-    }, 
-    shadowOpacity: 0.25,
-    shadowRadius: 4, 
-    elevation: 5 
 
-  }
 })

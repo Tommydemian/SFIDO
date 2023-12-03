@@ -54,7 +54,7 @@ const [googleCredential, setGoogleCredential] = useState<FirebaseAuthTypes.AuthC
     onGoogleButtonPress()
     .then((res) => {
       const response = res as DraftUserCredentials
-        if (!isGoogleLinked) {
+        if (!isGoogleLinked) { // need persistance here
           setIsVisible(true)
           setEmail(response.email)
           setGoogleCredential(response.googleCredential)
