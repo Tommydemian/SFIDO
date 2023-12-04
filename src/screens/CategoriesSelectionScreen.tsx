@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, StyleSheet, SafeAreaView, ScrollView, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, StyleSheet, SafeAreaView, StatusBar, ScrollView, FlatList } from 'react-native';
 import auth from '@react-native-firebase/auth';
+
+import Animated from 'react-native-reanimated';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { MainStackParams } from '../navigation/MainStackNavigator';
@@ -10,19 +12,14 @@ import { COLORS } from '../../assets/theme';
 
 import { InterestCard } from '../components/InterestCard';
 import { useSelectInterests } from '../hooks/useSelectInterests';
-import { useAuthContext } from '../hooks/useAuthContext';
 import { addIntererstsToFirestoreUser } from '../services/userService';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 type Props = NativeStackScreenProps<MainStackParams, 'CategoriesSelectionScreen'>
 
-const windowHeight = Dimensions.get('window').height;
-
 export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
   const [interests, setInterests] = useState<Categorie[]>([])
   const [loading, setLoading] = useState(false)
-
-  const {signOutUser} = useAuthContext()
 
   useEffect(() => {
     setLoading(true)
@@ -50,24 +47,37 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
     }
   }
 
-  
   // loading return
   if (loading) {
     return <Spinner />;
   }
   
-
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>What Type of Beast Are You?</Text>
       <View style={styles.interestsContainer}>
-        <TouchableOpacity onPress={signOutUser}><Text>Sign out</Text></TouchableOpacity>
     {
       interests.length > 0 && (
         <FlatList
       data={interests}
       keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{
+        padding: 20,
+        paddingTop: StatusBar.currentHeight || 42,
+        borderRadius: 30, 
+        rowGap: 15
+      }}
+      ListFooterComponent={
+        <TouchableOpacity
+       style={styles.ctaButton}
+       disabled={selectedInterests.length !== 3}
+       onPress={handleSubmitResult}
+       >
+            <Text style={styles.ctaButtonText}>Confirm</Text>
+            </TouchableOpacity>
+      }
+      renderItem={({ item, index }) => (
       <InterestCard 
       onPress={() => handleSelect(item.id)}
       key={item.id}
@@ -82,14 +92,6 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
     }
 
       </View>      
-      <TouchableOpacity
-       style={styles.ctaButton}
-       disabled={selectedInterests.length !== 3}
-       onPress={handleSubmitResult}
-       >
-            <Text style={styles.ctaButtonText}>Confirm</Text>
-            </TouchableOpacity>
-
     </SafeAreaView>
   );
 };
@@ -97,7 +99,6 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: COLORS.blackBg
     // Estilos adicionales
   },
@@ -106,7 +107,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     textAlign: 'center',
-    marginBottom: 20,
+    color: COLORS.whiteText,
+    marginTop: 10
     // Estilos adicionales
   },
   interestsContainer: {
@@ -119,14 +121,12 @@ const styles = StyleSheet.create({
     // Estilos para las tarjetas seleccionadas
   },
   confirmButton: {
-    marginBottom: 100, 
     backgroundColor: COLORS.orangeWeb
   },
   confirmButtonText: {
     // Estilos para el texto del botón de confirmación
   },
   flatList: {
-    height: windowHeight * 0.7, 
     marginBottom: 10
   }, 
   ctaButton: {
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
-    marginTop: 20,
+    marginBottom: 30
 },
 ctaButtonText: {
     color: COLORS.whiteText,

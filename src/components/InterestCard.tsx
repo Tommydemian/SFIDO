@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         color: COLORS.blackBg, // Texto gris para descripción
     }, 
     selected: {
-        backgroundColor: COLORS.orangeWeb, // Cambia el color de fondo para resaltar
+        backgroundColor: COLORS.bluegreen, // Cambia el color de fondo para resaltar
         borderWidth: 2, // Borde más grueso
         borderColor: COLORS.orangeWeb, // Color del borde
         shadowColor: COLORS.orangeWeb, // Sombra con un color que resalte

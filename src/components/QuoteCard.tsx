@@ -1,15 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, ViewProps } from 'react-native'
 import React from 'react'
 import { COLORS } from '../../assets/theme';
 
-type Props = {
+type Props = ViewProps & {
     text: string;
     author: string;
+    customStyles?: object;
 }
 
-export const QuoteCard: React.FC<Props> = ({text, author}) => {
+const deviceWidth: number = Dimensions.get('screen').width
+
+export const QuoteCard: React.FC<Props> = ({text, author, customStyles}) => {
   return (
-    <View style={styles.cardContainer}>
+    <View style={[styles.cardContainer, customStyles]}>
       <Text style={styles.quoteText}>{text}</Text>
       <Text style={styles.quoteAuthor}>{author}</Text>
     </View>
@@ -20,13 +23,15 @@ const styles = StyleSheet.create({
   cardContainer: {
     backgroundColor: COLORS.silver, 
     marginVertical: 10, 
+    marginHorizontal: 10,
     borderRadius: 20, 
-    padding: 10
+    padding: 10, 
+    width: deviceWidth * 0.7,
   }, 
   quoteText: {
     color: COLORS.textBlack, 
-    textAlign: 'center', 
-    marginBottom: 10
+    marginBottom: 10, 
+    paddingLeft: 5
   }, 
   quoteAuthor: {
     color: COLORS.textBlack, 

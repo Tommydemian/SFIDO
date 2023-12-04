@@ -7,6 +7,7 @@ export const COLORS = {
     whiteText: '#F5F5F5',
     whiteTextTwo: '#BBBBBB', 
     orangeWeb: '#FFA726',
-    silver: '#CCCCCC'
+    silver: '#CCCCCC', 
+    bluegreen: '#07A0C3'
     
 }
