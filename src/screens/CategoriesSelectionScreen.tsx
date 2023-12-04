@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, StyleSheet, SafeAreaView, StatusBar, ScrollView, FlatList } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, TouchableOpacity, Dimensions, StyleSheet, SafeAreaView, StatusBar, ScrollView, FlatList, useWindowDimensions } from 'react-native';
 import auth from '@react-native-firebase/auth';
 
-import Animated from 'react-native-reanimated';
+import Animated, {useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, interpolate} from 'react-native-reanimated';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { MainStackParams } from '../navigation/MainStackNavigator';
@@ -14,12 +14,15 @@ import { InterestCard } from '../components/InterestCard';
 import { useSelectInterests } from '../hooks/useSelectInterests';
 import { addIntererstsToFirestoreUser } from '../services/userService';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { AnimatedCategorieCard } from '../components/AnimatedCategorieCard';
 
 type Props = NativeStackScreenProps<MainStackParams, 'CategoriesSelectionScreen'>
 
 export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
   const [interests, setInterests] = useState<Categorie[]>([])
   const [loading, setLoading] = useState(false)
+
+  const {height: SCREEN_HEIGHT} = useWindowDimensions()
 
   useEffect(() => {
     setLoading(true)
@@ -47,6 +50,14 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
     }
   }
 
+  const scrollY = useSharedValue(0);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    },
+  });
+
   // loading return
   if (loading) {
     return <Spinner />;
@@ -54,44 +65,49 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
   
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>What Type of Beast Are You?</Text>
-      <View style={styles.interestsContainer}>
+      {/* <Text style={styles.title}>What Type of Beast Are You?</Text> */}
+      <View style={styles.categoriesContainer}>
     {
       interests.length > 0 && (
-        <FlatList
+        <Animated.FlatList
       data={interests}
       keyExtractor={(item) => item.id.toString()}
+      onScroll={scrollHandler}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
         padding: 20,
         paddingTop: StatusBar.currentHeight || 42,
         borderRadius: 30, 
-        rowGap: 15
+        rowGap: 15,
       }}
-      ListFooterComponent={
-        <TouchableOpacity
+      renderItem={({ item, index }) => {
+        return (
+          <>
+            <InterestCard
+              onPress={() => handleSelect(item.id)}
+              description={item.description} 
+              title={item.title}
+              isSelected={selectedInterests.includes(item.id)} 
+            />
+            </>
+        );
+      }}
+      
+      style={styles.flatList}
+        />
+        
+      )
+      
+    }
+
+      </View> 
+      <TouchableOpacity
        style={styles.ctaButton}
        disabled={selectedInterests.length !== 3}
        onPress={handleSubmitResult}
        >
             <Text style={styles.ctaButtonText}>Confirm</Text>
-            </TouchableOpacity>
-      }
-      renderItem={({ item, index }) => (
-      <InterestCard 
-      onPress={() => handleSelect(item.id)}
-      key={item.id}
-      description={item.description} 
-      title={item.title}
-      isSelected={selectedInterests.includes(item.id)} 
-        />
-        )}
-      style={styles.flatList}
-        />
-      )
-    }
-
-      </View>      
+            </TouchableOpacity>     
     </SafeAreaView>
   );
 };
@@ -111,8 +127,9 @@ const styles = StyleSheet.create({
     marginTop: 10
     // Estilos adicionales
   },
-  interestsContainer: {
-    // Estilos para el contenedor de intereses
+  categoriesContainer: {
+     
+    height: '90%'
   },
   interestCard: {
     // Estilos para las tarjetas de intereses

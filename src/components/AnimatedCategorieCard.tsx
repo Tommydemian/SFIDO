@@ -1,19 +1,38 @@
-import { StyleSheet, Text, Pressable, PressableProps } from 'react-native'
+import { StyleSheet, Text, Pressable, PressableProps, View } from 'react-native'
 import React from 'react'
 import { COLORS } from '../../assets/theme'
+import Animated,{ SharedValue, useAnimatedStyle, interpolate } from 'react-native-reanimated'
 
 type Props = PressableProps & {
     title: string
     description: string;
-    isSelected: boolean
+    isSelected: boolean;
+    scrollY: SharedValue<number>
+    index: number
 }
 
-export const InterestCard: React.FC<Props> = ({title, description, isSelected, ...rest}) => {
-  return (
+export const AnimatedCategorieCard: React.FC<Props> = ({title, description, isSelected, index, scrollY, ...rest}) => {
+ 
+    const animatedStyle = useAnimatedStyle(() => {
+        const scale = interpolate(
+          scrollY.value,
+          [-1, 0, 200 * index, 200 * (index + 2)],
+          [1, 1, 1, 0]
+        );
+    
+        return {
+          transform: [{ scale }],
+        };
+      });
+  
+  
+    return (
+    <Animated.View style={animatedStyle}>
     <Pressable  {...rest} style={[styles.cardContainer, isSelected && styles.selected]}>
       <Text style={styles.cardTitle}>{title}</Text>
       <Text style={styles.cardDescription}>{description}</Text>
     </Pressable>
+    </Animated.View>
   )
 }
 
