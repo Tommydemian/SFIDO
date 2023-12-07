@@ -1,4 +1,5 @@
 import { FieldValue, Timestamp } from "firebase/firestore";
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 export type Message = {
     senderID: string; 
@@ -41,4 +42,14 @@ export type Categorie = {
     title: string;
     description: string;
     id: number
+}
+
+export type DraftUserCredentials = FirebaseAuthTypes.UserCredential & {
+    email: string;
+    googleCredential: FirebaseAuthTypes.AuthCredential;
+}
+
+export type FormData = {
+  email: string;
+  password: string;
 }

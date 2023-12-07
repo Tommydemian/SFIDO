@@ -74,13 +74,18 @@ const handleSignup = (email: string, password: string) => {
 
 // function sign in 
 const handleSignIn = (email: string, password: string) => {
+  if (email === '' || password === '') {
+    console.log('Email and password must be provided');
+    return; // Exit the function early if validation fails
+  }
+  
 auth()
   .signInWithEmailAndPassword(email, password)
   .then(() => {
     console.log('Signed in succesfully!');
   })
   .catch(error => {
-    console.error(error);
+    console.log(error);
   });
 }
 

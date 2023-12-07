@@ -17,7 +17,7 @@ type Props = TextInputProps & {
     customStyles?: object;
 }
 
-export const InputField: React.FC<Props> = ({label, customStyles, setVisibility, name,autoCapitalize, control ,placeholder, secureTextEntry, rules = {}, leftIcon, rightIcon, ...rest }) => {
+export const InputField: React.FC<Props> = ({label, customStyles, setVisibility, name,autoCapitalize, control, placeholder, secureTextEntry, rules = {}, leftIcon, rightIcon, ...rest }) => {
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
@@ -39,7 +39,7 @@ export const InputField: React.FC<Props> = ({label, customStyles, setVisibility,
       {leftIcon && <View style={styles.inputFieldLeftIcon}>{leftIcon}</View>}
     <View style={[styles.inputFieldContainer, {borderColor: error && 'red'}]}>
       <TextInput 
-        style={[customStyles], styles.input}
+        style={[customStyles, styles.input]}
        {...rest}
        value={value}
        onChangeText={onChange}
