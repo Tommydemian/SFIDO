@@ -17,6 +17,7 @@ import { AuthForm } from '../components/AuthForm';
 import { OfficialLogo } from '../components/OfficialLogo';
 import { SfidoWhiteTextLogo } from '../components/SfidoWhiteTextLogo';
 import { NunitoText } from '../components/NunitoText';
+import { InputField } from '../components/InputField';
 
 // Custom Hooks imports
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -37,7 +38,7 @@ const authbg = require('../../assets/images/authbg.png')
 export const SignupScreen: React.FC<Props> = ({navigation}) => {
 
   // conext hook
-  const {user, handleSignIn, onGoogleButtonPress, isGoogleLinked } = useAuthContext()
+  const {user, handleSignup, onGoogleButtonPress, isGoogleLinked, errorMessageState, setErrorMessageState } = useAuthContext()
 
   // dialogVisibility hook
   const {isVisible, showDialog, hideDialog} = useDialogVisibility()
@@ -45,23 +46,42 @@ export const SignupScreen: React.FC<Props> = ({navigation}) => {
   // useGoogleAuth hook:
   const {handleOnGoogleButtonPress} = useGoogleAuthentication()
 
-  // useForm hook
-  const {control, handleSubmit, formState: {errors, isSubmitting}, reset, getValues} = useForm<FormData>()
+// useForm hook initialization with validation mode set to 'onChange'
+const { control, handleSubmit, formState: { errors }, setError, reset, clearErrors } = useForm<FormData>({
+  mode: 'onChange' // This triggers validation on change
+});
 
-  const onSignIn = handleSubmit((data) => {
-    handleSignIn(data.email, data.password)
-  })
+// Rules for the email input field
+const emailRules = {
+  required: 'Email is required',
+  pattern: {
+    value: /^\S+@\S+$/i,
+    message: 'Invalid email format'
+  }
+};
+
+// Rules for the password input field
+const passwordRules = {
+  required: 'Password is required',
+  minLength: {
+    value: 6,
+    message: 'Password must be at least 6 characters'
+  }
+}
+
+  // function sign up
+  const onSubmit = ({email, password}: FormData) => {
+    handleSignup(email, password, reset);
+  };
 
   useEffect(() => {
     console.log(auth().currentUser);
   }, [])
 
-  const onSignup = handleSubmit((data) => {
-    // Lógica para manejar el registro
-  });
-
-  // Resto de la lógica y efectos
-
+  const clearErrorMessage = () => {
+    setErrorMessageState(''); // Clear the error message
+  };
+  
   return (
     <SafeAreaView style={styles.container}>
       <Spinner visible={user.loading}/>
@@ -80,13 +100,28 @@ export const SignupScreen: React.FC<Props> = ({navigation}) => {
           Join us and start your journey
         </NunitoText>
         
-        {/* Formulario de registro */}
-        <AuthForm 
-          submitButtonText='Sign Up'
-          onSignIn={onSignup} // Cambiar el nombre de la prop a algo más genérico como onFormSubmit
-        >
-          {/* Elementos adicionales si son necesarios */}
-        </AuthForm>
+      <InputField
+      autoCapitalize='none'
+      control={control}
+      placeholder='Email'
+      onInputChange={clearErrorMessage} 
+      name='email'
+      rules={emailRules}
+      
+      />
+
+      <InputField
+      autoCapitalize='none'
+      control={control}
+      placeholder='Password'
+      onInputChange={clearErrorMessage}
+      name='password'
+      rules={passwordRules}
+      />
+
+      <SubmitButton onPress={handleSubmit(onSubmit)}>Sing Up</SubmitButton>
+      
+      {errorMessageState && <NunitoText customStyles={styles.errorMessage}>{errorMessageState}</NunitoText>}
 
         <OrDivider />
 
@@ -98,14 +133,14 @@ export const SignupScreen: React.FC<Props> = ({navigation}) => {
 
         {/* Enlace para cambiar a la pantalla de inicio de sesión */}
         <AuthSwitchLink 
-          actionText='Already have an account?' 
-          navigationText='Sign In' 
+          actionText='Sign In' 
+          navigationText='Already have an account?' 
           onActionPress={() => navigation.navigate('LoginScreen')} 
         />
       </AuthContainer>
     </SafeAreaView>
   );
-};
+  }
 
 const styles = StyleSheet.create({
   container: {
@@ -146,6 +181,9 @@ signInButton: {
 subHeader: {
   fontSize: 22, 
   textAlign: 'center',
+}, 
+errorMessage: {
+  color: COLORS.errorRed
 }
 })
 

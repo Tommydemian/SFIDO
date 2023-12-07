@@ -6,7 +6,6 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { FormData } from "../types"
 import { MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import { useEffect } from "react"
-import { useAuthContext } from "../hooks/useAuthContext"
 
 type Props = {
  children? : React.ReactNode
@@ -16,13 +15,6 @@ type Props = {
 
 export const AuthForm: React.FC<Props> = ({children, submitButtonText, onSignIn }) => {
   const {control, handleSubmit, formState: {errors}} = useForm<FormData>()
-const {handleSignIn} = useAuthContext()
-
-
-  // This function will be called when the form is submitted
-  const onSubmit = (data: FormData) => {
-    handleSignIn(data.email, data.password); // Pass email and password to your sign-in function
-  };
 
   // Display errors if there are any
   useEffect(() => {

@@ -6,6 +6,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { DbUser } from "../types";
+import { useForm, UseFormReset } from "react-hook-form";
 
 type AuthProviderProps = {
     children: React.ReactNode
@@ -19,6 +20,8 @@ type User = {
     profilePic?: string;
 }
 
+type ResetFunction = UseFormReset<FormData>;
+
 type AuthContextType = {
     user: User
     setUser: React.Dispatch<React.SetStateAction<User>>
@@ -29,6 +32,8 @@ type AuthContextType = {
     onGoogleButtonPress: () => Promise<FirebaseAuthTypes.UserCredential | undefined>
     linkGoogleAccount: (googleCredential: FirebaseAuthTypes.AuthCredential, email: string, password: string) => Promise<void>
     isGoogleLinked: boolean
+    errorMessageState: string
+    setErrorMessageState: React.Dispatch<React.SetStateAction<string>>
   }
 
 
@@ -37,6 +42,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
  // State
   const [user, setUser] = useState<User>({email:'', uid: '', isLoggedIn: false, loading: false})
+  const [errorMessageState, setErrorMessageState] = useState('')
   const [initializing, setInitializing] = useState(true);
   const [isLinking, setIsLinking] = useState(false)
   const [isGoogleLinked, setIsGoogleLinked] = useState(false)
@@ -45,8 +51,8 @@ export const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
     webClientId: '86924702179-fkg4evrmr3rcu1om8np5gg898v73u5j6.apps.googleusercontent.com',
   });
 
-  // function Sign up
-const handleSignup = (email: string, password: string) => {
+// function Sign up
+const handleSignup = (email: string, password: string, reset: ResetFunction) => {
     setUser(current => ({...current, loading: true}))
     auth().createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
@@ -63,29 +69,78 @@ const handleSignup = (email: string, password: string) => {
        return addUserToFirestore(userCredential.user.uid, newUser);
     })
     .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.error(errorCode);
+      let errorMessage = '';
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          errorMessage = 'That email address is already in use!';
+          break;
+        case 'auth/invalid-email':
+          errorMessage = 'That email address is invalid!';
+          break;
+        case 'auth/operation-not-allowed':
+          errorMessage = 'Email and password accounts are not enabled.';
+          break;
+        case 'auth/weak-password':
+          errorMessage = 'The password is too weak.';
+          break;
+        case 'auth/network-request-failed':
+          errorMessage = 'Network error, please try again.';
+          break;
+        case 'auth/too-many-requests':
+          errorMessage = 'Too many requests, please try again later.';
+          break;
+        case 'auth/internal-error':
+          errorMessage = 'An unexpected error occurred, please try again.';
+          break;
+        default:
+          errorMessage = 'An unknown error occurred.';
+      }
       console.error(errorMessage);
-      
-      setUser(current => ({...current, loading: false}))
-  })
+      setErrorMessageState(errorMessage);
+    }).finally(() => {
+      setUser(current => ({...current, loading: false}));
+      reset();
+    })
 }
 
 // function sign in 
-const handleSignIn = (email: string, password: string) => {
-  if (email === '' || password === '') {
-    console.log('Email and password must be provided');
-    return; // Exit the function early if validation fails
-  }
-  
+const handleSignIn = (email: string, password: string, reset: ResetFunction) => {
+
+setUser(current => ({...current, loading: true}));
+
 auth()
   .signInWithEmailAndPassword(email, password)
   .then(() => {
     console.log('Signed in succesfully!');
   })
-  .catch(error => {
+  .catch((error) => {
+    let errorMessage = '';
+    switch (error.code) {
+      case 'auth/invalid-email':
+        errorMessage = 'The email address is invalid.';
+        break;
+      case 'auth/user-disabled':
+        errorMessage = 'This user account has been disabled.';
+        break;
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+        errorMessage = 'Incorrect email or password.';
+        break;
+      case 'auth/too-many-requests':
+        errorMessage = 'Too many attempts. Please try again later.';
+        break;
+      default:
+        errorMessage = 'Login failed. Please try again.';
+    }
+    console.error(error);
     console.log(error);
+    
+    // console.error(errorMessage);
+    setErrorMessageState(errorMessage);
+  })
+  .finally(() => {
+    setUser(current => ({...current, loading: false}));
+    reset();
   });
 }
 
@@ -230,7 +285,7 @@ const handleForgotPassword = (email: string) => {
 }, []);
 
 
- return(<AuthContext.Provider value={{user, setUser, handleSignup, signOutUser, handleForgotPassword, handleSignIn, onGoogleButtonPress, linkGoogleAccount, isGoogleLinked}}>
+ return(<AuthContext.Provider value={{user, setUser, errorMessageState, handleSignup, setErrorMessageState, signOutUser, handleForgotPassword, handleSignIn, onGoogleButtonPress, linkGoogleAccount, isGoogleLinked}}>
         {children}
     </AuthContext.Provider>)
 }

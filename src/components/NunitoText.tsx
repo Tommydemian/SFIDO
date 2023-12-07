@@ -24,7 +24,7 @@ export const NunitoText: React.FC<Props> = ({ onPress, children, customStyles, t
     const fontStyles = fontTypeStyles[type] || fontTypeStyles.regular;
 
     return (
-        <Text onPress={onPress} style={[fontStyles, customStyles, styles.default]}>
+        <Text onPress={onPress} style={[fontStyles, styles.default, customStyles]}>
             {children}
         </Text>
     );

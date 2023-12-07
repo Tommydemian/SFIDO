@@ -17,6 +17,7 @@ import { AuthForm } from '../components/AuthForm';
 import { OfficialLogo } from '../components/OfficialLogo';
 import { SfidoWhiteTextLogo } from '../components/SfidoWhiteTextLogo';
 import { NunitoText } from '../components/NunitoText';
+import { InputField } from '../components/InputField';
 
 // Custom Hooks imports
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -36,7 +37,7 @@ const authbg = require('../../assets/images/authbg.png')
 
 export const LoginScreen: React.FC<Props> = ({navigation}) => {
   // conext hook
-  const {user, handleSignIn, onGoogleButtonPress, isGoogleLinked } = useAuthContext()
+  const {user, onGoogleButtonPress, isGoogleLinked, handleSignIn, errorMessageState, setErrorMessageState } = useAuthContext()
 
   // dialogVisibility hook
   const {isVisible, showDialog, hideDialog} = useDialogVisibility()
@@ -45,18 +46,20 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
   const {handleOnGoogleButtonPress} = useGoogleAuthentication()
 
   // useForm hook
-  const {control, handleSubmit, formState: {errors}} = useForm<FormData>()
+  const {control, handleSubmit, formState: {errors}, reset} = useForm<FormData>()
 
-  const onSignIn = handleSubmit((data) => {
-    console.log(data.email);
-    console.log(data.password);
-    
-    handleSignIn(data.email, data.password)
-  })
+  // function sign in 
+  const onSubmit = (data: FormData) => {
+    handleSignIn(data.email, data.password, reset);
+  };
 
   useEffect(() => {
     console.log(auth().currentUser);
   }, [])
+
+  const clearErrorMessage = () => {
+    setErrorMessageState(''); // Clear the error message
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -76,15 +79,49 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
       <NunitoText customStyles={styles.subHeader}>
       Your goals, your dreams, your journey means a lot.
       </NunitoText>
+
+      <InputField
+      autoCapitalize='none'
+      control={control}
+      placeholder='Email'
+      name='email'
+      onInputChange={clearErrorMessage} 
+      rules={{
+        required: 'Email is required', // Ensures the user does not leave the email field blank
+        pattern: {
+          value: /^\S+@\S+$/i, // Simple regex for email validation
+          message: 'Please enter a valid email address' // Message to show if the regex test fails
+        }
+      }}
+      />
+
+      <InputField
+      autoCapitalize='none'
+      control={control}
+      placeholder='Password'
+      name='password'
+      onInputChange={clearErrorMessage} 
+      rules={{
+        required: 'Password is required', // Ensures the password field is not left blank
+        minLength: {
+          value: 6, // You can set a minimum length for the password if you want
+          message: 'Password must be at least 6 characters long' // Message for the minimum length
+        }
+      }}
+      />
+
+      <SubmitButton onPress={handleSubmit(onSubmit)}>Sing In</SubmitButton>
       
-      <AuthForm 
+      {errorMessageState && <NunitoText customStyles={styles.errorMessage}>{errorMessageState}</NunitoText>}
+
+      {/* <AuthForm 
       submitButtonText='Sign In'
       onSignIn={onSignIn}
       >
       <TouchableOpacity>
       <NunitoText onPress={() => navigation.navigate('EmailPromptModal')} customStyles={styles.forgotPassword}>Forgot your password?</NunitoText>
       </TouchableOpacity>
-      </AuthForm>
+      </AuthForm> */}
 
       <OrDivider />
 
@@ -139,5 +176,8 @@ signInButton: {
 subHeader: {
   fontSize: 22, 
   textAlign: 'center',
+}, 
+errorMessage: {
+  color: COLORS.errorRed
 }
 })

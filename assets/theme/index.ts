@@ -6,9 +6,9 @@ export const COLORS = {
     whiteText: '#F8F1F3',
     black: '#030303',
     folly: '#FF2E63', 
-    orangeWeb: '#FFA726',
-    silver: '#CCCCCC', 
-    bluegreen: '#07A0C3'   
+    robinEggBlue: '#08D9D6', 
+    indigoDye: '#0B526E', 
+    errorRed: '#FF6659'
 }
 
 export const SPACING = {

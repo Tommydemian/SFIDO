@@ -2,6 +2,7 @@ import { StyleSheet, Text, TextInput, TextInputProps, TouchableOpacity, View } f
 import React, {useEffect, useState} from 'react'
 import { BORDER, COLORS, SPACING } from '../../assets/theme';
 import { Control, Controller } from 'react-hook-form';
+import { NunitoText } from './NunitoText';
 
 type Props = TextInputProps & {
     label?: string; 
@@ -15,9 +16,11 @@ type Props = TextInputProps & {
     rules: object;
     setVisibility: boolean;
     customStyles?: object;
+    onInputChange?: () => void; 
+
 }
 
-export const InputField: React.FC<Props> = ({label, customStyles, setVisibility, name,autoCapitalize, control, placeholder, secureTextEntry, rules = {}, leftIcon, rightIcon, ...rest }) => {
+export const InputField: React.FC<Props> = ({label, onInputChange, customStyles, setVisibility, name,autoCapitalize, control, placeholder, secureTextEntry, rules = {}, leftIcon, rightIcon, ...rest }) => {
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
@@ -27,38 +30,50 @@ export const InputField: React.FC<Props> = ({label, customStyles, setVisibility,
     }
   }
 
+  const { onChangeText, ...otherRestProps } = rest;
   return (
     <Controller 
     control={control}
     name={name}
     rules={rules}
-    render={({field: {value, onChange, onBlur}, fieldState:{error} }) => (
+    render={({field: {value, onChange, onBlur}, fieldState:{error}}) => (
       <>
       <Text style={styles.inputFieldLabel}>{label && label}</Text>
       <View style={styles.outerInputFieldContainer}>
       {leftIcon && <View style={styles.inputFieldLeftIcon}>{leftIcon}</View>}
-    <View style={[styles.inputFieldContainer, {borderColor: error && 'red'}]}>
+    <View style={[styles.inputFieldContainer, {borderColor: error && COLORS.errorRed, borderWidth: 1}]}>
       <TextInput 
         style={[customStyles, styles.input]}
        {...rest}
        value={value}
-       onChangeText={onChange}
        onBlur={onBlur}
        secureTextEntry={isPasswordVisible}
        placeholder={placeholder}
        autoCapitalize={autoCapitalize}
        placeholderTextColor={COLORS.inputGrayText}
+       onChangeText={(text) => {
+        // Call the original onChangeText if it exists
+        if (onChangeText) {
+          onChangeText(text);
+        }
+        // Call the new input change handler
+        if (onInputChange) {
+          onInputChange();
+        }
+        // Call the react-hook-form onChange
+        onChange(text);
+      }}
+      {...otherRestProps}
        />
        {rightIcon && <TouchableOpacity onPress={handlePasswordVisibiliy} style={styles.inputFieldRightIcon}>{rightIcon}</TouchableOpacity>}
     </View>
     </View>
     {
-      error && <Text style={styles.errorText}>{error.message || 'Error'}</Text>
+      error && <NunitoText type='bold' customStyles={styles.errorText}>{error.message || 'Error'}</NunitoText>
     }
     </>
     )}
-    />
-    
+    />    
   )
 }
 
@@ -92,7 +107,7 @@ const styles = StyleSheet.create({
     paddingRight: 10 
   }, 
   errorText: {
-    color: 'red',  
+    color: COLORS.errorRed,  
     alignSelf: 'stretch',
     fontWeight: '400'
   }, 

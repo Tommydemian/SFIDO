@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { COLORS } from '../../assets/theme';
+import { COLORS, SPACING } from '../../assets/theme';
 import { NunitoText } from './NunitoText';
 
 type Props = {
@@ -9,12 +9,14 @@ type Props = {
   onActionPress: () => void;
 };
 
+// TODO: add transition to Sign In
+
 export const AuthSwitchLink: React.FC<Props> = ({ navigationText, actionText, onActionPress }) => {
   return (
     <View style={styles.container}>
       <NunitoText customStyles={styles.navigationText}>{navigationText}</NunitoText>
       <TouchableOpacity onPress={onActionPress}>
-        <NunitoText customStyles={styles.actionText}>{actionText}</NunitoText>
+        <NunitoText type='bold' customStyles={styles.actionText}>{actionText}</NunitoText>
       </TouchableOpacity>
     </View>
   );
@@ -25,6 +27,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    columnGap: SPACING.spacing20
     // otros estilos necesarios
   },
   navigationText: {
