@@ -1,17 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, StyleSheet, SafeAreaView, StatusBar, ScrollView, FlatList, useWindowDimensions } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 import Animated, {useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, interpolate} from 'react-native-reanimated';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { MainStackParams } from '../navigation/MainStackNavigator';
-import { getCategoriesFromFirestore } from '../services/categoriesService';
-import { Categorie } from '../types';
 import { COLORS } from '../../assets/theme';
 
 import { InterestCard } from '../components/InterestCard';
-import { useSelectInterests } from '../hooks/useSelectInterests';
+import { useHandleCategories } from '../hooks/useHandleCategories';
 import { addIntererstsToFirestoreUser } from '../services/userService';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { AnimatedCategorieCard } from '../components/AnimatedCategorieCard';
@@ -19,29 +17,12 @@ import { AnimatedCategorieCard } from '../components/AnimatedCategorieCard';
 type Props = NativeStackScreenProps<MainStackParams, 'CategoriesSelectionScreen'>
 
 export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
-  const [interests, setInterests] = useState<Categorie[]>([])
-  const [loading, setLoading] = useState(false)
-
-  const {height: SCREEN_HEIGHT} = useWindowDimensions()
-
-  useEffect(() => {
-    setLoading(true)
-    getCategoriesFromFirestore()
-    .then((res) => {
-      const interestsList = res.docs.map(doc => doc.data() as Categorie)
-      setInterests(interestsList)
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => setLoading(false))
-  }, [])
-
-  const {handleSelect, selectedInterests} = useSelectInterests()
+  
+  const {handleSelect, selectedCategories, categories, loading  } = useHandleCategories()
 
   const handleSubmitResult = () => {
-    if (selectedInterests.length > 0) {
-      addIntererstsToFirestoreUser(auth().currentUser?.uid!, selectedInterests)
+    if (selectedCategories.length > 0) {
+      addIntererstsToFirestoreUser(auth().currentUser?.uid!, selectedCategories)
       .then(() => {
         navigation.navigate('BottomTabs')
       }).catch((err) => {
@@ -50,13 +31,13 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
     }
   }
 
-  const scrollY = useSharedValue(0);
+  // const scrollY = useSharedValue(0);
 
-  const scrollHandler = useAnimatedScrollHandler({
-    onScroll: (event) => {
-      scrollY.value = event.contentOffset.y;
-    },
-  });
+  // const scrollHandler = useAnimatedScrollHandler({
+  //   onScroll: (event) => {
+  //     scrollY.value = event.contentOffset.y;
+  //   },
+  // });
 
   // loading return
   if (loading) {
@@ -68,11 +49,11 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
       {/* <Text style={styles.title}>What Type of Beast Are You?</Text> */}
       <View style={styles.categoriesContainer}>
     {
-      interests.length > 0 && (
+      categories.length > 0 && (
         <Animated.FlatList
-      data={interests}
+      data={categories}
       keyExtractor={(item) => item.id.toString()}
-      onScroll={scrollHandler}
+      // onScroll={scrollHandler}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
         padding: 20,
@@ -87,7 +68,7 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
               onPress={() => handleSelect(item.id)}
               description={item.description} 
               title={item.title}
-              isSelected={selectedInterests.includes(item.id)} 
+              isSelected={selectedCategories.includes(item.id)} 
             />
             </>
         );
@@ -103,7 +84,7 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
       </View> 
       <TouchableOpacity
        style={styles.ctaButton}
-       disabled={selectedInterests.length !== 3}
+       disabled={selectedCategories.length !== 3}
        onPress={handleSubmitResult}
        >
             <Text style={styles.ctaButtonText}>Confirm</Text>
@@ -127,8 +108,7 @@ const styles = StyleSheet.create({
     marginTop: 10
     // Estilos adicionales
   },
-  categoriesContainer: {
-     
+  categoriesContainer: { 
     height: '90%'
   },
   interestCard: {

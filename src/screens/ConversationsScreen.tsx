@@ -2,43 +2,40 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Pressable, 
 import React, { useEffect, useState } from 'react'
 import { UpperBarNav } from '../components/UpperBarNav'
 import { requestPermissions, scheduleNotifications } from '../services/notificationsService'
-import { DateAndTimePicker } from '../components/DateTimePicker';
-import { useSetLocalNotifDate } from '../hooks/useSetLocalNotifDate';
+// import { DateAndTimePicker } from '../components/DateTimePicker';
+// import { useSetLocalNotifDate } from '../hooks/useSetLocalNotifDate';
+import { useDateTimePicker } from '../hooks/useDateTimePicker';
 
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { COLORS } from '../../assets/theme';
 
-type PickerMode = 'date' | 'time'
-
-const imageSrc = require('../../assets/images/dobermanbark.jpeg')
+// type PickerMode = 'date' | 'time'
 
 export const ConversationsScreen = () => {
-//const {handleDateChange, localNotifDate, showDatePicker, toggleDatePickerVisibility, date } = useSetLocalNotifDate();
 
-// const [showDatePicker, setShowDatePicker] = useState(false)
-// time picker
-// const [selectedTime, setSelectedTime] = useState(new Date())
-const [date, setDate] = useState(new Date())
-const [showPicker, setShowPicker] = useState(false)
-const [mode, setMode] = useState<PickerMode>('date')
-const [res, setRes] = useState('')
+  const {date, handleChange, mode, res, setModeAndShowPicker, showPicker} = useDateTimePicker()
 
-const setModeAndShowPicker = (currentMode: PickerMode ) => {
-  setShowPicker(true)
-  setMode(currentMode)
-}
+// const [date, setDate] = useState(new Date())
+// const [showPicker, setShowPicker] = useState(false)
+// const [mode, setMode] = useState<PickerMode>('date')
+// const [res, setRes] = useState('')
 
-const handleChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-  const currentDate = selectedDate || date
-  setShowPicker(Platform.OS === 'ios')
-  setDate(currentDate)
+// const setModeAndShowPicker = (currentMode: PickerMode ) => {
+//   setShowPicker(true)
+//   setMode(currentMode)
+// }
 
-  let tempDate = new Date(currentDate)
-  let fullDate =  tempDate.getDate() + '/' + (tempDate.getMonth()) + '/' + tempDate.getFullYear()
-  let fullTime = 'Hour: ' + tempDate.getHours() + ':' + tempDate.getMinutes() 
-  setRes(fullDate + ' ' + fullTime)
+// const handleChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+//   const currentDate = selectedDate || date
+//   setShowPicker(Platform.OS === 'ios')
+//   setDate(currentDate)
 
-} 
+//   let tempDate = new Date(currentDate)
+//   let fullDate =  tempDate.getDate() + '/' + (tempDate.getMonth()) + '/' + tempDate.getFullYear()
+//   let fullTime = 'Hour: ' + tempDate.getHours() + ':' + tempDate.getMinutes() 
+//   setRes(fullDate + ' ' + fullTime)
+
+// } 
 
 const handleScheduleNotification = () => {
   scheduleNotifications({
@@ -71,7 +68,6 @@ const handleScheduleNotification = () => {
 
        <TouchableOpacity onPress={() => setModeAndShowPicker('time')}><Text>Open TimePicker</Text></TouchableOpacity>
 
-       <Image source={imageSrc} style={{height: 300}} /> 
     </View>
   )
 }

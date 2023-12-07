@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TextInput, TextInputProps, TouchableOpacity, View } from 'react-native'
 import React, {useEffect, useState} from 'react'
-import { COLORS } from '../../assets/theme';
+import { BORDER, COLORS, SPACING } from '../../assets/theme';
 import { Control, Controller } from 'react-hook-form';
 
 type Props = TextInputProps & {
@@ -14,9 +14,10 @@ type Props = TextInputProps & {
     control: Control;
     rules: object;
     setVisibility: boolean;
+    customStyles?: object;
 }
 
-export const InputField: React.FC<Props> = ({label, setVisibility, name,autoCapitalize, control ,placeholder, secureTextEntry, rules = {}, leftIcon, rightIcon, ...rest }) => {
+export const InputField: React.FC<Props> = ({label, customStyles, setVisibility, name,autoCapitalize, control ,placeholder, secureTextEntry, rules = {}, leftIcon, rightIcon, ...rest }) => {
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
@@ -34,9 +35,11 @@ export const InputField: React.FC<Props> = ({label, setVisibility, name,autoCapi
     render={({field: {value, onChange, onBlur}, fieldState:{error} }) => (
       <>
       <Text style={styles.inputFieldLabel}>{label && label}</Text>
-    <View style={[styles.inputFieldContainer, {borderColor: error && 'red'}]}>
+      <View style={styles.outerInputFieldContainer}>
       {leftIcon && <View style={styles.inputFieldLeftIcon}>{leftIcon}</View>}
+    <View style={[styles.inputFieldContainer, {borderColor: error && 'red'}]}>
       <TextInput 
+        style={[customStyles], styles.input}
        {...rest}
        value={value}
        onChangeText={onChange}
@@ -47,6 +50,7 @@ export const InputField: React.FC<Props> = ({label, setVisibility, name,autoCapi
        placeholderTextColor={COLORS.inputGrayText}
        />
        {rightIcon && <TouchableOpacity onPress={handlePasswordVisibiliy} style={styles.inputFieldRightIcon}>{rightIcon}</TouchableOpacity>}
+    </View>
     </View>
     {
       error && <Text style={styles.errorText}>{error.message || 'Error'}</Text>
@@ -64,10 +68,11 @@ const styles = StyleSheet.create({
   },
   inputFieldContainer: {
     backgroundColor: COLORS.whiteText, 
-    borderRadius: 30, // Aumenta para más redondez
-    paddingVertical: 15, // Aumenta para más altura
-    paddingLeft: 20, // Aumenta para más espacio interior
+    borderRadius: BORDER.buttons, // Aumenta para más redondez
+    paddingVertical: SPACING.spacing10, // Aumenta para más altura
     marginBottom: 10, 
+    width: 'auto',
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     shadowColor: "#000", // Color de la sombra
@@ -80,9 +85,7 @@ const styles = StyleSheet.create({
     elevation: 5, // Elevación para Android
   }, 
   inputFieldLeftIcon: {
-    alignSelf: 'flex-start', 
-    paddingRight: 10, 
-    paddingLeft: 5
+    marginRight: 5 
   }, 
   inputFieldRightIcon: {
     marginLeft: 'auto',
@@ -92,5 +95,14 @@ const styles = StyleSheet.create({
     color: 'red',  
     alignSelf: 'stretch',
     fontWeight: '400'
+  }, 
+  outerInputFieldContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'center',
+    width: '100%',
+  }, 
+  input: {
+    paddingLeft: 20
   }
 })

@@ -20,11 +20,11 @@ export const OrDivider = () => {
     orDividerLine: {
       flex: 1,
       height: 1,
-      backgroundColor: COLORS.grayText,
+      backgroundColor: COLORS.whiteText,
     },
     orDividerText: {
       marginHorizontal: 10,
-      color: COLORS.grayText,
+      color: COLORS.whiteText,
     },
   });
   

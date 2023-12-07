@@ -1,5 +1,5 @@
 import { Pressable, PressableProps, Text, StyleSheet } from "react-native"
-import { COLORS } from "../../assets/theme"
+import { BORDER, COLORS } from "../../assets/theme"
 
 type Props = PressableProps & {
     customStyles?: object
@@ -10,7 +10,7 @@ export const SubmitButton: React.FC<Props> = ({customStyles,children, ...rest}) 
     return (
     <Pressable 
     {...rest}
-    style={[styles.submitButton]}
+    style={[styles.submitButton, customStyles]}
     >
         <Text style={styles.submitText}>{children}</Text>
     </Pressable>)
@@ -18,15 +18,16 @@ export const SubmitButton: React.FC<Props> = ({customStyles,children, ...rest}) 
 
 const styles = StyleSheet.create({
   submitButton: {
-    marginVertical: 20, 
-    paddingVertical: 10, 
-    backgroundColor: COLORS.orangeWeb, 
-    paddingHorizontal: 10, 
-    borderRadius: 30,
-    marginBottom: 20
+    backgroundColor: COLORS.black, 
+    paddingVertical: 15, 
+    borderRadius: BORDER.buttons,
+    marginVertical: 10, 
+    // paddingHorizontal: 10, 
+    // marginBottom: 20
   }, 
   submitText: {
     color: COLORS.whiteText, 
+    fontSize: 16,
     fontWeight: 'bold',
     alignSelf: 'center', 
     textTransform: 'capitalize',

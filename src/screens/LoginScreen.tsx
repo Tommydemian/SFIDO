@@ -12,16 +12,24 @@ import { OrDivider } from '../components/OrDivider'
 import { AuthStackParams } from '../navigation/AuthStackNavigator'
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { FirebaseAuthTypes } from '@react-native-firebase/auth'
+import { useFonts } from 'expo-font';
+import { BlurView } from 'expo-blur';
+import { AuthContainer } from '../components/AuthContainer'
+
+import { SvgLogo } from '../components/SvgLogo'
+import { FontAwesome } from '@expo/vector-icons';
 
 import { DialogPopup } from '../components/DialogPopup'
 import { isUserGoogleAccountLinked, setIsGoogleAccountLinkedToTrue } from '../services/userService'
 
+import { AntDesign } from '@expo/vector-icons';
+import { OfficialLogo } from '../components/OfficialLogo'
+import { SfidoWhiteTextLogo } from '../components/SfidoWhiteTextLogo'
 
 type FormData = {
   email: string;
   password: string;
 }
-
 
 type Props = NativeStackScreenProps<AuthStackParams, 'LoginScreen'>
 
@@ -30,11 +38,17 @@ type DraftUserCredentials = FirebaseAuthTypes.UserCredential & {
   googleCredential: FirebaseAuthTypes.AuthCredential;
 }
 
+const authbg = require('../../assets/images/authbg.png')
+const sfidoName = require('../../assets/images/sfidoname.png')
+
 export const LoginScreen: React.FC<Props> = ({navigation}) => {
 const [visible, setIsVisible] = useState(false)
 const [email, setEmail] = useState('')
 const [password, setPassword] = useState('')
 const [googleCredential, setGoogleCredential] = useState<FirebaseAuthTypes.AuthCredential | null>(null)
+
+// TODO: Splash screen control here
+
 
   // conext hook
   const {user, handleSignIn, onGoogleButtonPress, isGoogleLinked } = useAuthContext()
@@ -70,18 +84,39 @@ const [googleCredential, setGoogleCredential] = useState<FirebaseAuthTypes.AuthC
     console.log(password);
   }, [password])
 
+  const [fontsLoaded] = useFonts({
+    'Nunito-Regular': require('../../assets/fonts/Nunito-Regular.ttf'),
+  });
+  
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <Spinner visible={user.loading}/>
+      
+     {/* Contenedor de imagen de fondo con desenfoque */}
+     <View style={StyleSheet.absoluteFill}>
+        <Image source={authbg} style={{flex: 1}} />
 
-      <DialogPopup visible={visible} email={email} setPassword={setPassword} googleCredential={googleCredential!} password={password} />
+      </View>
+      
+      <AuthContainer>
 
-      <Image style={styles.heroImage} source={require('../../assets/images/loginwolf.png')}></Image>
+      <OfficialLogo style={{alignSelf: 'center'}}/>
+      
+      <SfidoWhiteTextLogo style={{marginVertical: 10}} />
+      
 
-      <Text>Inner Beast</Text>
-      <Text>Unleash your inner beast</Text>
+      {/* <DialogPopup visible={visible} email={email} setPassword={setPassword} googleCredential={googleCredential!} password={password} /> */}
 
+      
+      <Text style={{fontFamily: 'Nunito-Regular', color: COLORS.blackSecondaryText, fontSize: 22, textAlign: 'center', color: COLORS.whiteText }}>Your goals, your dreams, your journey means a lot.</Text>
+
+      
       <InputField
+      customStyles={styles.fieldInput}
       rules={{required: 'Email is required'}}
       name='email' 
       control={control}
@@ -89,9 +124,13 @@ const [googleCredential, setGoogleCredential] = useState<FirebaseAuthTypes.AuthC
       secureTextEntry={false}
       autoCapitalize='none'
       setVisibility={false}
-      leftIcon={<MaterialIcons name="email" size={24} color={COLORS.textBlack} />} />
+      leftIcon={
+        <AntDesign name="user" size={32} color={COLORS.whiteText} />}
+      />
+      
       
       <InputField 
+      customStyles={styles.fieldInput}
       rules={{required: 'Password is required'}}
       name='password'
       setVisibility
@@ -99,32 +138,34 @@ const [googleCredential, setGoogleCredential] = useState<FirebaseAuthTypes.AuthC
       placeholder='●●●●●●●●'
       secureTextEntry={true}
       placeholderTextColor={COLORS.inputGrayText}
-      autoCapitalize='none'
-      leftIcon={<Entypo name="lock" size={24} color={COLORS.textBlack} />} 
-      rightIcon={<Entypo name="eye" size={24} color={COLORS.textBlack} />}
+      autoCapitalize='none' 
+      leftIcon={<Entypo name="lock" size={32} color={COLORS.whiteText} />}
+      rightIcon={<Entypo name="eye" size={24} color={COLORS.blackSecondaryText} />}
         />
       
       <TouchableOpacity>
       <Text onPress={() => navigation.navigate('EmailPromptModal')} style={styles.forgotPassword}>Forgot your password?</Text>
       </TouchableOpacity>
 
-      <SubmitButton onPress={onSignIn}>
+      <SubmitButton customStyles={styles.signInButton} onPress={onSignIn}>
         Sing In
       </SubmitButton>
 
       <OrDivider />
 
+      <View style={styles.providerButtonsContainer}>
+      <SubmitButton customStyles={styles.providerButton} onPress={handleOnGoogleButtonPress}>Google</SubmitButton>
+      <SubmitButton customStyles={styles.providerButton}>Apple</SubmitButton>
+      </View>
 
-      <Button
-      title="Google Sign-In"
-      onPress={handleOnGoogleButtonPress}
-    />
-
-    <View style={{flexDirection: 'row'}}>
-    <Text>Dont have an account?</Text>
+    <View style={{flexDirection: 'row', }}>
+    <Text style={{fontFamily: 'Nunito-Regular', color: COLORS.whiteText}}>Dont have an account?</Text>
     
-    <Pressable onPress={() => navigation.navigate('SignupScreen')}><Text>Sign Up</Text></Pressable>
+    <Pressable onPress={() => navigation.navigate('SignupScreen')}><Text
+    style={{fontFamily: 'Nunito-Regular', color: COLORS.whiteText}}
+    >Sign Up</Text></Pressable>
     </View>
+    </AuthContainer>
 
     </SafeAreaView>
   )
@@ -133,19 +174,37 @@ const [googleCredential, setGoogleCredential] = useState<FirebaseAuthTypes.AuthC
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: '5%', 
     justifyContent: 'center',
-    backgroundColor: COLORS.blackBg,
-    padding: 20
+    backgroundColor: COLORS.blackBg
   }, 
   forgotPassword: {
     alignSelf: 'flex-end', 
-    color: COLORS.orangeWeb
+    color: COLORS.whiteText, 
+    fontWeight: 'bold'
   }, 
   heroImage: {
   height: 250, // Ajusta según sea necesario
   resizeMode: 'contain', // Asegúrate de que la imagen se ajuste sin deformarse
   alignSelf: 'center',
   marginVertical: 20, // Ajusta el espacio vertical
+}, 
+providerButtonsContainer: {
+  flexDirection: 'row', 
+  justifyContent: 'space-around', 
+  columnGap: 10, 
+}, 
+providerButton: {
+  flexGrow: 1 // TODO: ask GPT
+}, 
+inputIconContainer: {
+  flexDirection: 'row', 
+  alignItems: 'center', 
+  justifyContent: 'space-between',
+  columnGap: 5, 
+  width: '100%',
+  backgroundColor: 'red'
+}, 
+signInButton: {
+  backgroundColor: COLORS.folly
 }
 })
