@@ -1,5 +1,5 @@
 // React and React-native imports
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
 // External libraries imports
@@ -18,6 +18,7 @@ import { OfficialLogo } from '../components/OfficialLogo';
 import { SfidoWhiteTextLogo } from '../components/SfidoWhiteTextLogo';
 import { NunitoText } from '../components/NunitoText';
 import { InputField } from '../components/InputField';
+import { AnimatedSubmitButton } from '../components/animated/AnimatedSubmitButton';
 
 // Custom Hooks imports
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -28,6 +29,7 @@ import { useGoogleAuthentication } from '../hooks/useGoogleAuthentication';
 import { FormData } from '../types';
 import { COLORS } from '../../assets/theme';
 import { AuthStackParams } from '../navigation/AuthStackNavigator';
+import { useDerivedValue, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
 
 // Estilos y otros recursos
 
@@ -36,6 +38,17 @@ type Props = NativeStackScreenProps<AuthStackParams, 'LoginScreen'>
 const authbg = require('../../assets/images/authbg.png')
 
 export const LoginScreen: React.FC<Props> = ({navigation}) => {
+
+  const [formInputsCompleted, setFormInputsCompleted] = useState(false)
+
+  const opacity = useSharedValue(0.7); // Initial opacity
+
+  useEffect(() => {
+    // Update opacity based on form completion
+    opacity.value = withTiming(formInputsCompleted ? 1 : 0.5, {duration: 300})
+  }, [formInputsCompleted]);
+
+
   // conext hook
   const {user, onGoogleButtonPress, isGoogleLinked, handleSignIn, errorMessageState, setErrorMessageState } = useAuthContext()
 
@@ -46,7 +59,14 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
   const {handleOnGoogleButtonPress} = useGoogleAuthentication()
 
   // useForm hook
-  const {control, handleSubmit, formState: {errors}, reset} = useForm<FormData>()
+  const {control, handleSubmit, formState: {errors}, reset, watch} = useForm<FormData>()
+  const email = watch('email')
+  const password = watch('password')
+
+  useEffect(() => {
+    setFormInputsCompleted(email?.length > 0 && password?.length > 0);
+  }, [email, password]);
+
 
   // function sign in 
   const onSubmit = (data: FormData) => {
@@ -110,7 +130,13 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
       }}
       />
 
-      <SubmitButton onPress={handleSubmit(onSubmit)}>Sing In</SubmitButton>
+      <AnimatedSubmitButton 
+      customStyles={styles.signInButton} 
+      onPress={handleSubmit(onSubmit)}
+      opacity={opacity}
+      >
+        Sing In
+      </AnimatedSubmitButton>
       
       {errorMessageState && <NunitoText customStyles={styles.errorMessage}>{errorMessageState}</NunitoText>}
 
@@ -171,7 +197,8 @@ inputIconContainer: {
   backgroundColor: 'red'
 }, 
 signInButton: {
-  backgroundColor: COLORS.folly
+  backgroundColor: COLORS.folly, 
+  opacity: 0.5
 }, 
 subHeader: {
   fontSize: 22, 

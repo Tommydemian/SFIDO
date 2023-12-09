@@ -22,7 +22,7 @@ const Stack = createNativeStackNavigator<MainStackParams>();
 
 export const MainStackNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName='WelcomeScreen'>
+    <Stack.Navigator initialRouteName='OnBoardingScreen'>
       <Stack.Screen name="QuoteScreen" component={QuoteScreen} options={{headerShown: false}} />
       <Stack.Screen name="MessageScreen" component={MessageScreen} />
       <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{headerShown: false}} />
