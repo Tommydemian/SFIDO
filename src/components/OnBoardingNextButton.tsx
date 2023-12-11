@@ -4,6 +4,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { COLORS } from '../../assets/theme';
 import { NunitoText } from './NunitoText';
 import Animated, {SharedValue, useAnimatedStyle, withSpring, withTiming} from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   flatListRef: React.RefObject<React.Component<{}, {}, any>>;
@@ -12,6 +13,8 @@ type Props = {
 }
 
 export const OnBoardingNextButton: React.FC<Props> = ({dataLength, flatListIndex, flatListRef}) => {
+
+  const navigation= useNavigation()
 
   const arrowAnimationStyle = useAnimatedStyle(() => {
     return {
@@ -26,7 +29,8 @@ export const OnBoardingNextButton: React.FC<Props> = ({dataLength, flatListIndex
       ]
     }
   })
- 
+  
+  // Animated styles for button
   const buttonAnimatedStyle = useAnimatedStyle(() => {
     return {
       width: flatListIndex.value === dataLength - 1 ? withSpring(140) : withSpring(60),
@@ -47,9 +51,15 @@ export const OnBoardingNextButton: React.FC<Props> = ({dataLength, flatListIndex
   //     ]
   //   }
   // })
+
+  const handlePress = () => {
+    if (flatListIndex.value === dataLength - 1) {
+      navigation.navigate('CategoriesSelectionScreen')
+    }    
+  }
  
   return (
-    <Pressable>
+    <Pressable onPress={handlePress}>
       <Animated.View style={[styles.container, buttonAnimatedStyle]}>
         <NunitoText customStyles={[styles.buttonText]}>Get Started</NunitoText>
         <Animated.View style={[styles.arrowIcon, arrowAnimationStyle]}>

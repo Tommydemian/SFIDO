@@ -26,7 +26,7 @@ export const MainStackNavigator = () => {
       <Stack.Screen name="QuoteScreen" component={QuoteScreen} options={{headerShown: false}} />
       <Stack.Screen name="MessageScreen" component={MessageScreen} />
       <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{headerShown: false}} />
-      <Stack.Screen name='CategoriesSelectionScreen' component={CategoriesSelectionScreen} options={{headerShown: false}} />
+      <Stack.Screen name='CategoriesSelectionScreen' component={CategoriesSelectionScreen} options={{headerShown: true}} />
       <Stack.Screen name="BottomTabs" component={BottomTabsNavigator} options={{headerShown: false}} />
       <Stack.Screen name="OnBoardingScreen" component={OnBoardingScreen} options={{headerShown: false}} />
     </Stack.Navigator>

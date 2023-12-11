@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import auth from '@react-native-firebase/auth';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { AntDesign, Entypo } from '@expo/vector-icons';
 
 // Custom Component imports
 import { SubmitButton } from '../components/SubmitButton';
@@ -47,7 +48,6 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
     // Update opacity based on form completion
     opacity.value = withTiming(formInputsCompleted ? 1 : 0.5, {duration: 300})
   }, [formInputsCompleted]);
-
 
   // conext hook
   const {user, onGoogleButtonPress, isGoogleLinked, handleSignIn, errorMessageState, setErrorMessageState } = useAuthContext()
@@ -105,6 +105,7 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
       control={control}
       placeholder='Email'
       name='email'
+      leftIcon={<AntDesign name="user" size={30} color={COLORS.whiteText} />}
       onInputChange={clearErrorMessage} 
       rules={{
         required: 'Email is required', // Ensures the user does not leave the email field blank
@@ -120,7 +121,9 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
       control={control}
       placeholder='Password'
       name='password'
+      secureTextEntry={true}
       onInputChange={clearErrorMessage} 
+      leftIcon={<Entypo name="lock" size={30} color={COLORS.whiteText} />}
       rules={{
         required: 'Password is required', // Ensures the password field is not left blank
         minLength: {
@@ -167,7 +170,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: COLORS.blackBg
+    backgroundColor: COLORS.indigoDye
   }, 
   forgotPassword: {
     alignSelf: 'flex-end', 

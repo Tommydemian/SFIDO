@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar} from
 import auth from '@react-native-firebase/auth';
 
 import Animated, {useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, interpolate} from 'react-native-reanimated';
-
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { MainStackParams } from '../navigation/MainStackNavigator';
 import { COLORS } from '../../assets/theme';

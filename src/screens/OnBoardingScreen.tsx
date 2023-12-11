@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, SafeAreaView, FlatList, StatusBar, Image, Dimensions, ViewToken } from 'react-native'
-import React, { useEffect } from 'react'
+import { StyleSheet, Text, View, SafeAreaView, FlatList, TouchableOpacity, StatusBar, Image, Dimensions, ViewToken } from 'react-native'
+import React, { useEffect, useCallback } from 'react'
 import { data, Data } from '../../assets/constants/data'
 import { COLORS } from '../../assets/theme'
 import { NunitoText } from '../components/NunitoText'
@@ -13,6 +13,9 @@ import Animated, {
     interpolate, 
     Extrapolation
 } from 'react-native-reanimated'
+import { useAuthContext } from '../hooks/useAuthContext'
+
+const authbg = require('../../assets/images/authbg.png')
 
 type onViewableItemsChangedType = {
     viewableItems: ViewToken[];
@@ -28,14 +31,18 @@ type RenderItemProps = {
 
 const SCREEN_WIDTH = Dimensions.get('screen').width
 
+// RenderItem component for rendering each onboarding item
 const RenderItem: React.FC<RenderItemProps> = ({item, index, offSetX}) => {
     console.log("RenderItem:", item, "Index:", index);
 
+    const {signOutUser} = useAuthContext()
     
     // const {width: SCREEN_WIDTH} = useWindowDimensions()
 
-    // Animated styles
+    // ANIMATED STYLES
+    // Animated styles for image
     const imageAnimatedStyle = useAnimatedStyle(() => {
+        // Interpolation for opacity and translateY based on scroll offset
         const opacityAnimation = interpolate(
         offSetX.value, 
         [
@@ -60,13 +67,16 @@ const RenderItem: React.FC<RenderItemProps> = ({item, index, offSetX}) => {
 
         return {
             opacity: opacityAnimation,
-            width: SCREEN_WIDTH * 0.8,
-            height: SCREEN_WIDTH * 0.8, 
+            // width: SCREEN_WIDTH * 0.8,
+            // height: SCREEN_WIDTH * 0.8, 
             transform: [{translateY: translateYAnimation}]
 
         }
     })
+
+    // Animated styles for text
     const textAnimationStyle = useAnimatedStyle(() => {
+        // Interpolation for opacity and translateY based on scroll offset
         const opacityAnimation = interpolate(
           offSetX.value,
           [
@@ -96,6 +106,9 @@ const RenderItem: React.FC<RenderItemProps> = ({item, index, offSetX}) => {
     
     return (
         <View style={[styles.itemContainer, {width: SCREEN_WIDTH}]}>
+          <View style={StyleSheet.absoluteFill}>
+        <Image source={authbg} style={{flex: 1}} />
+        </View>
             <StatusBar barStyle={'light-content'}/>
             <Animated.Image 
             source={item.image}
@@ -104,25 +117,30 @@ const RenderItem: React.FC<RenderItemProps> = ({item, index, offSetX}) => {
               <Animated.View style={textAnimationStyle}>
             <NunitoText type='bold' customStyles={styles.itemTitle}>{item.title}</NunitoText>
             <NunitoText customStyles={styles.itemText}>{item.text}</NunitoText>
+            <TouchableOpacity onPress={signOutUser}><Text>Sign out</Text></TouchableOpacity>
             </Animated.View>
         </View>
     )
 }
 
 export const OnBoardingScreen = () => {
+    // Shared values for animation
     const offSetX = useSharedValue(0);
     const flatListIndex = useSharedValue(0)
 
-const handleScroll = useAnimatedScrollHandler({
+    // Scroll handler for updating offSetX
+    const handleScroll = useAnimatedScrollHandler({
     onScroll: (event) => {
         offSetX.value = event.contentOffset.x;
     },
 });
 
-const onViewableItemsChanged = ({ viewableItems }: onViewableItemsChangedType) => {
-    flatListIndex.value = viewableItems[0]?.index ?? 0;
-}
+ // Handler for onViewableItemsChanged event
+ const onViewableItemsChanged = useCallback(({ viewableItems }: onViewableItemsChangedType) => {
+  flatListIndex.value = viewableItems[0]?.index ?? 0;
+}, []);
 
+    // Ref for the flat list
     const flatListRef = useAnimatedRef();
 
 
@@ -165,20 +183,20 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: COLORS.folly,
+        backgroundColor: COLORS.indigoDye,
       },
       image: {
         width: 100, // ajusta según sea necesario
         height: 100, // ajusta según sea necesario
       },
       itemTitle: {
-        color: COLORS.blackSecondaryText, 
+        color: COLORS.whiteText, 
         fontSize: 22, 
         textAlign: 'center',
         marginBottom: 10
       },
       itemText: {
-        color: COLORS.blackSecondaryText, 
+        color: COLORS.whiteText, 
         textAlign: 'center',
         lineHeight: 20, 
         marginHorizontal: 35
