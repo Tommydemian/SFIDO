@@ -14,6 +14,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { AuthContainer } from '../components/AuthContainer';
 import { SubmitButton } from '../components/SubmitButton';
 import { NunitoText } from '../components/NunitoText';
+import {CategorieCardIcon} from '../components/CategorieCardIcon';
 
 const authbg = require('../../assets/images/authbg.png');
 
@@ -56,7 +57,7 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
       // onScroll={scrollHandler}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-        padding: 20,
+
         paddingTop: StatusBar.currentHeight || 42,
         borderRadius: 30, 
         rowGap: 15,
@@ -73,7 +74,9 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
               isSelected={selectedCategories.includes(item.id)} 
               expanded={!!expandedCards?.includes(item.id)}
               onIconPress={() => handleSelect(item.id)}
-            />
+            >
+              <CategorieCardIcon title={item.title} /> 
+            </CategorieCard>
             </>
         );
       }}

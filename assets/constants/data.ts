@@ -25,3 +25,16 @@ export const data: Data[] = [
       text: 'You decide when and how to receive your motivational boosts. Schedule your messages for key moments, and let SFIDO accompany you on your path to your goals.',
     },
   ];
+
+  export type CategoryIcons = {
+    [key: string]: string;
+  };
+
+  export const categoryIcons: CategoryIcons = {
+    "Personal Improvement": "lightbulb-o",
+    "Resilience and Strength": "tree",
+    "Inspiration and Creativity": "paint-brush",
+    "Success and Goals": "trophy",
+    "Positivity and Optimism": "smile-o",
+    "Empowerment and Leadership": "black-tie"
+};

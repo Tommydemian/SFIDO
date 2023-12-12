@@ -1,6 +1,6 @@
 import { StyleSheet, Text, Pressable, PressableProps, View } from 'react-native'
 import React, {useState} from 'react'
-import { COLORS } from '../../assets/theme'
+import { COLORS, SPACING } from '../../assets/theme'
 import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated'
 import { AntDesign } from '@expo/vector-icons';
 import { Categorie } from '../types';
@@ -13,10 +13,10 @@ type Props = PressableProps & {
     expanded: boolean;
     onIconPress: (interestId: number) => void
     onExpandPress: (card: Categorie) => void
-
+    children: React.ReactNode
 }
 
-export const CategorieCard: React.FC<Props> = ({ title, onExpandPress, onIconPress, expanded, description, isSelected, ...rest}) => {
+export const CategorieCard: React.FC<Props> = ({ title, onExpandPress, onIconPress, children, expanded, description, isSelected, ...rest}) => {
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
@@ -29,6 +29,8 @@ export const CategorieCard: React.FC<Props> = ({ title, onExpandPress, onIconPre
     <Pressable style={[styles.cardContainer, isSelected && styles.selected]} {...rest}>
       <View style={styles.headerContainer}>
       <NunitoText customStyles={styles.cardTitle}>{title}</NunitoText>
+      <View style={styles.headerIconsContainer}>
+      {children}
       {
         expanded ? (
             <AntDesign onPress={onExpandPress} name="up" size={15} color="black" />
@@ -37,6 +39,7 @@ export const CategorieCard: React.FC<Props> = ({ title, onExpandPress, onIconPre
             <AntDesign onPress={onExpandPress} name="down" size={15} color="black" />
 
       }
+      </View>
       </View>
       <Animated.View style={[styles.cardDescription, animatedStyle]}>
                 <NunitoText customStyles={styles.cardDescription}>{description}</NunitoText>
@@ -60,6 +63,10 @@ const styles = StyleSheet.create({
         padding: 15,
         marginBottom: 10,
     }, 
+    headerIconsContainer: {
+        flexDirection: 'row', 
+        gap: SPACING.spacing10
+    },
     cardTitle: {
         fontSize: 18,
         fontWeight: 'bold',
@@ -84,7 +91,8 @@ const styles = StyleSheet.create({
     headerContainer: {
         flexDirection: 'row', 
         justifyContent: 'space-between', 
-        alignItems: 'center'
+        alignItems: 'center', 
+        marginBottom: 5
     }, 
     container: {
         height: 'auto'
