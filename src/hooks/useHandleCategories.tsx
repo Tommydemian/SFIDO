@@ -5,6 +5,7 @@ import { getCategoriesFromFirestore } from "../services/categoriesService";
 export const useHandleCategories = () => {
   const [categories, setCategories] = useState<Categorie[]>([])
   const [loading, setLoading] = useState(false)  
+  const [expandedCards, setExpandedCards] = useState<Categorie['id'][]>([]);
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   
   // display categories
@@ -21,15 +22,26 @@ export const useHandleCategories = () => {
     .finally(() => setLoading(false))
   }, [])
 
+  // expand categories
+  const handleExpandedCards = (card: Categorie) => {
+    expandedCards?.includes(card.id) 
+    ? 
+      setExpandedCards(current => current?.filter(item => item !== card.id) || [])
+    :
+      setExpandedCards(current => [...(current || []), card.id]);
+};
+
 
   // select categories
     const handleSelect = (interestId: number) => {
+      if (expandedCards?.includes(interestId)) {
         if (selectedCategories.includes(interestId)) {
-          setSelectedCategories(selectedCategories.filter(id => id !== interestId));
+          setSelectedCategories((current) => current.filter(id => id !== interestId));
         } else if (selectedCategories.length < 3) {
-          setSelectedCategories([...selectedCategories, interestId]);
+            setSelectedCategories([...selectedCategories, interestId]);
         }
       };
+    }
 
-    return {handleSelect, selectedCategories, categories, loading}
+    return {handleSelect, selectedCategories, categories, loading, handleExpandedCards, expandedCards}
 }

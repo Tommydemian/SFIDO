@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar, Image} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 import Animated, {useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, interpolate} from 'react-native-reanimated';
@@ -7,17 +7,21 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { MainStackParams } from '../navigation/MainStackNavigator';
 import { COLORS } from '../../assets/theme';
 
-import { InterestCard } from '../components/InterestCard';
+import { CategorieCard } from '../components/CategorieCard';
 import { useHandleCategories } from '../hooks/useHandleCategories';
 import { addIntererstsToFirestoreUser } from '../services/userService';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { AnimatedCategorieCard } from '../components/AnimatedCategorieCard';
+import { AuthContainer } from '../components/AuthContainer';
+import { SubmitButton } from '../components/SubmitButton';
+import { NunitoText } from '../components/NunitoText';
+
+const authbg = require('../../assets/images/authbg.png');
 
 type Props = NativeStackScreenProps<MainStackParams, 'CategoriesSelectionScreen'>
 
 export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
   
-  const {handleSelect, selectedCategories, categories, loading  } = useHandleCategories()
+  const {handleSelect, selectedCategories, categories, loading, handleExpandedCards, expandedCards } = useHandleCategories()
 
   const handleSubmitResult = () => {
     if (selectedCategories.length > 0) {
@@ -30,14 +34,6 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
     }
   }
 
-  // const scrollY = useSharedValue(0);
-
-  // const scrollHandler = useAnimatedScrollHandler({
-  //   onScroll: (event) => {
-  //     scrollY.value = event.contentOffset.y;
-  //   },
-  // });
-
   // loading return
   if (loading) {
     return <Spinner />;
@@ -45,7 +41,12 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
   
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Text style={styles.title}>What Type of Beast Are You?</Text> */}
+      <View style={StyleSheet.absoluteFill}>
+        <Image source={authbg} style={{flex: 1}} />
+        </View>
+      <AuthContainer> 
+      <NunitoText type='bold' customStyles={styles.title}>Pick Your Categories</NunitoText>
+      <NunitoText>Choose 3 Categories for a Tailored Experience</NunitoText>
       <View style={styles.categoriesContainer}>
     {
       categories.length > 0 && (
@@ -63,31 +64,34 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
       renderItem={({ item, index }) => {
         return (
           <>
-            <InterestCard
-              onPress={() => handleSelect(item.id)}
+            <CategorieCard
+              onExpandPress={() => {
+                handleExpandedCards(item)
+              }}
               description={item.description} 
               title={item.title}
               isSelected={selectedCategories.includes(item.id)} 
+              expanded={!!expandedCards?.includes(item.id)}
+              onIconPress={() => handleSelect(item.id)}
             />
             </>
         );
       }}
       
       style={styles.flatList}
-        />
-        
+        /> 
       )
-      
     }
 
       </View> 
-      <TouchableOpacity
+      <SubmitButton
        style={styles.ctaButton}
        disabled={selectedCategories.length !== 3}
        onPress={handleSubmitResult}
        >
-            <Text style={styles.ctaButtonText}>Confirm</Text>
-            </TouchableOpacity>     
+            <NunitoText type='bold' customStyles={styles.ctaButtonText}>Confirm</NunitoText>
+            </SubmitButton>     
+            </AuthContainer>
     </SafeAreaView>
   );
 };
@@ -103,39 +107,28 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     textAlign: 'center',
-    color: COLORS.whiteText,
     marginTop: 10
     // Estilos adicionales
   },
+  subtitle: {
+    fontSize: 16,
+    color: COLORS.grayText,
+    textAlign: 'center',
+  },
   categoriesContainer: { 
     height: '90%'
-  },
-  interestCard: {
-    // Estilos para las tarjetas de intereses
-  },
-  selectedInterest: {
-    // Estilos para las tarjetas seleccionadas
-  },
-  confirmButton: {
-    backgroundColor: COLORS.orangeWeb
-  },
-  confirmButtonText: {
-    // Estilos para el texto del botón de confirmación
   },
   flatList: {
     marginBottom: 10
   }, 
   ctaButton: {
-    backgroundColor: COLORS.orangeWeb,
     padding: 15,
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 30
 },
 ctaButtonText: {
-    color: COLORS.whiteText,
-    fontWeight: 'bold',
-    fontSize: 18,
+    textAlign: 'center'
 },
 });
 

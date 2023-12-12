@@ -1,6 +1,7 @@
 import { Pressable, PressableProps, Text, StyleSheet } from "react-native"
 import { BORDER, COLORS } from "../../../assets/theme"
 import Animated, {AnimatableValue, useAnimatedStyle, SharedValue} from "react-native-reanimated"
+import { NunitoText } from "../NunitoText";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
@@ -24,7 +25,7 @@ export const AnimatedSubmitButton: React.FC<Props> = ({opacity, transition, cust
     {...rest}
     style={[styles.submitButton, customStyles, animatedStyle]}
     >
-        <Text style={styles.submitText}>{children}</Text>
+        <NunitoText customStyles={styles.submitText}>{children}</NunitoText>
     </AnimatedPressable>
     )
 }

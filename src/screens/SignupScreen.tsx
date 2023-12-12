@@ -119,7 +119,11 @@ const passwordRules = {
       rules={passwordRules}
       />
 
-      <SubmitButton onPress={handleSubmit(onSubmit)}>Sing Up</SubmitButton>
+      <SubmitButton onPress={handleSubmit(onSubmit)}>
+        <NunitoText customStyles={styles.signInButtonText} type='bold'>
+          Sing Up
+        </NunitoText>
+        </SubmitButton>
       
       {errorMessageState && <NunitoText customStyles={styles.errorMessage}>{errorMessageState}</NunitoText>}
 
@@ -127,17 +131,19 @@ const passwordRules = {
 
         {/* Botones para registro con Google/Apple si son necesarios */}
         <View style={styles.providerButtonsContainer}>
-          <SubmitButton customStyles={styles.providerButton}>Google</SubmitButton>
-          <SubmitButton customStyles={styles.providerButton}>Apple</SubmitButton>
-        </View>
+      <SubmitButton customStyles={styles.providerButton} onPress={handleOnGoogleButtonPress}>
+        <NunitoText customStyles={styles.providerButtonText} type='bold'>Google</NunitoText>
+        
+        </SubmitButton>
+      <SubmitButton customStyles={styles.providerButton}>
+        <NunitoText customStyles={styles.providerButtonText} type='bold'>
+        Apple
+        </NunitoText>
+        </SubmitButton>
+      </View>
 
-        {/* Enlace para cambiar a la pantalla de inicio de sesión */}
-        <AuthSwitchLink 
-          actionText='Sign In' 
-          navigationText='Already have an account?' 
-          onActionPress={() => navigation.navigate('LoginScreen')} 
-        />
-      </AuthContainer>
+      <AuthSwitchLink actionText='Sign In' navigationText='Already have an account?' onActionPress={() => navigation.navigate('LoginScreen')}   />
+    </AuthContainer>
     </SafeAreaView>
   );
   }
@@ -165,8 +171,12 @@ providerButtonsContainer: {
   columnGap: 10, 
 }, 
 providerButton: {
-  flexGrow: 1 // TODO: ask GPT
+  flexGrow: 1, // TODO: ask GPT
+  backgroundColor: COLORS.black
 }, 
+providerButtonText: {
+  textAlign: 'center',
+},
 inputIconContainer: {
   flexDirection: 'row', 
   alignItems: 'center', 
@@ -178,6 +188,11 @@ inputIconContainer: {
 signInButton: {
   backgroundColor: COLORS.folly
 }, 
+signInButtonText: {
+  textAlign: 'center', 
+  fontSize: 18, 
+  backgroundColor: 'transparent'
+},
 subHeader: {
   fontSize: 22, 
   textAlign: 'center',

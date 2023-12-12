@@ -7,32 +7,15 @@ type Props = PressableProps & {
     title: string
     description: string;
     isSelected: boolean;
-    scrollY: SharedValue<number>
     index: number
 }
 
-export const AnimatedCategorieCard: React.FC<Props> = ({title, description, isSelected, index, scrollY, ...rest}) => {
- 
-    const animatedStyle = useAnimatedStyle(() => {
-        const scale = interpolate(
-          scrollY.value,
-          [-1, 0, 200 * index, 200 * (index + 2)],
-          [1, 1, 1, 0]
-        );
-    
-        return {
-          transform: [{ scale }],
-        };
-      });
-  
-  
+export const AnimatedCategorieCard: React.FC<Props> = ({title, description, isSelected, index, ...rest}) => {
     return (
-    <Animated.View style={animatedStyle}>
-    <Pressable  {...rest} style={[styles.cardContainer, isSelected && styles.selected]}>
+    <Pressable  {...rest} style={[styles.cardContainer]}>
       <Text style={styles.cardTitle}>{title}</Text>
       <Text style={styles.cardDescription}>{description}</Text>
     </Pressable>
-    </Animated.View>
   )
 }
 
@@ -51,7 +34,7 @@ const styles = StyleSheet.create({
     cardTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: COLORS.textBlack, // Texto oscuro para contraste
+        color: COLORS.black, // Texto oscuro para contraste
         marginBottom: 5,
     },
     cardDescription: {

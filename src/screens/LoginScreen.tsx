@@ -49,7 +49,7 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
     opacity.value = withTiming(formInputsCompleted ? 1 : 0.5, {duration: 300})
   }, [formInputsCompleted]);
 
-  // conext hook
+  // context hook
   const {user, onGoogleButtonPress, isGoogleLinked, handleSignIn, errorMessageState, setErrorMessageState } = useAuthContext()
 
   // dialogVisibility hook
@@ -133,13 +133,14 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
       }}
       />
 
-      <AnimatedSubmitButton 
+      <SubmitButton 
       customStyles={styles.signInButton} 
       onPress={handleSubmit(onSubmit)}
-      opacity={opacity}
       >
-        Sing In
-      </AnimatedSubmitButton>
+        <NunitoText type='bold' customStyles={styles.signInButtonText}>
+          Sing In
+        </NunitoText>
+      </SubmitButton>
       
       {errorMessageState && <NunitoText customStyles={styles.errorMessage}>{errorMessageState}</NunitoText>}
 
@@ -155,8 +156,15 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
       <OrDivider />
 
       <View style={styles.providerButtonsContainer}>
-      <SubmitButton customStyles={styles.providerButton} onPress={handleOnGoogleButtonPress}>Google</SubmitButton>
-      <SubmitButton customStyles={styles.providerButton}>Apple</SubmitButton>
+      <SubmitButton customStyles={styles.providerButton} onPress={handleOnGoogleButtonPress}>
+        <NunitoText customStyles={styles.providerButtonText} type='bold'>Google</NunitoText>
+        
+        </SubmitButton>
+      <SubmitButton customStyles={styles.providerButton}>
+        <NunitoText customStyles={styles.providerButtonText} type='bold'>
+        Apple
+        </NunitoText>
+        </SubmitButton>
       </View>
 
       <AuthSwitchLink actionText='Sign Up' navigationText='Dont have an account?' onActionPress={() => navigation.navigate('SignupScreen')}   />
@@ -189,8 +197,12 @@ providerButtonsContainer: {
   columnGap: 10, 
 }, 
 providerButton: {
-  flexGrow: 1 // TODO: ask GPT
+  flexGrow: 1, // TODO: ask GPT
+  backgroundColor: COLORS.black
 }, 
+providerButtonText: {
+  textAlign: 'center',
+},
 inputIconContainer: {
   flexDirection: 'row', 
   alignItems: 'center', 
@@ -199,10 +211,12 @@ inputIconContainer: {
   width: '100%',
   backgroundColor: 'red'
 }, 
-signInButton: {
-  backgroundColor: COLORS.folly, 
-  opacity: 0.5
-}, 
+signInButtonText: {
+  textAlign: 'center', 
+  fontSize: 18, 
+  backgroundColor: 'transparent'
+
+},
 subHeader: {
   fontSize: 22, 
   textAlign: 'center',

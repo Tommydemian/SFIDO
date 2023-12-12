@@ -15,7 +15,7 @@ export const OrDivider = () => {
     orDividerContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginVertical: 20,
+      marginVertical: 10,
     },
     orDividerLine: {
       flex: 1,

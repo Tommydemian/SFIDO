@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { SubmitButton } from '../components/SubmitButton'
 import { User } from '../types'
+import { NunitoText } from '../components/NunitoText'
 
 import {UpperBarNav} from '../components/UpperBarNav'
 
@@ -50,7 +51,11 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
         ))
       }
 
-      <SubmitButton onPress={signOutUser}>Sign out</SubmitButton>
+      <SubmitButton onPress={signOutUser}>
+        <NunitoText>
+        Sign out
+        </NunitoText>
+        </SubmitButton>
 
     </SafeAreaView>
   )

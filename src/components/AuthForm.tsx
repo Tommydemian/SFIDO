@@ -6,6 +6,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { FormData } from "../types"
 import { MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
 import { useEffect } from "react"
+import { NunitoText } from "./NunitoText"
 
 type Props = {
  children? : React.ReactNode
@@ -53,7 +54,9 @@ export const AuthForm: React.FC<Props> = ({children, submitButtonText, onSignIn 
       {children}
 
       <SubmitButton customStyles={styles.signInButton} onPress={onSignIn}>
+        <NunitoText>
         {submitButtonText}
+        </NunitoText>
       </SubmitButton>
       </>
     )

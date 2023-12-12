@@ -8,7 +8,9 @@ export const COLORS = {
     folly: '#FF2E63', 
     robinEggBlue: '#08D9D6', 
     indigoDye: '#0B526E', 
-    errorRed: '#FF6659'
+    errorRed: '#FF6659',
+    successGreen: '#4CAF50', 
+    celadon: '#B8E0BA'
 }
 
 export const SPACING = {

@@ -12,13 +12,13 @@ export const SubmitButton: React.FC<Props> = ({customStyles,children, ...rest}) 
     {...rest}
     style={[styles.submitButton, customStyles]}
     >
-        <Text style={styles.submitText}>{children}</Text>
+      {children}
     </Pressable>)
 }
 
 const styles = StyleSheet.create({
   submitButton: {
-    backgroundColor: COLORS.black, 
+    backgroundColor: COLORS.folly, 
     paddingVertical: 15, 
     borderRadius: BORDER.buttons,
     marginVertical: 10, 

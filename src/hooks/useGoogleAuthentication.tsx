@@ -14,7 +14,9 @@ export const useGoogleAuthentication = () => {
     const [email, setEmail] = useState('')
     const [googleCredential, setGoogleCredential] = useState<FirebaseAuthTypes.AuthCredential | null>(null)
 
+    // both googleFunctions from AuthContext
     const {onGoogleButtonPress, isGoogleLinked } = useAuthContext()
+    
     const {setIsVisible} = useDialogVisibility()
 
     const handleOnGoogleButtonPress = useCallback(() => {
