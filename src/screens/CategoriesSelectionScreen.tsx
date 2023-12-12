@@ -57,7 +57,6 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
       // onScroll={scrollHandler}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-
         paddingTop: StatusBar.currentHeight || 42,
         borderRadius: 30, 
         rowGap: 15,
