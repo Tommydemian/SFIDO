@@ -191,6 +191,7 @@ const onGoogleButtonPress = async () => {
 
       // Check if the user's Google account is already linked
       isUserGoogleAccountLinked(response.user.email)
+      //isLinked: boolean
       .then((isLinked) => {
         console.log('isLinked in then:', isLinked);
         setIsGoogleLinked(isLinked!);

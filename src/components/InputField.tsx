@@ -17,17 +17,10 @@ type Props = TextInputProps & {
     setVisibility: boolean;
     customStyles?: object;
     onInputChange?: () => void; 
+    handlePassworsSecured: () => void;
 }
 
-export const InputField: React.FC<Props> = ({label, onInputChange, customStyles, setVisibility, name,autoCapitalize, control, placeholder, secureTextEntry, rules = {}, leftIcon, rightIcon, ...rest }) => {
-
-  const [isSecuredTextEntry, setIsSecuredTextEntry] = useState(true)
-
-  const handlePasswordVisibiliy = () => {
-    if (setVisibility) {
-      setIsSecuredTextEntry(current => !current)
-    }
-  }
+export const InputField: React.FC<Props> = ({label, onInputChange, customStyles, setVisibility, name,autoCapitalize, control, placeholder, secureTextEntry, handlePassworsSecured, rules = {}, leftIcon, rightIcon, ...rest }) => {
 
   const { onChangeText, ...otherRestProps } = rest;
   return (
@@ -64,7 +57,12 @@ export const InputField: React.FC<Props> = ({label, onInputChange, customStyles,
       }}
       {...otherRestProps}
        />
-       {rightIcon && <TouchableOpacity onPress={handlePasswordVisibiliy} style={styles.inputFieldRightIcon}>{rightIcon}</TouchableOpacity>}
+       {rightIcon && <TouchableOpacity
+        onPress={handlePassworsSecured}
+        style={styles.inputFieldRightIcon}>
+          {rightIcon}
+          </TouchableOpacity>
+          }
     </View>
     </View>
     {

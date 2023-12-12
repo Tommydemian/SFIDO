@@ -1,6 +1,6 @@
 // React and React-native imports
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView, StyleSheet, View, Image } from 'react-native';
 
 // External libraries imports
 import { useForm } from "react-hook-form";
@@ -19,7 +19,6 @@ import { OfficialLogo } from '../components/OfficialLogo';
 import { SfidoWhiteTextLogo } from '../components/SfidoWhiteTextLogo';
 import { NunitoText } from '../components/NunitoText';
 import { InputField } from '../components/InputField';
-import { AnimatedSubmitButton } from '../components/animated/AnimatedSubmitButton';
 
 // Custom Hooks imports
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -30,7 +29,8 @@ import { useGoogleAuthentication } from '../hooks/useGoogleAuthentication';
 import { FormData } from '../types';
 import { COLORS } from '../../assets/theme';
 import { AuthStackParams } from '../navigation/AuthStackNavigator';
-import { useDerivedValue, useSharedValue, withSpring, withTiming } from 'react-native-reanimated';
+import { useSharedValue, withTiming } from 'react-native-reanimated';
+import { usePasswordVisibility } from '../hooks/usePasswordVisibility';
 
 // Estilos y otros recursos
 
@@ -51,6 +51,7 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
 
   // context hook
   const {user, onGoogleButtonPress, isGoogleLinked, handleSignIn, errorMessageState, setErrorMessageState } = useAuthContext()
+  const {handlPasswordSecured, isPaswordSecured} = usePasswordVisibility()
 
   // dialogVisibility hook
   const {isVisible, showDialog, hideDialog} = useDialogVisibility()
@@ -66,7 +67,6 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
   useEffect(() => {
     setFormInputsCompleted(email?.length > 0 && password?.length > 0);
   }, [email, password]);
-
 
   // function sign in 
   const onSubmit = (data: FormData) => {
@@ -121,9 +121,11 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
       control={control}
       placeholder='Password'
       name='password'
-      secureTextEntry={true}
+      secureTextEntry={isPaswordSecured}
       onInputChange={clearErrorMessage} 
+      handlePassworsSecured={handlPasswordSecured}
       leftIcon={<Entypo name="lock" size={30} color={COLORS.whiteText} />}
+      rightIcon={<Entypo name="eye" size={24} color={COLORS.blackSecondaryText} />}
       rules={{
         required: 'Password is required', // Ensures the password field is not left blank
         minLength: {
@@ -215,7 +217,6 @@ signInButtonText: {
   textAlign: 'center', 
   fontSize: 18, 
   backgroundColor: 'transparent'
-
 },
 subHeader: {
   fontSize: 22, 

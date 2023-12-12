@@ -15,7 +15,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tommydemian.realtimemessages",
+      "googleServicesFile": "./GoogleService-info.plist"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
@@ -32,9 +34,18 @@
       "eas": {
         "projectId": "5cd6af1d-2208-419c-8e3c-dc3669a7948b"
       }
-    }, 
+    },
     "plugins": [
-      "@react-native-firebase/app"
+      "@react-native-firebase/app",
+      "expo-build-properties", 
+      [
+        "expo-build-properties",
+         {
+          "ios": {
+             "useFrameworks": "static"
+           }
+         }
+       ]
     ]
   }
 }

@@ -15,6 +15,7 @@ import { AuthContainer } from '../components/AuthContainer';
 import { SubmitButton } from '../components/SubmitButton';
 import { NunitoText } from '../components/NunitoText';
 import {CategorieCardIcon} from '../components/CategorieCardIcon';
+import {OnBoardingContainer} from '../components/OnBoardingContainer'
 
 const authbg = require('../../assets/images/authbg.png');
 
@@ -42,9 +43,11 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
   
   return (
     <SafeAreaView style={styles.container}>
+      <OnBoardingContainer>
       <View style={StyleSheet.absoluteFill}>
         <Image source={authbg} style={{flex: 1}} />
         </View>
+
       <AuthContainer> 
       <NunitoText type='bold' customStyles={styles.title}>Pick Your Categories</NunitoText>
       <NunitoText>Choose 3 Categories for a Tailored Experience</NunitoText>
@@ -94,6 +97,7 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
             <NunitoText type='bold' customStyles={styles.ctaButtonText}>Confirm</NunitoText>
             </SubmitButton>     
             </AuthContainer>
+            </OnBoardingContainer>
     </SafeAreaView>
   );
 };

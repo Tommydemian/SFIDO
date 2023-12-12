@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>86924702179-htrm6bpasurjcb65qbbu6k2s7s9s3h0b.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.86924702179-htrm6bpasurjcb65qbbu6k2s7s9s3h0b</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>86924702179-6tpiklia9qqaiqoqitrp79k175p8b337.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBWDO_vV58aYVfGdWKj9qab063XAlAHf1g</string>
+	<key>GCM_SENDER_ID</key>
+	<string>86924702179</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.tommydemian.realtimemessages</string>
+	<key>PROJECT_ID</key>
+	<string>realtimeme-4afc1</string>
+	<key>STORAGE_BUCKET</key>
+	<string>realtimeme-4afc1.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:86924702179:ios:eaeff640141dc57e6430d6</string>
+</dict>
+</plist>
