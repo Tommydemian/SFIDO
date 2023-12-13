@@ -1,6 +1,6 @@
 // React and React-native imports
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, View, Image } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 
 // External libraries imports
 import { useForm } from "react-hook-form";
@@ -19,6 +19,7 @@ import { OfficialLogo } from '../components/OfficialLogo';
 import { SfidoWhiteTextLogo } from '../components/SfidoWhiteTextLogo';
 import { NunitoText } from '../components/NunitoText';
 import { InputField } from '../components/InputField';
+import { AbsoluteFillBgImage } from '../components/AbsoluteFillBgImage';
 
 // Custom Hooks imports
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -35,8 +36,6 @@ import { usePasswordVisibility } from '../hooks/usePasswordVisibility';
 // Estilos y otros recursos
 
 type Props = NativeStackScreenProps<AuthStackParams, 'LoginScreen'>
-
-const authbg = require('../../assets/images/authbg.png')
 
 export const LoginScreen: React.FC<Props> = ({navigation}) => {
 
@@ -86,9 +85,7 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
       <Spinner visible={user.loading}/>
       
      {/* bg image container */}
-     <View style={StyleSheet.absoluteFill}>
-        <Image source={authbg} style={{flex: 1}} />
-      </View>
+     <AbsoluteFillBgImage/>
 
       <AuthContainer>
 

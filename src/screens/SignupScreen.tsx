@@ -18,6 +18,7 @@ import { OfficialLogo } from '../components/OfficialLogo';
 import { SfidoWhiteTextLogo } from '../components/SfidoWhiteTextLogo';
 import { NunitoText } from '../components/NunitoText';
 import { InputField } from '../components/InputField';
+import { AbsoluteFillBgImage } from '../components/AbsoluteFillBgImage';
 
 // Custom Hooks imports
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -32,8 +33,6 @@ import { AuthStackParams } from '../navigation/AuthStackNavigator';
 // Estilos y otros recursos
 
 type Props = NativeStackScreenProps<AuthStackParams, 'LoginScreen'>
-
-const authbg = require('../../assets/images/authbg.png')
 
 export const SignupScreen: React.FC<Props> = ({navigation}) => {
 
@@ -87,9 +86,7 @@ const passwordRules = {
       <Spinner visible={user.loading}/>
       
       {/* Contenedor de imagen de fondo */}
-      <View style={StyleSheet.absoluteFill}>
-        <Image source={authbg} style={{flex: 1}} />
-      </View>
+      <AbsoluteFillBgImage/>
 
       <AuthContainer>
         <OfficialLogo style={{alignSelf: 'center'}}/>   

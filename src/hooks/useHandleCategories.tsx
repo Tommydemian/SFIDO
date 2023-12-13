@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { Categorie } from "../types";
 import { getCategoriesFromFirestore } from "../services/categoriesService";
+import { addIntererstsToFirestoreUser } from "../services/userService";
+import { CategoriesNavigationProps } from "../screens/CategoriesSelectionScreen";
 
-export const useHandleCategories = () => {
+export const useHandleCategories = (navigation: CategoriesNavigationProps['navigation']) => {
   const [categories, setCategories] = useState<Categorie[]>([])
   const [loading, setLoading] = useState(false)  
   const [expandedCards, setExpandedCards] = useState<Categorie['id'][]>([]);
@@ -43,5 +45,17 @@ export const useHandleCategories = () => {
       };
     }
 
-    return {handleSelect, selectedCategories, categories, loading, handleExpandedCards, expandedCards}
+    // submit results
+    const handleSubmitResult = (uid: string) => {
+      if (selectedCategories.length > 0) {
+        addIntererstsToFirestoreUser(uid, selectedCategories)
+        .then(() => {
+          navigation.navigate('BottomTabs')
+        }).catch((err) => {
+          console.log(err);
+        })
+      }
+    }
+
+    return {handleSelect, selectedCategories, categories, loading, handleExpandedCards, expandedCards, handleSubmitResult}
 }

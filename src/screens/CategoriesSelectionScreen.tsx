@@ -1,41 +1,46 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, StatusBar, Image} from 'react-native';
-import auth from '@react-native-firebase/auth';
+import { View, StyleSheet, SafeAreaView, StatusBar, Dimensions} from 'react-native';
 
+// External libraries imports
+import auth from '@react-native-firebase/auth';
 import Animated, {useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, interpolate} from 'react-native-reanimated';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { MainStackParams } from '../navigation/MainStackNavigator';
-import { COLORS } from '../../assets/theme';
 
+// Custom Component imports
 import { CategorieCard } from '../components/CategorieCard';
-import { useHandleCategories } from '../hooks/useHandleCategories';
-import { addIntererstsToFirestoreUser } from '../services/userService';
-import Spinner from 'react-native-loading-spinner-overlay';
-import { AuthContainer } from '../components/AuthContainer';
 import { SubmitButton } from '../components/SubmitButton';
 import { NunitoText } from '../components/NunitoText';
 import {CategorieCardIcon} from '../components/CategorieCardIcon';
 import {OnBoardingContainer} from '../components/OnBoardingContainer'
+import {AbsoluteFillBgImage} from '../components/AbsoluteFillBgImage';
 
-const authbg = require('../../assets/images/authbg.png');
+// Custom Hooks imports
+import { useHandleCategories } from '../hooks/useHandleCategories';
 
-type Props = NativeStackScreenProps<MainStackParams, 'CategoriesSelectionScreen'>
+// types and resources
+import { COLORS } from '../../assets/theme';
 
-export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
+const screenHeight = Dimensions.get('screen').height
+
+
+export type CategoriesNavigationProps = NativeStackScreenProps<MainStackParams, 'CategoriesSelectionScreen'>
+
+export const CategoriesSelectionScreen : React.FC<CategoriesNavigationProps> = ({navigation}) => {
   
-  const {handleSelect, selectedCategories, categories, loading, handleExpandedCards, expandedCards } = useHandleCategories()
+  const {handleSelect, selectedCategories, categories, loading, handleExpandedCards, expandedCards, handleSubmitResult } = useHandleCategories(navigation)
 
-  const handleSubmitResult = () => {
-    if (selectedCategories.length > 0) {
-      addIntererstsToFirestoreUser(auth().currentUser?.uid!, selectedCategories)
-      .then(() => {
-        navigation.navigate('BottomTabs')
-      }).catch((err) => {
-        console.log(err);
-      })
+  const onHandleSubmitResult = () => {
+    const currentUser = auth().currentUser?.uid
+
+    if (!currentUser) {
+      return
+    } else {
+      handleSubmitResult(currentUser)
     }
   }
-
+      
   // loading return
   if (loading) {
     return <Spinner />;
@@ -43,12 +48,10 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
   
   return (
     <SafeAreaView style={styles.container}>
-      <OnBoardingContainer>
-      <View style={StyleSheet.absoluteFill}>
-        <Image source={authbg} style={{flex: 1}} />
-        </View>
+      <AbsoluteFillBgImage />
 
-      <AuthContainer> 
+      <OnBoardingContainer>
+
       <NunitoText type='bold' customStyles={styles.title}>Pick Your Categories</NunitoText>
       <NunitoText>Choose 3 Categories for a Tailored Experience</NunitoText>
       <View style={styles.categoriesContainer}>
@@ -57,13 +60,8 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
         <Animated.FlatList
       data={categories}
       keyExtractor={(item) => item.id.toString()}
-      // onScroll={scrollHandler}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{
-        paddingTop: StatusBar.currentHeight || 42,
-        borderRadius: 30, 
-        rowGap: 15,
-      }}
+      contentContainerStyle={styles.flatListContentContainer}
       renderItem={({ item, index }) => {
         return (
           <>
@@ -92,12 +90,12 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
       <SubmitButton
        style={styles.ctaButton}
        disabled={selectedCategories.length !== 3}
-       onPress={handleSubmitResult}
+       onPress={onHandleSubmitResult}
        >
             <NunitoText type='bold' customStyles={styles.ctaButtonText}>Confirm</NunitoText>
             </SubmitButton>     
-            </AuthContainer>
-            </OnBoardingContainer>
+            
+      </OnBoardingContainer>
     </SafeAreaView>
   );
 };
@@ -105,11 +103,9 @@ export const CategoriesSelectionScreen : React.FC<Props> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.blackBg
+    backgroundColor: COLORS.indigoDye,
     // Estilos adicionales
   },
-  interestTitle: {}, 
-  interestDescription: {},
   title: {
     fontSize: 24,
     textAlign: 'center',
@@ -122,11 +118,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   categoriesContainer: { 
-    height: '90%'
+    height: screenHeight * 0.7
   },
   flatList: {
     marginBottom: 10
   }, 
+  flatListContentContainer: {
+    paddingTop: StatusBar.currentHeight || 42,
+    borderRadius: 30,
+    rowGap: 15,
+  },
   ctaButton: {
     padding: 15,
     borderRadius: 10,

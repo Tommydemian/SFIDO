@@ -12,7 +12,6 @@ export type MainStackParams = {
         email: string
         id: string
     };
-    WelcomeScreen: undefined;
     CategoriesSelectionScreen: undefined;
     BottomTabs: undefined;
     OnBoardingScreen: undefined;
@@ -25,7 +24,6 @@ export const MainStackNavigator = () => {
     <Stack.Navigator initialRouteName='OnBoardingScreen'>
       <Stack.Screen name="QuoteScreen" component={QuoteScreen} options={{headerShown: false}} />
       <Stack.Screen name="MessageScreen" component={MessageScreen} />
-      <Stack.Screen name="WelcomeScreen" component={WelcomeScreen} options={{headerShown: false}} />
       <Stack.Screen name='CategoriesSelectionScreen' component={CategoriesSelectionScreen} options={{headerShown: false}} />
       <Stack.Screen name="BottomTabs" component={BottomTabsNavigator} options={{headerShown: false}} />
       <Stack.Screen name="OnBoardingScreen" component={OnBoardingScreen} options={{headerShown: false}} />

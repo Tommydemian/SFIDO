@@ -14,8 +14,7 @@ import Animated, {
     Extrapolation
 } from 'react-native-reanimated'
 import { useAuthContext } from '../hooks/useAuthContext'
-
-const authbg = require('../../assets/images/authbg.png')
+import { AbsoluteFillBgImage } from '../components/AbsoluteFillBgImage'
 
 type onViewableItemsChangedType = {
     viewableItems: ViewToken[];
@@ -106,9 +105,9 @@ const RenderItem: React.FC<RenderItemProps> = ({item, index, offSetX}) => {
     
     return (
         <View style={[styles.itemContainer, {width: SCREEN_WIDTH}]}>
-          <View style={StyleSheet.absoluteFill}>
-        <Image source={authbg} style={{flex: 1}} />
-        </View>
+          
+           <AbsoluteFillBgImage />
+           
             <StatusBar barStyle={'light-content'}/>
             <Animated.Image 
             source={item.image}
