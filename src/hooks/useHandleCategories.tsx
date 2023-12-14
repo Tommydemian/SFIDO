@@ -50,7 +50,7 @@ export const useHandleCategories = (navigation: CategoriesNavigationProps['navig
       if (selectedCategories.length > 0) {
         addIntererstsToFirestoreUser(uid, selectedCategories)
         .then(() => {
-          navigation.navigate('BottomTabs')
+          navigation.navigate('DemoSettedScreen')
         }).catch((err) => {
           console.log(err);
         })

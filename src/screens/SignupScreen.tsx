@@ -37,7 +37,7 @@ type Props = NativeStackScreenProps<AuthStackParams, 'LoginScreen'>
 export const SignupScreen: React.FC<Props> = ({navigation}) => {
 
   // conext hook
-  const {user, handleSignup, onGoogleButtonPress, isGoogleLinked, errorMessageState, setErrorMessageState } = useAuthContext()
+  const {user, handleSignUp, onGoogleButtonPress, isGoogleLinked, errorMessageState, setErrorMessageState } = useAuthContext()
 
   // dialogVisibility hook
   const {isVisible, showDialog, hideDialog} = useDialogVisibility()
@@ -70,7 +70,7 @@ const passwordRules = {
 
   // function sign up
   const onSubmit = ({email, password}: FormData) => {
-    handleSignup(email, password, reset);
+    handleSignUp(email, password, reset);
   };
 
   useEffect(() => {

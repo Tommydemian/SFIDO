@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden', 
     }, 
     selected: {
-        backgroundColor: COLORS.celadon, // Cambia el color de fondo para resaltar
+        backgroundColor: COLORS.nianza, // Cambia el color de fondo para resaltar
         borderWidth: 1, // Borde más grueso
         borderColor: COLORS.successGreen, // Color del borde
         shadowColor: COLORS.successGreen, // Sombra con un color que resalte

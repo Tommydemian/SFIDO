@@ -4,6 +4,7 @@ import { FirebaseAuthTypes } from '@react-native-firebase/auth'
 import { useAuthContext } from "./useAuthContext"
 import { setIsGoogleAccountLinkedToTrue } from "../services/userService"
 import { useDialogVisibility } from "./useDialogVisibility"
+import { useGoogleContext } from "./useGoogleContext"
 
 type DraftUserCredentials = FirebaseAuthTypes.UserCredential & {
     email: string;
@@ -15,7 +16,7 @@ export const useGoogleAuthentication = () => {
     const [googleCredential, setGoogleCredential] = useState<FirebaseAuthTypes.AuthCredential | null>(null)
 
     // both googleFunctions from AuthContext
-    const {onGoogleButtonPress, isGoogleLinked } = useAuthContext()
+    const {onGoogleButtonPress, isGoogleLinked } = useGoogleContext()
     
     const {setIsVisible} = useDialogVisibility()
 

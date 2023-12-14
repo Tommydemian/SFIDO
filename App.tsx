@@ -1,10 +1,16 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { AuthProvider } from './src/contexts/AuthContext';
+import { GoogleProvider } from './src/contexts/GoogleContext'; // Importa GoogleProvider
 import { NavResolutionNavigator } from './src/navigation/NavResolution';
 import { MessageProvider } from './src/contexts/MessageContext';
 import * as Notifications from 'expo-notifications';
 import {navigate, navigationRef} from './src/navigation/navigationRef'
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId: '86924702179-fkg4evrmr3rcu1om8np5gg898v73u5j6.apps.googleusercontent.com',
+})
 
 export default function App() {
 
@@ -27,12 +33,14 @@ export default function App() {
   }, []);
 
   return (
+    <GoogleProvider> 
     <AuthProvider>
       <MessageProvider>
-    <NavigationContainer ref={navigationRef}>
-      <NavResolutionNavigator />
-    </NavigationContainer>
-    </MessageProvider>
+        <NavigationContainer ref={navigationRef}>
+          <NavResolutionNavigator />
+        </NavigationContainer>
+      </MessageProvider>
     </AuthProvider>
+  </GoogleProvider>
   );
 }

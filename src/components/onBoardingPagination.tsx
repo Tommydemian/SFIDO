@@ -3,8 +3,6 @@ import React from 'react'
 import { Data } from '../../assets/constants/data'
 import Animated, {useAnimatedStyle, interpolate, Extrapolate} from 'react-native-reanimated'
 import { COLORS } from '../../assets/theme'
-import { AndroidImportance } from 'expo-notifications'
-
 
 type Props = {
   data: Data[];
@@ -17,8 +15,6 @@ type AnimatedDotsProps = {
   offSetX: Animated.SharedValue<number>;
   screenWidth: number;
 } 
-
-
 
 const AnimatedDot: React.FC<AnimatedDotsProps> = ({ index, offSetX, screenWidth }) => {
   const animatedDotStyle = useAnimatedStyle(() => {

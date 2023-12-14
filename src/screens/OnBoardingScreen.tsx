@@ -32,7 +32,6 @@ const SCREEN_WIDTH = Dimensions.get('screen').width
 
 // RenderItem component for rendering each onboarding item
 const RenderItem: React.FC<RenderItemProps> = ({item, index, offSetX}) => {
-    console.log("RenderItem:", item, "Index:", index);
 
     const {signOutUser} = useAuthContext()
     
@@ -66,8 +65,8 @@ const RenderItem: React.FC<RenderItemProps> = ({item, index, offSetX}) => {
 
         return {
             opacity: opacityAnimation,
-            // width: SCREEN_WIDTH * 0.8,
-            // height: SCREEN_WIDTH * 0.8, 
+            width: SCREEN_WIDTH * 0.7,
+            height: SCREEN_WIDTH * 0.7, 
             transform: [{translateY: translateYAnimation}]
 
         }
@@ -111,7 +110,7 @@ const RenderItem: React.FC<RenderItemProps> = ({item, index, offSetX}) => {
             <StatusBar barStyle={'light-content'}/>
             <Animated.Image 
             source={item.image}
-            style={[imageAnimatedStyle]}
+            style={[imageAnimatedStyle, ]}
               />
               <Animated.View style={textAnimationStyle}>
             <NunitoText type='bold' customStyles={styles.itemTitle}>{item.title}</NunitoText>
@@ -179,27 +178,25 @@ const styles = StyleSheet.create({
         flex: 1, 
     },  
     itemContainer: {
-        flex: 1,
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        backgroundColor: COLORS.indigoDye,
-      },
-      image: {
-        width: 100, // ajusta según sea necesario
-        height: 100, // ajusta según sea necesario
-      },
-      itemTitle: {
-        color: COLORS.whiteText, 
-        fontSize: 22, 
-        textAlign: 'center',
-        marginBottom: 10
-      },
-      itemText: {
-        color: COLORS.whiteText, 
-        textAlign: 'center',
-        lineHeight: 20, 
-        marginHorizontal: 35
-      }, 
+      flex: 1,
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      backgroundColor: COLORS.indigoDye,
+      padding: 20, // Añade un poco de padding
+    },
+    itemTitle: {
+      color: COLORS.whiteText, 
+      fontSize: 28, // Tamaño de fuente más grande
+      textAlign: 'center',
+      marginBottom: 15, // Espaciado mayor
+    },
+    itemText: {
+      color: COLORS.whiteText, 
+      fontSize: 18, // Tamaño de fuente ligeramente mayor
+      textAlign: 'center',
+      lineHeight: 24, // Aumenta el interlineado para mejorar la legibilidad
+      marginHorizontal: 40, // Ajusta según sea necesario
+    },    
       bottomContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',

@@ -10,7 +10,9 @@ export const COLORS = {
     indigoDye: '#0B526E', 
     errorRed: '#FF6659',
     successGreen: '#4CAF50', 
-    celadon: '#B8E0BA'
+    celadon: '#B8E0BA', 
+    robinEggBlueDarker: '#07C5C2', 
+    nianza: '#D4ECD6'
 }
 
 export const SPACING = {

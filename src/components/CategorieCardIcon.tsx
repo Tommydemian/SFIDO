@@ -12,5 +12,5 @@ export const CategorieCardIcon: React.FC<Props> = ({title}) => {
   // map object
   const iconName = categoryIcons[title] ? categoryIcons[title] : "tree";
 
- return (<FontAwesome name={iconName} size={20} color={COLORS.folly} />)  
+ return (<FontAwesome name={iconName} size={20} color={COLORS.robinEggBlue} />)  
 }

@@ -1,6 +1,6 @@
 // React and React-native imports
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet, View, TouchableOpacity } from 'react-native';
 
 // External libraries imports
 import { useForm } from "react-hook-form";
@@ -147,10 +147,10 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
       submitButtonText='Sign In'
       onSignIn={onSignIn}
       >
-      <TouchableOpacity>
-      <NunitoText onPress={() => navigation.navigate('EmailPromptModal')} customStyles={styles.forgotPassword}>Forgot your password?</NunitoText>
-      </TouchableOpacity>
-      </AuthForm> */}
+    </AuthForm> */}
+    <TouchableOpacity>
+    <NunitoText onPress={() => navigation.navigate('EmailPromptModal')} customStyles={styles.forgotPassword}>Forgot your password?</NunitoText>
+    </TouchableOpacity>
 
       <OrDivider />
 
