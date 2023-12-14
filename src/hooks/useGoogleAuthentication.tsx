@@ -1,10 +1,9 @@
 import { useCallback, useState } from "react"
 import { FirebaseAuthTypes } from '@react-native-firebase/auth'
 
-import { useAuthContext } from "./useAuthContext"
 import { setIsGoogleAccountLinkedToTrue } from "../services/userService"
 import { useDialogVisibility } from "./useDialogVisibility"
-import { useGoogleContext } from "./useGoogleContext"
+import { useGoogleContext } from "../contexts/GoogleContext"
 
 type DraftUserCredentials = FirebaseAuthTypes.UserCredential & {
     email: string;

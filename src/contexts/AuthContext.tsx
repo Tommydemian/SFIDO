@@ -13,10 +13,12 @@ import * as authService from '../services/authService';
 import { DbUser } from "../types";
 import { UseFormReset } from "react-hook-form";
 
+// AuthProviderProps defines the expected properties for the AuthProvider.
 type AuthProviderProps = {
     children: React.ReactNode
 }
 
+// User defines the structure of the user state in the context.
 type User = {
     email: string;
     uid: string;
@@ -32,31 +34,37 @@ type AuthContextType = {
     setUser: React.Dispatch<React.SetStateAction<User>>
     handleSignUp: (email: string, password: string, reset: ResetFunction) => void;
     signOutUser: () => void;
-    handleForgotPassword: (email: string) => void  
+    handleForgotPassword: (email: string) => Promise<unknown>  
     handleSignIn: (email: string, password: string, reset: ResetFunction) => void
-    errorMessageState: string
-    setErrorMessageState: React.Dispatch<React.SetStateAction<string>>
+    errorMessageForgotPassword: string
+    setErrorMessageForgotPassword: React.Dispatch<React.SetStateAction<string>
+    >
+    errorMessageSignIn: string
+    setErrorMessageSignIn: React.Dispatch<React.SetStateAction<string>
+    >
   }
 
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
+// AuthProvider is the component that provides the authentication context to its children.
 export const AuthProvider:React.FC<AuthProviderProps> = ({children}) => {
- // State
+   // State to manage user information and error state.
   const [user, setUser] = useState<User>({email:'', uid: '', isLoggedIn: false, loading: false})
-  const [errorMessageState, setErrorMessageState] = useState('')
-
+  const [errorMessageSignIn, setErrorMessageSignIn] = useState('')
+  const [errorMessageSignUp, setErrorMessageSignUp] = useState('')
+  const [errorMessageSignOut, setErrorMessageSignOut] = useState('')
+  const [errorMessageForgotPassword, setErrorMessageForgotPassword] = useState('')
 
   const googleContext = useContext(GoogleContext)
 
     if (!googleContext) {
         throw new Error('useContext must be used within a GoogleProvider')
     }
-
     const {isLinking} = googleContext
 
 
-// function Sign up
+// handleSignUp manages the user registration process.
 const handleSignUp = async (email: string, password: string, reset: ResetFunction) => {
   setUser(current => ({...current, loading: true}))
   try {
@@ -82,7 +90,7 @@ const handleSignUp = async (email: string, password: string, reset: ResetFunctio
     }
   } catch (error) {
     const err = error as  Error
-    setErrorMessageState(err.message)
+    setErrorMessageSignUp(err.message)
     console.error(err.message);
   } finally {
       setUser(current => ({...current, loading: false}));
@@ -99,7 +107,7 @@ try {
   console.log(userCredential, 'MOBB DEEP');
 } catch (error) {
   const err = error as  Error
-    setErrorMessageState(err.message)
+    setErrorMessageSignIn(err.message)
     console.error(err.message);
 } finally {
   setUser(current => ({...current, loading: false}));
@@ -115,30 +123,36 @@ try {
   } catch (error) {
     const err = error as Error;
     console.error(err.message);
-    setErrorMessageState(err.message)
+    setErrorMessageSignOut(err.message)
   } finally {
     setUser(current => ({...current, loading: true}))
   }
 }
 
 // function Recover password
-const handleForgotPassword = async (email: string) => {
+const handleForgotPassword = (email: string) => {
   setUser(current => ({...current, loading: true}));
-  try {
-    await authService.sendPasswordResetEmail(email);
-    alert('Reset Password email sent successfully');
-  } catch (error) {
-    const err = error as Error
-    console.error(err.message);
-    // Actualizar el estado con el mensaje de error
-    setErrorMessageState(err.message);
-  } finally {
-    setUser(current => ({...current, loading: false}));
-  }
+
+  return new Promise((resolve, reject) => {
+    authService.sendPasswordResetEmail(email)
+      .then(() => {
+        resolve('Email sent successfully'); // Resuelve con un mensaje de éxito
+      })
+      .catch((error) => {
+        const err = error as Error;
+        setErrorMessageForgotPassword(err.message);
+        reject(err); // Rechaza la promesa si hay un error
+      })
+      .finally(() => {
+        setUser(current => ({...current, loading: false}));
+      });
+  });
 };
 
-
+      
+// useEffect to handle changes in authentication state.
   useEffect(() => {
+  // Subscription to Firebase authentication state.
   const subscriber = auth().onAuthStateChanged((firebaseUser) => {
     console.log(firebaseUser?.email);
     if (firebaseUser && !isLinking) {
@@ -162,11 +176,21 @@ const handleForgotPassword = async (email: string) => {
     }
   });
 
+  // Cleanup when the component is unmounted.
   return () => subscriber();
 }, []);
 
 
- return(<AuthContext.Provider value={{user, setUser, errorMessageState, handleSignUp, setErrorMessageState, signOutUser, handleForgotPassword, handleSignIn}}>
+ return(<AuthContext.Provider value={{user, setUser, handleSignUp, signOutUser, handleForgotPassword, handleSignIn, errorMessageForgotPassword, setErrorMessageForgotPassword, errorMessageSignIn, setErrorMessageSignIn}}>
         {children}
     </AuthContext.Provider>)
 }
+
+// useAuthContext is a custom hook for accessing the authentication context.
+export const useAuthContext = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+      throw new Error('useAuthContext must be used within a AuthProvider');
+  }
+  return context;
+};

@@ -21,7 +21,6 @@ import { InputField } from '../components/InputField';
 import { AbsoluteFillBgImage } from '../components/AbsoluteFillBgImage';
 
 // Custom Hooks imports
-import { useAuthContext } from '../hooks/useAuthContext';
 import { useDialogVisibility } from '../hooks/useDialogVisibility';
 import { useGoogleAuthentication } from '../hooks/useGoogleAuthentication';
 
@@ -29,6 +28,8 @@ import { useGoogleAuthentication } from '../hooks/useGoogleAuthentication';
 import { FormData } from '../types';
 import { COLORS } from '../../assets/theme';
 import { AuthStackParams } from '../navigation/AuthStackNavigator';
+import { useAuthContext } from '../contexts/AuthContext';
+import { useGoogleContext } from '../contexts/GoogleContext';
 
 // Estilos y otros recursos
 
@@ -37,7 +38,9 @@ type Props = NativeStackScreenProps<AuthStackParams, 'LoginScreen'>
 export const SignupScreen: React.FC<Props> = ({navigation}) => {
 
   // conext hook
-  const {user, handleSignUp, onGoogleButtonPress, isGoogleLinked, errorMessageState, setErrorMessageState } = useAuthContext()
+  const {user, handleSignUp, errorMessageState, setErrorMessageState } = useAuthContext()
+
+  const {onGoogleButtonPress, isGoogleLinked} = useGoogleContext()
 
   // dialogVisibility hook
   const {isVisible, showDialog, hideDialog} = useDialogVisibility()

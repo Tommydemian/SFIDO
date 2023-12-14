@@ -1,8 +1,9 @@
 // React and React-native imports
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, View, TouchableOpacity, Platform } from 'react-native';
 
 // External libraries imports
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { useForm } from "react-hook-form";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import auth from '@react-native-firebase/auth';
@@ -20,18 +21,20 @@ import { SfidoWhiteTextLogo } from '../components/SfidoWhiteTextLogo';
 import { NunitoText } from '../components/NunitoText';
 import { InputField } from '../components/InputField';
 import { AbsoluteFillBgImage } from '../components/AbsoluteFillBgImage';
+import { AppleButton } from '@invertase/react-native-apple-authentication';
 
 // Custom Hooks imports
-import { useAuthContext } from '../hooks/useAuthContext';
 import { useDialogVisibility } from '../hooks/useDialogVisibility';
 import { useGoogleAuthentication } from '../hooks/useGoogleAuthentication';
 
 // Types and Constants imports
 import { FormData } from '../types';
-import { COLORS } from '../../assets/theme';
+import { COLORS, SPACING } from '../../assets/theme';
 import { AuthStackParams } from '../navigation/AuthStackNavigator';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { usePasswordVisibility } from '../hooks/usePasswordVisibility';
+import { useAuthContext } from '../contexts/AuthContext';
+import { useGoogleContext } from '../contexts/GoogleContext';
 
 // Estilos y otros recursos
 
@@ -49,7 +52,9 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
   }, [formInputsCompleted]);
 
   // context hook
-  const {user, onGoogleButtonPress, isGoogleLinked, handleSignIn, errorMessageState, setErrorMessageState } = useAuthContext()
+  const {user, handleSignIn, errorMessageSignIn, setErrorMessageSignIn } = useAuthContext()
+  const {isGoogleLinked, onGoogleButtonPress, linkGoogleAccount} = useGoogleContext()
+
   const {handlPasswordSecured, isPaswordSecured} = usePasswordVisibility()
 
   // dialogVisibility hook
@@ -77,7 +82,7 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
   }, [])
 
   const clearErrorMessage = () => {
-    setErrorMessageState(''); // Clear the error message
+    setErrorMessageSignIn(''); // Clear the error message
   };
 
   return (
@@ -141,7 +146,7 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
         </NunitoText>
       </SubmitButton>
       
-      {errorMessageState && <NunitoText customStyles={styles.errorMessage}>{errorMessageState}</NunitoText>}
+      {errorMessageSignIn && <NunitoText customStyles={styles.errorMessage}>{errorMessageSignIn}</NunitoText>}
 
       {/* <AuthForm 
       submitButtonText='Sign In'
@@ -149,20 +154,41 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
       >
     </AuthForm> */}
     <TouchableOpacity>
-    <NunitoText onPress={() => navigation.navigate('EmailPromptModal')} customStyles={styles.forgotPassword}>Forgot your password?</NunitoText>
+    <NunitoText onPress={() => navigation.navigate('ForgotEmailScreen')} customStyles={styles.forgotPassword}>Forgot your password?</NunitoText>
     </TouchableOpacity>
 
       <OrDivider />
 
       <View style={styles.providerButtonsContainer}>
-      <SubmitButton customStyles={styles.providerButton} onPress={handleOnGoogleButtonPress}>
+      {/* Apple Login */}
+             <View style={styles.container}>
+      <AppleAuthentication.AppleAuthenticationButton
+        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+        buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+        cornerRadius={30}
+        style={styles.button}
+        onPress={async () => {
+          try {
+            const credential = await AppleAuthentication.signInAsync({
+              requestedScopes: [
+                AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                AppleAuthentication.AppleAuthenticationScope.EMAIL,
+              ],
+            });
+            // signed in
+          } catch (e) {
+            if (e.code === 'ERR_REQUEST_CANCELED') {
+              // handle that the user canceled the sign-in flow
+            } else {
+              // handle other errors
+            }
+          }
+        }}
+      />
+    </View>
+    <SubmitButton customStyles={styles.providerButton} onPress={handleOnGoogleButtonPress}>
         <NunitoText customStyles={styles.providerButtonText} type='bold'>Google</NunitoText>
         
-        </SubmitButton>
-      <SubmitButton customStyles={styles.providerButton}>
-        <NunitoText customStyles={styles.providerButtonText} type='bold'>
-        Apple
-        </NunitoText>
         </SubmitButton>
       </View>
 
@@ -191,9 +217,8 @@ const styles = StyleSheet.create({
   marginVertical: 20, // Ajusta el espacio vertical
 }, 
 providerButtonsContainer: {
-  flexDirection: 'row', 
-  justifyContent: 'space-around', 
-  columnGap: 10, 
+  justifyContent: 'center', 
+  rowGap: SPACING.spacing20
 }, 
 providerButton: {
   flexGrow: 1, // TODO: ask GPT
@@ -221,5 +246,9 @@ subHeader: {
 }, 
 errorMessage: {
   color: COLORS.errorRed
-}
-})
+}, 
+  button: {
+    width: '100%',
+    height: 44,
+  },
+});

@@ -1,7 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, StatusBar } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useAuthContext } from '../hooks/useAuthContext'
 import { SubmitButton } from '../components/SubmitButton'
 import { User } from '../types'
 import { NunitoText } from '../components/NunitoText'
@@ -14,6 +13,7 @@ import {format} from 'date-fns'
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs'
 import { TabNavigatorParams,  } from '../navigation/BottomTabsNavigator'
 import { COLORS } from '../../assets/theme'
+import { useAuthContext } from '../contexts/AuthContext'
 
 type Props = BottomTabScreenProps<TabNavigatorParams, 'HomeScreen'>; // Updated Props type
 

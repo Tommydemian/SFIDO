@@ -17,7 +17,8 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.tommydemian.realtimemessages",
-      "googleServicesFile": "./GoogleService-info.plist"
+      "googleServicesFile": "./GoogleService-info.plist",
+      "usesAppleSignIn": true
     },
     "android": {
       "googleServicesFile": "./google-services.json",
@@ -37,6 +38,7 @@
     },
     "plugins": [
       "@react-native-firebase/app",
+      "expo-apple-authentication",
       "expo-build-properties", 
       [
         "expo-build-properties",

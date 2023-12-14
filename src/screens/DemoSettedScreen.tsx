@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { AbsoluteFillBgImage } from '../components/AbsoluteFillBgImage'
 import { YungJakesText } from '../components/YungJakesText'
 import { TouchableOpacity } from 'react-native'
-import { useAuthContext } from '../hooks/useAuthContext'
+import { useAuthContext } from '../contexts/AuthContext'
 
 export const DemoSettedScren = () => {
 

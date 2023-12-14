@@ -20,7 +20,7 @@ import {AbsoluteFillBgImage} from '../components/AbsoluteFillBgImage';
 import { useHandleCategories } from '../hooks/useHandleCategories';
 
 // types and resources
-import { COLORS } from '../../assets/theme';
+import { COLORS, FONT_SIZE } from '../../assets/theme';
 
 const screenHeight = Dimensions.get('screen').height
 
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     // Estilos adicionales
   },
   title: {
-    fontSize: 24,
+    fontSize: FONT_SIZE.title,
     textAlign: 'center',
     marginTop: 10
     // Estilos adicionales

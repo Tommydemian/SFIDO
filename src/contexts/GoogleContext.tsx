@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
@@ -116,6 +116,12 @@ const linkGoogleAccount = async (googleCredential: FirebaseAuthTypes.AuthCredent
 return(<GoogleContext.Provider value={{isGoogleLinked, linkGoogleAccount, onGoogleButtonPress, isLinking}}>
     {children}
 </GoogleContext.Provider>)
-
-
 }
+
+export const useGoogleContext = () => {
+    const context = useContext(GoogleContext);
+    if (!context) {
+        throw new Error('useAuthContext must be used within a AuthProvider');
+    }
+    return context;
+  };

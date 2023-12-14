@@ -13,8 +13,8 @@ import Animated, {
     interpolate, 
     Extrapolation
 } from 'react-native-reanimated'
-import { useAuthContext } from '../hooks/useAuthContext'
 import { AbsoluteFillBgImage } from '../components/AbsoluteFillBgImage'
+import { useAuthContext } from '../contexts/AuthContext'
 
 type onViewableItemsChangedType = {
     viewableItems: ViewToken[];

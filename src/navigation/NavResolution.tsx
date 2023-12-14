@@ -1,4 +1,4 @@
-import { useAuthContext } from "../hooks/useAuthContext";
+import { useAuthContext } from "../contexts/AuthContext";
 import { AuthStackNavigator } from "./AuthStackNavigator";
 import { MainStackNavigator } from "./MainStackNavigator";
 import { RootStackNavigator } from "./RootStackNavigator";

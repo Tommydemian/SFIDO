@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, Dimensio
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import { COLORS } from '../../assets/theme';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useAuthContext } from '../contexts/AuthContext';
 
 const screenHeight = Dimensions.get('window').height
  

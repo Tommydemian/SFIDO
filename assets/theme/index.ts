@@ -8,7 +8,8 @@ export const COLORS = {
     folly: '#FF2E63', 
     robinEggBlue: '#08D9D6', 
     indigoDye: '#0B526E', 
-    errorRed: '#FF6659',
+    errorRed: '#FF6B6B',
+    // TODO: Folly contrast
     successGreen: '#4CAF50', 
     celadon: '#B8E0BA', 
     robinEggBlueDarker: '#07C5C2', 
@@ -25,4 +26,8 @@ export const SPACING = {
 
 export const BORDER = {
     buttons: 30
+}
+
+export const FONT_SIZE = {
+    title: 24
 }

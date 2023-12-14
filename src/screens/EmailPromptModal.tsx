@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { AuthStackParams } from '../navigation/AuthStackNavigator';
-import { useAuthContext } from '../hooks/useAuthContext';
+import { useAuthContext } from '../contexts/AuthContext';
 
 type Props = NativeStackScreenProps<AuthStackParams, 'EmailPromptModal'>
 
