@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
-import { categoryIcons } from '../../assets/constants/data'
+import { categoryIcons } from '../../../assets/constants/data'
 import { FontAwesome } from '@expo/vector-icons';
-import { COLORS } from '../../assets/theme';
+import { COLORS } from '../../../assets/theme';
 
 type Props = {
   title: string

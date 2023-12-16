@@ -42,6 +42,9 @@ type AuthContextType = {
     errorMessageSignIn: string
     setErrorMessageSignIn: React.Dispatch<React.SetStateAction<string>
     >
+    errorMessageSignUp: string
+    setErrorMessageSignUp: React.Dispatch<React.SetStateAction<string>
+    >
   }
 
 
@@ -98,7 +101,6 @@ const handleSignUp = async (email: string, password: string, reset: ResetFunctio
     }
   }
     
-
 // function sign in 
 const handleSignIn = async (email: string, password: string, reset: ResetFunction) => {
 setUser(current => ({...current, loading: true}));
@@ -112,7 +114,7 @@ try {
 } finally {
   setUser(current => ({...current, loading: false}));
   reset();
-}
+  }
 }
 
  // function Signout 
@@ -181,7 +183,9 @@ const handleForgotPassword = (email: string) => {
 }, []);
 
 
- return(<AuthContext.Provider value={{user, setUser, handleSignUp, signOutUser, handleForgotPassword, handleSignIn, errorMessageForgotPassword, setErrorMessageForgotPassword, errorMessageSignIn, setErrorMessageSignIn}}>
+ return(<AuthContext.Provider value={{user, setUser, handleSignUp, signOutUser, handleForgotPassword, handleSignIn, errorMessageForgotPassword, setErrorMessageForgotPassword, errorMessageSignIn, setErrorMessageSignIn,
+  errorMessageSignUp, setErrorMessageSignUp
+ }}>
         {children}
     </AuthContext.Provider>)
 }

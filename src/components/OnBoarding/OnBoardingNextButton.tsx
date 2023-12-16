@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native'
 import React from 'react'
 import { AntDesign } from '@expo/vector-icons';
-import { COLORS } from '../../assets/theme';
-import { NunitoText } from './NunitoText';
+import { COLORS } from '../../../assets/theme';
+import { NunitoText } from '../NunitoText';
 import Animated, {SharedValue, useAnimatedStyle, withSpring, withTiming} from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 

@@ -3,17 +3,17 @@ import React, { useEffect } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
 // External libraries imports
-import { useForm } from "react-hook-form";
+
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import auth from '@react-native-firebase/auth';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 // Custom Component imports
 import { SubmitButton } from '../components/SubmitButton';
-import { OrDivider } from '../components/OrDivider';
+
 import { AuthContainer } from '../components/AuthContainer';
 import { AuthSwitchLink } from '../components/AuthSwitchLink';
-import { AuthForm } from '../components/AuthForm';
+
 import { OfficialLogo } from '../components/OfficialLogo';
 import { SfidoWhiteTextLogo } from '../components/SfidoWhiteTextLogo';
 import { NunitoText } from '../components/NunitoText';
@@ -22,14 +22,13 @@ import { AbsoluteFillBgImage } from '../components/AbsoluteFillBgImage';
 
 // Custom Hooks imports
 import { useDialogVisibility } from '../hooks/useDialogVisibility';
-import { useGoogleAuthentication } from '../hooks/useGoogleAuthentication';
+import { useFormHandler } from '../hooks/useFormHandler';
 
 // Types and Constants imports
 import { FormData } from '../types';
 import { COLORS } from '../../assets/theme';
 import { AuthStackParams } from '../navigation/AuthStackNavigator';
 import { useAuthContext } from '../contexts/AuthContext';
-import { useGoogleContext } from '../contexts/GoogleContext';
 
 // Estilos y otros recursos
 
@@ -38,38 +37,12 @@ type Props = NativeStackScreenProps<AuthStackParams, 'LoginScreen'>
 export const SignupScreen: React.FC<Props> = ({navigation}) => {
 
   // conext hook
-  const {user, handleSignUp, errorMessageState, setErrorMessageState } = useAuthContext()
-
-  const {onGoogleButtonPress, isGoogleLinked} = useGoogleContext()
+  const {user, handleSignUp, errorMessageSignUp, setErrorMessageSignUp } = useAuthContext()
 
   // dialogVisibility hook
   const {isVisible, showDialog, hideDialog} = useDialogVisibility()
 
-  // useGoogleAuth hook:
-  const {handleOnGoogleButtonPress} = useGoogleAuthentication()
-
-// useForm hook initialization with validation mode set to 'onChange'
-const { control, handleSubmit, formState: { errors }, setError, reset, clearErrors } = useForm<FormData>({
-  mode: 'onChange' // This triggers validation on change
-});
-
-// Rules for the email input field
-const emailRules = {
-  required: 'Email is required',
-  pattern: {
-    value: /^\S+@\S+$/i,
-    message: 'Invalid email format'
-  }
-};
-
-// Rules for the password input field
-const passwordRules = {
-  required: 'Password is required',
-  minLength: {
-    value: 6,
-    message: 'Password must be at least 6 characters'
-  }
-}
+  const {control, emailRules, handleSubmit} = useFormHandler('onChange', navigation)
 
   // function sign up
   const onSubmit = ({email, password}: FormData) => {
@@ -79,17 +52,13 @@ const passwordRules = {
   useEffect(() => {
     console.log(auth().currentUser);
   }, [])
-
-  const clearErrorMessage = () => {
-    setErrorMessageState(''); // Clear the error message
-  };
   
   return (
     <SafeAreaView style={styles.container}>
       <Spinner visible={user.loading}/>
       
       {/* Contenedor de imagen de fondo */}
-      <AbsoluteFillBgImage/>
+      <AbsoluteFillBgImage imageKey='authbg'/>
 
       <AuthContainer>
         <OfficialLogo style={{alignSelf: 'center'}}/>   
@@ -107,7 +76,7 @@ const passwordRules = {
       onInputChange={clearErrorMessage} 
       name='email'
       rules={emailRules}
-      
+      setError={setErrorMessageSignUp}
       />
 
       <InputField
@@ -117,6 +86,7 @@ const passwordRules = {
       onInputChange={clearErrorMessage}
       name='password'
       rules={passwordRules}
+      setError={setErrorMessageSignUp}
       />
 
       <SubmitButton onPress={handleSubmit(onSubmit)}>
@@ -125,22 +95,8 @@ const passwordRules = {
         </NunitoText>
         </SubmitButton>
       
-      {errorMessageState && <NunitoText customStyles={styles.errorMessage}>{errorMessageState}</NunitoText>}
+      {errorMessageSignUp && <NunitoText customStyles={styles.errorMessage}>{errorMessageSignUp}</NunitoText>}
 
-        <OrDivider />
-
-        {/* Botones para registro con Google/Apple si son necesarios */}
-        <View style={styles.providerButtonsContainer}>
-      <SubmitButton customStyles={styles.providerButton} onPress={handleOnGoogleButtonPress}>
-        <NunitoText customStyles={styles.providerButtonText} type='bold'>Google</NunitoText>
-        
-        </SubmitButton>
-      <SubmitButton customStyles={styles.providerButton}>
-        <NunitoText customStyles={styles.providerButtonText} type='bold'>
-        Apple
-        </NunitoText>
-        </SubmitButton>
-      </View>
 
       <AuthSwitchLink actionText='Sign In' navigationText='Already have an account?' onActionPress={() => navigation.navigate('LoginScreen')}   />
     </AuthContainer>

@@ -1,10 +1,10 @@
 import { StyleSheet, Text, Pressable, PressableProps, View } from 'react-native'
 import React, {useState} from 'react'
-import { COLORS, SPACING } from '../../assets/theme'
+import { COLORS, SPACING } from '../../../assets/theme'
 import Animated, {useAnimatedStyle, withTiming} from 'react-native-reanimated'
 import { AntDesign } from '@expo/vector-icons';
-import { Categorie } from '../types';
-import { NunitoText } from './NunitoText';
+import { Categorie } from '../../types';
+import { NunitoText } from '../NunitoText';
 
 type Props = PressableProps & {
     title: string

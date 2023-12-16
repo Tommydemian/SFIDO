@@ -4,7 +4,6 @@ import { SafeAreaView, StyleSheet, View, TouchableOpacity, Platform } from 'reac
 
 // External libraries imports
 import * as AppleAuthentication from 'expo-apple-authentication';
-import { useForm } from "react-hook-form";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import auth from '@react-native-firebase/auth';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -35,22 +34,13 @@ import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { usePasswordVisibility } from '../hooks/usePasswordVisibility';
 import { useAuthContext } from '../contexts/AuthContext';
 import { useGoogleContext } from '../contexts/GoogleContext';
+import { useFormHandler } from '../hooks/useFormHandler';
 
 // Estilos y otros recursos
 
-type Props = NativeStackScreenProps<AuthStackParams, 'LoginScreen'>
+type NavigationProps = NativeStackScreenProps<AuthStackParams, 'LoginScreen'>
 
-export const LoginScreen: React.FC<Props> = ({navigation}) => {
-
-  const [formInputsCompleted, setFormInputsCompleted] = useState(false)
-
-  const opacity = useSharedValue(0.7); // Initial opacity
-
-  useEffect(() => {
-    // Update opacity based on form completion
-    opacity.value = withTiming(formInputsCompleted ? 1 : 0.5, {duration: 300})
-  }, [formInputsCompleted]);
-
+export const LoginScreen: React.FC<NavigationProps> = ({navigation}) => {
   // context hook
   const {user, handleSignIn, errorMessageSignIn, setErrorMessageSignIn } = useAuthContext()
   const {isGoogleLinked, onGoogleButtonPress, linkGoogleAccount} = useGoogleContext()
@@ -63,26 +53,11 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
   // useGoogleAuth hook:
   const {handleOnGoogleButtonPress} = useGoogleAuthentication()
 
-  // useForm hook
-  const {control, handleSubmit, formState: {errors}, reset, watch} = useForm<FormData>()
-  const email = watch('email')
-  const password = watch('password')
-
-  useEffect(() => {
-    setFormInputsCompleted(email?.length > 0 && password?.length > 0);
-  }, [email, password]);
-
+  const {control, emailRules, passwordRules, reset, handleSubmit, clearErrors} = useFormHandler('onSubmit', navigation)
+  
   // function sign in 
   const onSubmit = (data: FormData) => {
     handleSignIn(data.email, data.password, reset);
-  };
-
-  useEffect(() => {
-    console.log(auth().currentUser);
-  }, [])
-
-  const clearErrorMessage = () => {
-    setErrorMessageSignIn(''); // Clear the error message
   };
 
   return (
@@ -90,7 +65,7 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
       <Spinner visible={user.loading}/>
       
      {/* bg image container */}
-     <AbsoluteFillBgImage/>
+     <AbsoluteFillBgImage imageKey='authbg'/>
 
       <AuthContainer>
 
@@ -107,15 +82,9 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
       control={control}
       placeholder='Email'
       name='email'
-      leftIcon={<AntDesign name="user" size={30} color={COLORS.whiteText} />}
-      onInputChange={clearErrorMessage} 
-      rules={{
-        required: 'Email is required', // Ensures the user does not leave the email field blank
-        pattern: {
-          value: /^\S+@\S+$/i, // Simple regex for email validation
-          message: 'Please enter a valid email address' // Message to show if the regex test fails
-        }
-      }}
+      leftIcon={<AntDesign name="user" size={30} color={COLORS.whiteText} />} 
+      setError={setErrorMessageSignIn}
+      rules={emailRules}
       />
 
       <InputField
@@ -123,18 +92,12 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
       control={control}
       placeholder='Password'
       name='password'
-      secureTextEntry={isPaswordSecured}
-      onInputChange={clearErrorMessage} 
+      secureTextEntry={isPaswordSecured} 
+      setError={setErrorMessageSignIn}
       handlePassworsSecured={handlPasswordSecured}
       leftIcon={<Entypo name="lock" size={30} color={COLORS.whiteText} />}
       rightIcon={<Entypo name="eye" size={24} color={COLORS.blackSecondaryText} />}
-      rules={{
-        required: 'Password is required', // Ensures the password field is not left blank
-        minLength: {
-          value: 6, // You can set a minimum length for the password if you want
-          message: 'Password must be at least 6 characters long' // Message for the minimum length
-        }
-      }}
+      rules={passwordRules}
       />
 
       <SubmitButton 
@@ -154,7 +117,7 @@ export const LoginScreen: React.FC<Props> = ({navigation}) => {
       >
     </AuthForm> */}
     <TouchableOpacity>
-    <NunitoText onPress={() => navigation.navigate('ForgotEmailScreen')} customStyles={styles.forgotPassword}>Forgot your password?</NunitoText>
+    <NunitoText onPress={() => navigation.navigate('ForgotPasswordScreen')} customStyles={styles.forgotPassword}>Forgot your password?</NunitoText>
     </TouchableOpacity>
 
       <OrDivider />

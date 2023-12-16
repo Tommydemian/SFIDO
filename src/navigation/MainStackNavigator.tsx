@@ -5,6 +5,7 @@ import { BottomTabsNavigator } from './BottomTabsNavigator';
 import { CategoriesSelectionScreen } from '../screens/CategoriesSelectionScreen';
 import {OnBoardingScreen} from '../screens/OnBoardingScreen';
 import { DemoSettedScren } from '../screens/DemoSettedScreen';
+import DemoPreparationScreen from '../screens/DemoPreparationScreen';
 
 export type MainStackParams = {
     QuoteScreen: undefined;
@@ -15,7 +16,11 @@ export type MainStackParams = {
     CategoriesSelectionScreen: undefined;
     BottomTabs: undefined;
     OnBoardingScreen: undefined;
-    DemoSettedScreen: undefined;
+    DemoPreparationScreen: undefined;
+    DemoSettedScreen: {
+      image: string;
+      text: string;
+    };
 }
 
 const Stack = createNativeStackNavigator<MainStackParams>();
@@ -29,6 +34,7 @@ export const MainStackNavigator = () => {
       <Stack.Screen name="BottomTabs" component={BottomTabsNavigator} options={{headerShown: false}} />
       <Stack.Screen name="OnBoardingScreen" component={OnBoardingScreen} options={{headerShown: false}} />
       <Stack.Screen name="DemoSettedScreen" component={DemoSettedScren} options={{headerShown: false}} />
+      <Stack.Screen name="DemoPreparationScreen" component={DemoPreparationScreen} options={{headerShown: false}} />
     </Stack.Navigator>
   );
 }

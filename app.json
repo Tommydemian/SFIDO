@@ -41,6 +41,13 @@
       "expo-apple-authentication",
       "expo-build-properties", 
       [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends.", 
+          "camcameraPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
         "expo-build-properties",
          {
           "ios": {

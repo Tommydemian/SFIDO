@@ -1,18 +1,23 @@
-import { Pressable, PressableProps, Text, StyleSheet } from "react-native"
+import { Pressable, PressableProps, Text, StyleSheet, ActivityIndicator } from "react-native"
 import { BORDER, COLORS } from "../../assets/theme"
 
 type Props = PressableProps & {
-    customStyles?: object
-    children: React.ReactNode
+    customStyles?: object;
+    children: React.ReactNode;
+    isLoading?: boolean;
 }
 
-export const SubmitButton: React.FC<Props> = ({customStyles,children, ...rest}) => {
+export const SubmitButton: React.FC<Props> = ({customStyles,children, isLoading, ...rest}) => {
     return (
     <Pressable 
     {...rest}
     style={[styles.submitButton, customStyles]}
     >
-      {children}
+       {isLoading ? (
+        <ActivityIndicator size="small" color={COLORS.whiteText} />
+      ) : (
+        children
+      )}
     </Pressable>)
 }
 

@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import Spinner from 'react-native-loading-spinner-overlay'
-import { useForm } from "react-hook-form";
 import { AntDesign, Entypo } from '@expo/vector-icons';
+import {NativeStackScreenProps} from '@react-navigation/native-stack'
 
+// Components
 import { InputField } from '../components/InputField'
 import { SubmitButton } from '../components/SubmitButton'
 import { AuthContainer } from '../components/AuthContainer'
@@ -13,28 +14,21 @@ import { NunitoText } from '../components/NunitoText'
 
 import { useAuthContext } from '../contexts/AuthContext'
 
+// types
 import { FormData } from '../types'
 import { FONT_SIZE, COLORS, SPACING } from '../../assets/theme'
-
-import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { AuthStackParams } from '../navigation/AuthStackNavigator'
+import { useFormHandler } from '../hooks/useFormHandler';
 
+type ForgotPasswordNavigationProps = NativeStackScreenProps<AuthStackParams, 'ForgotPasswordScreen'>
 
-type ForgotPasswordNavigationProps = NativeStackScreenProps<AuthStackParams, 'ForgotEmailScreen'>
-
-
-const ForgotEmailScreen: React.FC<ForgotPasswordNavigationProps> = ({navigation}) => {
+export const ForgotPasswordScreen: React.FC<ForgotPasswordNavigationProps> = ({navigation}) => {
 
     const {user, handleForgotPassword, errorMessageForgotPassword, setErrorMessageForgotPassword  } = useAuthContext() 
 
-    // useForm hook
-    const { control, handleSubmit, formState: { errors }, setError, reset, clearErrors } = useForm<FormData>({
-        mode: 'onChange' // This triggers validation on change
-      });
-  const clearErrorMessage = () => {
-    setErrorMessageForgotPassword(''); // Clear the error message
-  };
+    const {control, emailRules, handleSubmit} = useFormHandler('onChange', navigation)
 
+      // fucntion used to control feedback base on operation success
   const onHandleForgotPassword = (data: FormData) => {
     handleForgotPassword(data.email)
       .then((message) => {
@@ -46,15 +40,12 @@ const ForgotEmailScreen: React.FC<ForgotPasswordNavigationProps> = ({navigation}
       });
   };
   
-    
-
-    // TODO: ??
-    if (user.loading) return <Spinner visible={user.loading}/>
-
   return (
     <SafeAreaView style={styles.container}>
+      <Spinner visible={user.loading}/>
       {/* bg image container */}
-      <AbsoluteFillBgImage/>
+      <AbsoluteFillBgImage imageKey='authbg'/>
+
        <AuthContainer>
       <NunitoText type='bold' customStyles={styles.title}>Forgot Password?</NunitoText>
       <NunitoText customStyles={styles.subtitle} type='regular'>Do not worry! we will help you recover your password</NunitoText>
@@ -65,17 +56,12 @@ const ForgotEmailScreen: React.FC<ForgotPasswordNavigationProps> = ({navigation}
       placeholder='Email'
       name='email'
       leftIcon={<AntDesign name="mail" size={35} color={COLORS.whiteText} />}
-      onInputChange={clearErrorMessage} 
-      rules={{
-        required: 'Email is required', // Ensures the user does not leave the email field blank
-        pattern: {
-          value: /^\S+@\S+$/i, // Simple regex for email validation
-          message: 'Please enter a valid email address' // Message to show if the regex test fails
-        }
-      }}
+      setError={setErrorMessageForgotPassword} 
+      rules={emailRules}
       />
 
-      <SubmitButton onPress={handleSubmit(onHandleForgotPassword)}><NunitoText customStyles={styles.submitButtonText} type='bold'>Send</NunitoText></SubmitButton>
+      <SubmitButton 
+      onPress={handleSubmit(onHandleForgotPassword)}><NunitoText customStyles={styles.submitButtonText} type='bold'>Send</NunitoText></SubmitButton>
 
       {errorMessageForgotPassword && <NunitoText customStyles={styles.errorMessage}>{errorMessageForgotPassword}</NunitoText>}
       
@@ -84,8 +70,6 @@ const ForgotEmailScreen: React.FC<ForgotPasswordNavigationProps> = ({navigation}
     </SafeAreaView>
   )
 }
-
-export default ForgotEmailScreen
 
 const styles = StyleSheet.create({
     container: {

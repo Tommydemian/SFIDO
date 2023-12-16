@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { Data } from '../../assets/constants/data'
+import { Data } from '../../../assets/constants/data'
 import Animated, {useAnimatedStyle, interpolate, Extrapolate} from 'react-native-reanimated'
-import { COLORS } from '../../assets/theme'
+import { COLORS } from '../../../assets/theme'
 
 type Props = {
   data: Data[];

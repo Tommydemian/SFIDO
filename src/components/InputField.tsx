@@ -18,17 +18,36 @@ type Props = TextInputProps & {
     customStyles?: object;
     onInputChange?: () => void; 
     handlePassworsSecured: () => void;
+    setError: React.Dispatch<React.SetStateAction<string>>
 }
 
-export const InputField: React.FC<Props> = ({label, onInputChange, customStyles, setVisibility, name,autoCapitalize, control, placeholder, secureTextEntry, handlePassworsSecured, rules = {}, leftIcon, rightIcon, ...rest }) => {
-
+export const InputField: React.FC<Props> = ({label, onInputChange, customStyles, setVisibility, name,autoCapitalize, control, placeholder, secureTextEntry, handlePassworsSecured, rules = {}, leftIcon, setError, rightIcon, ...rest }) => {
+  
   const { onChangeText, ...otherRestProps } = rest;
   return (
     <Controller 
     control={control}
     name={name}
     rules={rules}
-    render={({field: {value, onChange, onBlur}, fieldState:{error}}) => (
+    render={({field: {value, onChange, onBlur}, fieldState:{error}}) => {
+      const handleChange = (text:string) => {
+        // Call the setter to clean the message once the user starts writing
+        if (setError) {
+            setError('');
+        }
+    
+        // Call the original onChangeText if it exists
+        if (onChangeText) {
+          onChangeText(text);
+        }
+        // Call the new input change handler
+        if (onInputChange) {
+          onInputChange();
+        }
+        // // Call the react-hook-form onChange
+         onChange(text);
+      }
+      return (
       <>
       <Text style={styles.inputFieldLabel}>{label && label}</Text>
       <View style={styles.outerInputFieldContainer}>
@@ -43,18 +62,7 @@ export const InputField: React.FC<Props> = ({label, onInputChange, customStyles,
        placeholder={placeholder}
        autoCapitalize={autoCapitalize}
        placeholderTextColor={COLORS.inputGrayText}
-       onChangeText={(text) => {
-        // Call the original onChangeText if it exists
-        if (onChangeText) {
-          onChangeText(text);
-        }
-        // Call the new input change handler
-        if (onInputChange) {
-          onInputChange();
-        }
-        // Call the react-hook-form onChange
-        onChange(text);
-      }}
+       onChangeText={handleChange}
       {...otherRestProps}
        />
        {rightIcon && <TouchableOpacity
@@ -69,7 +77,8 @@ export const InputField: React.FC<Props> = ({label, onInputChange, customStyles,
       error && <NunitoText type='bold' customStyles={styles.errorText}>{error.message || 'Error'}</NunitoText>
     }
     </>
-    )}
+      )
+    }}
     />    
   )
 }

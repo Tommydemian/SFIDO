@@ -38,3 +38,10 @@ export const data: Data[] = [
     "Positivity and Optimism": "smile-o",
     "Empowerment and Leadership": "black-tie"
 };
+
+// Images mapping
+export const bgImages = {
+  authbg: require('../../assets/images/authbg.png'),
+  demobg: require('../../assets/images/demoshades.png'),
+  categoriebg: require('../../assets/images/categorybg.png'),
+};

@@ -1,19 +1,19 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { View, StyleSheet, SafeAreaView, StatusBar, Dimensions} from 'react-native';
 
 // External libraries imports
 import auth from '@react-native-firebase/auth';
-import Animated, {useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, interpolate} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {NativeStackScreenProps} from '@react-navigation/native-stack'
 import { MainStackParams } from '../navigation/MainStackNavigator';
 
 // Custom Component imports
-import { CategorieCard } from '../components/CategorieCard';
+import { CategorieCard } from '../components/Categories/CategorieCard';
 import { SubmitButton } from '../components/SubmitButton';
 import { NunitoText } from '../components/NunitoText';
-import {CategorieCardIcon} from '../components/CategorieCardIcon';
-import {OnBoardingContainer} from '../components/OnBoardingContainer'
+import {CategorieCardIcon} from '../components/Categories/CategorieCardIcon';
+import {OnBoardingContainer} from '../components/OnBoarding/OnBoardingContainer'
 import {AbsoluteFillBgImage} from '../components/AbsoluteFillBgImage';
 
 // Custom Hooks imports
@@ -48,7 +48,7 @@ export const CategoriesSelectionScreen : React.FC<CategoriesNavigationProps> = (
   
   return (
     <SafeAreaView style={styles.container}>
-      <AbsoluteFillBgImage />
+      <AbsoluteFillBgImage imageKey='categoriebg' />
 
       <OnBoardingContainer>
 

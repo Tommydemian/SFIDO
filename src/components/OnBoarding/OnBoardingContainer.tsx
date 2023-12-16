@@ -13,8 +13,6 @@ export const OnBoardingContainer: React.FC<Props> = ({children}) => {
   )
 }
 
-export default OnBoardingContainer
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
