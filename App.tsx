@@ -9,7 +9,7 @@ import {navigate, navigationRef} from './src/navigation/navigationRef'
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
-  webClientId: '86924702179-fkg4evrmr3rcu1om8np5gg898v73u5j6.apps.googleusercontent.com',
+  webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
 })
 
 export default function App() {
