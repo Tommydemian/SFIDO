@@ -5,13 +5,19 @@ type Props = PressableProps & {
     customStyles?: object;
     children: React.ReactNode;
     isLoading?: boolean;
+    disabled?: boolean;
 }
 
-export const SubmitButton: React.FC<Props> = ({customStyles,children, isLoading, ...rest}) => {
+export const SubmitButton: React.FC<Props> = ({customStyles,children, isLoading, disabled, ...rest}) => {
     return (
     <Pressable 
     {...rest}
-    style={[styles.submitButton, customStyles]}
+    style={({ pressed }) => [
+      styles.submitButton,
+      customStyles,
+      pressed && styles.pressed, // Estilo cuando el botón está presionado
+      disabled && styles.disabled // Estilo para el estado deshabilitado
+    ]}
     >
        {isLoading ? (
         <ActivityIndicator size="small" color={COLORS.whiteText} />
@@ -36,5 +42,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     alignSelf: 'center', 
     textTransform: 'capitalize',
+  },
+  pressed: {
+    backgroundColor: COLORS.ligthFolly
+  },
+  disabled: {
+    backgroundColor: COLORS.inputGrayText
   }
 })

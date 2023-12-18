@@ -7,6 +7,7 @@ import { MessageProvider } from './src/contexts/MessageContext';
 import * as Notifications from 'expo-notifications';
 import {navigate, navigationRef} from './src/navigation/navigationRef'
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 GoogleSignin.configure({
   webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
