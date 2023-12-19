@@ -5,7 +5,6 @@ import { BORDER, COLORS } from '../../assets/theme';
 import { NunitoText } from './NunitoText';
 import { SubmitButton } from './SubmitButton';
 
-
 export const DemoModal = () => {
 
  const [isVisible, setIsVisible] = useState(true)

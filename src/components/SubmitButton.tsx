@@ -33,8 +33,6 @@ const styles = StyleSheet.create({
     paddingVertical: 15, 
     borderRadius: BORDER.buttons,
     marginVertical: 10, 
-    // paddingHorizontal: 10, 
-    // marginBottom: 20
   }, 
   submitText: {
     color: COLORS.whiteText, 

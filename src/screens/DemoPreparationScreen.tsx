@@ -1,112 +1,83 @@
-import { SafeAreaView, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, ImageBackground, Modal, Image } from 'react-native'
-import React, { useMemo, useRef, useState } from 'react'
-import { ImagePickerExample } from '../components/ImagePicker'
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, ImageBackground, Modal, Image } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { MainStackParams } from '../navigation/MainStackNavigator'
 import { Entypo, AntDesign } from '@expo/vector-icons';
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import Animated, {useSharedValue, useAnimatedStyle, withSpring} from 'react-native-reanimated'
+
+import { ImagePickerExample } from '../components/ImagePicker'
 import { DemoModal } from '../components/DemoModal'
 import { SubmitButton } from '../components/SubmitButton'
 import { NunitoText } from '../components/NunitoText'
-import { COLORS, SPACING } from '../../assets/theme'
 import { OnBoardingContainer } from '../components/OnBoarding/OnBoardingContainer'
-import BottomSheet from '@gorhom/bottom-sheet';
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { useAuthContext } from '../contexts/AuthContext'
-import Animated, {useSharedValue, useAnimatedStyle, withSpring} from 'react-native-reanimated'
+import { CustomBottomSheet } from '../components/CustomBottomSheet';
+import { DemoTextInput } from '../components/DemoTextInput';
+import {DemoImageModal} from '../components/DemoImageModal';
 
-const { width, height } = Dimensions.get('window');
+import { useAuthContext } from '../contexts/AuthContext'
+import { useBottomSheet } from '../hooks/useBottomSheet';
+
+import { COLORS, SPACING } from '../../assets/theme'
+import { useDemoTextInput } from '../hooks/useDemoTextInput';
 
 type NavigationProps = NativeStackScreenProps<MainStackParams, 'DemoPreparationScreen'>
 
-const DemoPreparationScreen: React.FC<NavigationProps> = ({navigation}) => {
-  const [text, setText] = useState('Remember why you started. Every step brings you closer to your goals. Keep pushing forward!')
-  const [image, setImage] = useState('')
-  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
-
+export const DemoPreparationScreen: React.FC<NavigationProps> = ({navigation}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState('')
+  const [modalSelectedImage, setModalSelectedImage] = useState('')
 
-  const confirmImageSelection = () => {
-    setIsModalVisible(false);
-    // Lógica adicional si es necesaria
-  };
+  const handleModalSelectedImage = (selectedImage: string) => {
+    setModalSelectedImage(selectedImage)
+    setIsModalVisible(false)
+  }
 
-  const handleBottomSheetOpen = () => {
-    setIsBottomSheetVisible(true);
-    bottomSheetRef.current?.snapToIndex(0);
-  };
+    // Llamado cuando se selecciona una imagen
+    const handleImageSelected = (uri: string) => {
+        setSelectedImage(uri);
+        setIsModalVisible(true); // Abre el modal
+    };
 
-  const handleBottomSheetClose = () => {
-    setIsBottomSheetVisible(false);
-  };
-  
-  const snapPoints = useMemo(() => ['30%', '50%'], [])
+  // hooks
+  const {handleBottomSheetClose, handleBottomSheetOpen, isBottomSheetVisible, bottomSheetRef} = useBottomSheet()
 
-  const bottomSheetRef = useRef<BottomSheet>(null)
+  const {handleWriteMyOwn} = useDemoTextInput()
 
   const {signOutUser} = useAuthContext()
-
-  const textInputRef = useRef<TextInput>(null);
-  const scale = useSharedValue(1);
-
-  const animatedStyles = useAnimatedStyle(() => {
-    return {
-      transform: [{ scale: scale.value }],
-    };
-  });
-
-  const handleWriteMyOwn = () => {
-    scale.value = withSpring(1.1, { damping: 2 }, () => {
-      scale.value = withSpring(1);
-    });
-    setText('');
-    textInputRef.current?.focus();
-  };
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
     <SafeAreaView style={styles.container}>
       <DemoModal />
+
       <OnBoardingContainer>
-      {/* Fondo con la imagen seleccionada */}
-      <ImageBackground 
-        source={{ uri: image }} 
-        style={styles.backgroundImage}
-        blurRadius={5} // Agrega un leve desenfoque para resaltar el texto
-      >
-        {/* Área de texto */}
-        <Animated.View style={animatedStyles}>
-        <TextInput 
-          ref={textInputRef}
-          style={styles.textInput}
-          value={text}
-          multiline={true} 
-          placeholder="Write here what you need to listen..." 
-          onChangeText={(newText) => setText(newText)} 
-          keyboardType='default'
-        />
-        </Animated.View>
 
-        {/* Modal para confirmar la selección de la imagen */}
-      <Modal
-        visible={isModalVisible}
-        onRequestClose={() => setIsModalVisible(false)}
-      >
-        <Image source={{ uri: selectedImage }} style={{ /* estilos de la imagen */ }} />
-        <TouchableOpacity onPress={confirmImageSelection}>
-          <Text>Confirmar</Text>
-        </TouchableOpacity>
-      </Modal>
-
-
+        <DemoTextInput 
+        placeholder='Write what you need to listen...' 
+        render={({handleWriteMyOwn}) => (
+          <View style={styles.actionsContainer}>
         <View style={styles.submitButtonContainer}>
         <SubmitButton 
         onPress={handleWriteMyOwn}
         style={styles.button}><NunitoText customStyles={styles.buttonText} type='bold'>Write My Message</NunitoText></SubmitButton>
         </View>
 
-        <TouchableOpacity onPress={signOutUser}><Text>Sign out</Text></TouchableOpacity>
+        {/* Selector de imagen */}
+        <View style={styles.imagePickerContainer}>
+          <ImagePickerExample img={selectedImage} setImg={handleImageSelected} />
+        </View> 
+        </View> 
+        )}
+        />
+         
+        {/* Image modal */}
+        <DemoImageModal selectedImage={selectedImage} isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible}
+        handleModalSelectedImage={handleModalSelectedImage}
+        />
 
+        <TouchableOpacity onPress={signOutUser}><Text>Sign out</Text></TouchableOpacity>
 
         <View style={styles.needInspTextContainer}>
         <NunitoText type='bold' customStyles={styles.needInspText}>Need some inspiration?</NunitoText>
@@ -116,30 +87,21 @@ const DemoPreparationScreen: React.FC<NavigationProps> = ({navigation}) => {
         color={COLORS.whiteText}
         onPress={handleBottomSheetOpen}
         />
-        
-        
-
         </View>
 
-        {/* Selector de imagen */}
-         {/* <View style={styles.imagePickerContainer}>
-          <ImagePickerExample img={image} setImg={setImage} />
-          <Entypo name="camera" size={28} color='#555' />
-        </View>  */}
+        <View style={styles.modalSelectedImageContainer}>
+        <Image 
+        source={{uri: modalSelectedImage}} 
+        style={styles.modalselectedImage}
+        />
+        </View>
 
-        {/* Botón para continuar */}
-        {/* <TouchableOpacity 
-          style={styles.continueButton}
-          onPress={() => image && navigation.navigate('DemoSettedScreen', {image, text})}
-          >
-          <Text style={styles.continueButtonText}>Continue</Text>
-        </TouchableOpacity> */}
-      </ImageBackground>
       </OnBoardingContainer>
     </SafeAreaView>
+
     {
       isBottomSheetVisible && (
-      <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
+      <CustomBottomSheet ref={bottomSheetRef}>
         <View style={styles.bottomSheetContentContainer}>
           <TouchableOpacity
            style={styles.bottomSheetCloseButton} 
@@ -149,49 +111,20 @@ const DemoPreparationScreen: React.FC<NavigationProps> = ({navigation}) => {
           <NunitoText customStyles={styles.bottomSheetContent}>If you're feeling a bit lost or just unsure what to write, visit our [Inspiration Section] to find famous quotes that might motivate you.
         </NunitoText>
         </View>
-      </BottomSheet>)
+      </CustomBottomSheet>)
     }
     </GestureHandlerRootView>
   )
 }
 
-export default DemoPreparationScreen
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: COLORS.indigoDye, 
-    alignItems: 'stretch'
-  },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center",
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: '#CCCCCC',
-    borderRadius: 10,
-    width: width - 40,
-    padding: 15,
-    fontSize: 16,
-    color: '#333333',
-    backgroundColor: '#FFFFFFAA', // Semi-transparente
-    textAlignVertical: 'top',
-    minHeight: 150,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    alignSelf: 'center',
-    marginVertical: 20,
+    backgroundColor: COLORS.whiteText, 
   },
   imagePickerContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
+    alignSelf: 'flex-start'
   },
   continueButton: {
     backgroundColor: '#007bff',
@@ -207,16 +140,6 @@ const styles = StyleSheet.create({
   continueButtonText: {
     color: 'white',
     fontSize: 18,
-  },
-  button:{
-    
-  }, 
-  submitButtonContainer: {
-  width: '50%', 
-  marginBottom: 20
-  }, 
-  buttonText: {
-    textAlign: 'center',
   },
   needInspText: {
   }, 
@@ -235,5 +158,35 @@ const styles = StyleSheet.create({
   bottomSheetCloseButton: {
     alignSelf: 'flex-end', 
     margin: SPACING.spacing10
+  }, 
+  submitButtonContainer: {
+  width: '50%', 
+  marginBottom: 20
+  }, 
+  buttonText: {
+    textAlign: 'center',
+  },
+  previewImage: {
+    width: '100%',
+    height: '80%', // Ajusta según sea necesario
+    resizeMode: 'contain',
+},
+  actionsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  }, 
+  modalSelectedImageContainer: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  modalselectedImage: {
+    height: 300, 
+    width: 300, 
+    elevation: 5,
+    borderRadius: SPACING.spacing10
+
   }
 });

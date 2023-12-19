@@ -84,7 +84,7 @@ export const OnBoardingRenderItem: React.FC<RenderItemProps> = ({item, index, of
           transform: [{translateY: translateYAnimation}],
         };
       });
-    
+     
     return (
         <View style={[styles.itemContainer, {width: SCREEN_WIDTH}]}>
           

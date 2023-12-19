@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Image, View, Platform, StyleSheet } from 'react-native';
+import { Image, View, Platform, StyleSheet, TouchableOpacity } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { CameraButton } from './CameraButton';
+import { Entypo } from '@expo/vector-icons';
+import { COLORS, SPACING } from '../../assets/theme';
 
 type Props = {
     img: string;
-    setImg: React.Dispatch<React.SetStateAction<string>>
+    setImg: (uri:string) => void;
 }
 
 export const  ImagePickerExample: React.FC<Props> = ({img, setImg}) => {
@@ -36,21 +37,49 @@ export const  ImagePickerExample: React.FC<Props> = ({img, setImg}) => {
     };
 
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <CameraButton onPress={pickImage} />
-            <View style={styles.imageContainer}>
-            {img && <Image source={{ uri: img }} style={{ width: '100%', height: '100%', resizeMode: 'contain' }} />}
-            </View>
-        </View>
+        <View style={styles.imagePickerContainer}>
+        <TouchableOpacity onPress={pickImage} style={styles.cameraButton}>
+            <Entypo name="camera" size={SPACING.spacing30} color={COLORS.whiteText} />
+        </TouchableOpacity>
+          {/* <NunitoText customStyles={styles.cameraText}>Press to select an image</NunitoText> */}
+    </View>
     );
 }
 
 const styles = StyleSheet.create({
-    imageContainer: {
-        width: '50%',
-        height: '50%', 
-        borderRadius: 30, 
-        borderWidth: 3, 
-        borderColor: 'red'       
-    }
+    imagePickerContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 20,
+      },
+        cameraButton: {
+            borderRadius: 100,
+            backgroundColor: COLORS.folly, // O el color que prefieras
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: SPACING.spacing10,
+            padding: SPACING.spacing10,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+        },
+        imageContainer: {
+            width: 300,
+            height: 300,
+            borderRadius: 30,
+            borderWidth: 3,
+            borderColor: 'red',
+            overflow: 'hidden', // Asegura que la imagen no se salga del borde redondeado
+        },
+        image: {
+            width: '100%',
+            height: '100%',
+            resizeMode: 'contain',
+        },
+        cameraText: {
+            fontSize: 14,
+            marginTop: 5,
+          },
 })

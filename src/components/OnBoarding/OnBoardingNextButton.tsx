@@ -54,7 +54,7 @@ export const OnBoardingNextButton: React.FC<Props> = ({dataLength, flatListIndex
 
   const handlePress = () => {
     if (flatListIndex.value === dataLength - 1) {
-      navigation.navigate('CategoriesSelectionScreen')
+      navigation.navigate('DemoPreparationScreen')
     }    
   }
  

@@ -5,7 +5,7 @@ import { BottomTabsNavigator } from './BottomTabsNavigator';
 import { CategoriesSelectionScreen } from '../screens/CategoriesSelectionScreen';
 import {OnBoardingScreen} from '../screens/OnBoardingScreen';
 import { DemoSettedScren } from '../screens/DemoSettedScreen';
-import DemoPreparationScreen from '../screens/DemoPreparationScreen';
+import {DemoPreparationScreen} from '../screens/DemoPreparationScreen';
 
 export type MainStackParams = {
     QuoteScreen: undefined;
