@@ -20,6 +20,7 @@ export type MainStackParams = {
     DemoSettedScreen: {
       image: string;
       text: string;
+      videoId: string;
     };
 }
 

@@ -3,11 +3,13 @@ import React from 'react'
 import { Data } from '../../../assets/constants/data'
 import Animated, {useAnimatedStyle, interpolate, Extrapolate} from 'react-native-reanimated'
 import { COLORS } from '../../../assets/theme'
+import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
 
-type Props = {
+type Props = ViewProps & {
   data: Data[];
   offSetX: Animated.SharedValue<number>;
   screenWidth: number;
+  customStyles: object;
 }
 
 type AnimatedDotsProps = {
@@ -39,9 +41,9 @@ const AnimatedDot: React.FC<AnimatedDotsProps> = ({ index, offSetX, screenWidth 
   return <Animated.View style={[styles.dots, animatedDotStyle]} />;
 };
 
-export const OnBoardingPagination: React.FC<Props> = ({ data, offSetX, screenWidth }) => {
+export const OnBoardingPagination: React.FC<Props> = ({ data, offSetX, screenWidth, customStyles }) => {
   return (
-    <View style={styles.paginationContainer}>
+    <View style={[styles.paginationContainer, customStyles]}>
       {data.map((_, index) => (
         <AnimatedDot key={index} index={index} offSetX={offSetX} screenWidth={screenWidth} />
       ))}

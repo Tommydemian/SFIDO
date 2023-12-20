@@ -9,12 +9,13 @@ export const COLORS = {
     ligthFolly: '#FF4775',
     robinEggBlue: '#08D9D6', 
     indigoDye: '#0B526E', 
-    errorRed: '#FF6B6B',
+    errorRed: '#FF4747',
     // TODO: Folly contrast
     successGreen: '#4CAF50', 
     celadon: '#B8E0BA', 
     robinEggBlueDarker: '#07C5C2', 
-    nianza: '#D4ECD6'
+    nianza: '#D4ECD6', 
+    claret: '#840032'
 }
 
 export const SPACING = {

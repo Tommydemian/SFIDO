@@ -10,6 +10,10 @@
         "simulator": true
       }
     },
+    "developmentdevice": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
     "preview": {
       "distribution": "internal"
 
@@ -20,3 +24,5 @@
     "production": {}
   }
 }
+
+

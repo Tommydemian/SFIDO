@@ -1,11 +1,10 @@
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, ImageBackground, Modal, Image } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, TextInput, Modal, Image } from 'react-native'
+import React, { useState } from 'react'
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { MainStackParams } from '../navigation/MainStackNavigator'
 import { Entypo, AntDesign } from '@expo/vector-icons';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import Animated, {useSharedValue, useAnimatedStyle, withSpring} from 'react-native-reanimated'
 
 import { ImagePickerExample } from '../components/ImagePicker'
 import { DemoModal } from '../components/DemoModal'
@@ -28,6 +27,7 @@ export const DemoPreparationScreen: React.FC<NavigationProps> = ({navigation}) =
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState('')
   const [modalSelectedImage, setModalSelectedImage] = useState('')
+  const [videoLink, setVideoLink] = useState('')
 
   const handleModalSelectedImage = (selectedImage: string) => {
     setModalSelectedImage(selectedImage)
@@ -42,8 +42,6 @@ export const DemoPreparationScreen: React.FC<NavigationProps> = ({navigation}) =
 
   // hooks
   const {handleBottomSheetClose, handleBottomSheetOpen, isBottomSheetVisible, bottomSheetRef} = useBottomSheet()
-
-  const {handleWriteMyOwn} = useDemoTextInput()
 
   const {signOutUser} = useAuthContext()
 
@@ -71,6 +69,22 @@ export const DemoPreparationScreen: React.FC<NavigationProps> = ({navigation}) =
         </View> 
         )}
         />
+
+        <View style={styles.videoLinkContainer}>
+          <View>
+        <TouchableOpacity style={styles.cameraButton}>
+            <Entypo name="video" size={SPACING.spacing30} color={COLORS.whiteText} />
+        </TouchableOpacity>
+          </View>
+
+          <TextInput 
+          style={styles.textInput}
+          value={videoLink}
+          placeholder={'https://www.youtube.com/watch?v=MTB7QTUuPaE&ab_channel=MobbDeepVEVO'}
+          onChangeText={(newText) => setVideoLink(newText)}
+          keyboardType='default'
+          />
+        </View> 
          
         {/* Image modal */}
         <DemoImageModal selectedImage={selectedImage} isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible}
@@ -84,7 +98,7 @@ export const DemoPreparationScreen: React.FC<NavigationProps> = ({navigation}) =
         <AntDesign 
         name="infocirlce"
         size={24} 
-        color={COLORS.whiteText}
+        color={COLORS.black}
         onPress={handleBottomSheetOpen}
         />
         </View>
@@ -187,6 +201,44 @@ const styles = StyleSheet.create({
     width: 300, 
     elevation: 5,
     borderRadius: SPACING.spacing10
+  }, 
+  videoLinkContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems:'center',
+    columnGap: SPACING.spacing10,
 
-  }
+  },
+  // Make it generic component
+  cameraButton: {
+    borderRadius: 100,
+    backgroundColor: COLORS.folly, // O el color que prefieras
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: SPACING.spacing10,
+    padding: SPACING.spacing10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+},
+textInput: {
+  borderWidth: 1,
+  borderColor: '#CCCCCC',
+  borderRadius: 10,
+  padding: 15,
+  fontSize: 16,
+  color: '#333333',
+  backgroundColor: '#FFFFFFAA', // Semi-transparente
+  textAlignVertical: 'top',
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5,
+  alignSelf: 'center',
+  marginVertical: 20,
+  flexGrow: 1
+},
 });

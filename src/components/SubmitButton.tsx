@@ -1,5 +1,5 @@
 import { Pressable, PressableProps, Text, StyleSheet, ActivityIndicator } from "react-native"
-import { BORDER, COLORS } from "../../assets/theme"
+import { BORDER, COLORS, SPACING } from "../../assets/theme"
 
 type Props = PressableProps & {
     customStyles?: object;
@@ -30,7 +30,7 @@ export const SubmitButton: React.FC<Props> = ({customStyles,children, isLoading,
 const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: COLORS.folly, 
-    paddingVertical: 15, 
+    paddingVertical: SPACING.spacing10, 
     borderRadius: BORDER.buttons,
     marginVertical: 10, 
   }, 

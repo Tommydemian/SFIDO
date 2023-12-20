@@ -1,6 +1,6 @@
 // React and React-native imports
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, View, TouchableOpacity, Platform } from 'react-native';
+import { SafeAreaView, StyleSheet, View, TouchableOpacity, Platform, KeyboardAvoidingView } from 'react-native';
 
 // External libraries imports
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -21,6 +21,7 @@ import { NunitoText } from '../components/NunitoText';
 import { InputField } from '../components/InputField';
 import { AbsoluteFillBgImage } from '../components/AbsoluteFillBgImage';
 import { AppleButton } from '@invertase/react-native-apple-authentication';
+import { GoogleButton } from '../components/GoogleButton';
 
 // Custom Hooks imports
 import { useDialogVisibility } from '../hooks/useDialogVisibility';
@@ -35,6 +36,11 @@ import { usePasswordVisibility } from '../hooks/usePasswordVisibility';
 import { useAuthContext } from '../contexts/AuthContext';
 import { useGoogleContext } from '../contexts/GoogleContext';
 import { useFormHandler } from '../hooks/useFormHandler';
+
+import { useAppleAuthentication } from '../hooks/useAppleAuthentication';
+
+import { RobotoText } from '../components/RobotoText';
+import { GoogleIcon } from '../components/GoogleIcon';
 
 // Estilos y otros recursos
 
@@ -52,8 +58,9 @@ export const LoginScreen: React.FC<NavigationProps> = ({navigation}) => {
 
   // useGoogleAuth hook:
   const {handleOnGoogleButtonPress} = useGoogleAuthentication()
+  const {handleAppleSignIn} = useAppleAuthentication()
 
-  const {control, emailRules, passwordRules, reset, handleSubmit, clearErrors} = useFormHandler('onSubmit', navigation)
+  const {control, emailRules, passwordRules, reset, handleSubmit} = useFormHandler('onSubmit', navigation)
   
   // function sign in 
   const onSubmit = (data: FormData) => {
@@ -67,7 +74,12 @@ export const LoginScreen: React.FC<NavigationProps> = ({navigation}) => {
      {/* bg image container */}
      <AbsoluteFillBgImage imageKey='authbg'/>
 
+      <KeyboardAvoidingView 
+      style={{flex: 1}}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
       <AuthContainer>
+
 
       <OfficialLogo style={{alignSelf: 'center'}}/>   
       <SfidoWhiteTextLogo style={{marginVertical: 10}} />
@@ -124,40 +136,32 @@ export const LoginScreen: React.FC<NavigationProps> = ({navigation}) => {
 
       <View style={styles.providerButtonsContainer}>
       {/* Apple Login */}
-             <View style={styles.container}>
+      <View style={styles.container}>
       <AppleAuthentication.AppleAuthenticationButton
-        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+        buttonType={AppleAuthentication.AppleAuthenticationButtonType.CONTINUE}
         buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
         cornerRadius={30}
         style={styles.button}
         onPress={async () => {
-          try {
-            const credential = await AppleAuthentication.signInAsync({
-              requestedScopes: [
-                AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                AppleAuthentication.AppleAuthenticationScope.EMAIL,
-              ],
-            });
-            // signed in
-          } catch (e) {
-            if (e.code === 'ERR_REQUEST_CANCELED') {
-              // handle that the user canceled the sign-in flow
-            } else {
-              // handle other errors
-            }
-          }
+          console.log('Im here dude');
+          
+          handleAppleSignIn()
         }}
       />
     </View>
-    <SubmitButton customStyles={styles.providerButton} onPress={handleOnGoogleButtonPress}>
-        <NunitoText customStyles={styles.providerButtonText} type='bold'>Google</NunitoText>
-        
-        </SubmitButton>
+    {/* <SubmitButton customStyles={styles.providerButton} onPress={handleOnGoogleButtonPress}>
+        <RobotoText customStyles={styles.providerButtonText} type='bold' >Continue with Google</RobotoText>
+    </SubmitButton> */}
+
+      <GoogleButton onPress={handleOnGoogleButtonPress} />
+
       </View>
 
       <AuthSwitchLink actionText='Sign Up' navigationText='Dont have an account?' onActionPress={() => navigation.navigate('SignupScreen')}   />
+    
     </AuthContainer>
 
+      </KeyboardAvoidingView>
     </SafeAreaView>
   )
 }
@@ -189,6 +193,7 @@ providerButton: {
 }, 
 providerButtonText: {
   textAlign: 'center',
+  fontSize: 16
 },
 inputIconContainer: {
   flexDirection: 'row', 

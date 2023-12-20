@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, FlatList, Dimensions, ViewToken } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, FlatList, Dimensions, ViewToken, StatusBar } from 'react-native'
 import React, { useEffect, useCallback } from 'react'
 import { data } from '../../assets/constants/data'
 import { OnBoardingPagination } from '../components/OnBoarding/onBoardingPagination'
@@ -9,6 +9,7 @@ import Animated, {
     useAnimatedScrollHandler, 
     useAnimatedRef, 
 } from 'react-native-reanimated'
+import { COLORS } from '../../assets/theme'
 
 
 type onViewableItemsChangedType = {
@@ -41,6 +42,9 @@ export const OnBoardingScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+
+        <StatusBar barStyle={'dark-content'} />
+
         <Animated.FlatList
         ref={flatListRef}
         data={data}
@@ -54,12 +58,13 @@ export const OnBoardingScreen = () => {
         showsHorizontalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged}
         />
-        <View style={styles.bottomContainer}>
         <OnBoardingPagination 
         data={data}
         offSetX={offSetX}
         screenWidth={SCREEN_WIDTH} 
+        customStyles={styles.pagination}
         />
+        <View style={styles.bottomContainer}>
         <OnBoardingNextButton
         flatListRef={flatListRef}
         flatListIndex={flatListIndex}
@@ -73,12 +78,19 @@ export const OnBoardingScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1, 
+        backgroundColor: COLORS.whiteText
     },     
       bottomContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center', 
         marginHorizontal: 20, 
-        marginVertical: 20
+        marginVertical: 20, 
+      }, 
+      pagination: {
+        position: 'absolute', 
+        bottom:  '20%', // Ajusta según sea necesario
+        left: 0,
+        right: 0,
       }
 })

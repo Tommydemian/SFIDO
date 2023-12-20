@@ -57,9 +57,12 @@ export const InputField: React.FC<Props> = ({label, onInputChange, customStyles,
         style={[customStyles, styles.input]}
        {...rest}
        value={value}
+       autoCorrect={false}
+       autoComplete='off'
        onBlur={onBlur}
        secureTextEntry={secureTextEntry}
        placeholder={placeholder}
+       spellCheck={false}
        autoCapitalize={autoCapitalize}
        placeholderTextColor={COLORS.inputGrayText}
        onChangeText={handleChange}
@@ -90,7 +93,6 @@ const styles = StyleSheet.create({
   inputFieldContainer: {
     backgroundColor: COLORS.whiteText, 
     borderRadius: BORDER.buttons, // Aumenta para más redondez
-    paddingVertical: SPACING.spacing10, // Aumenta para más altura
     marginBottom: 10, 
     width: 'auto',
     flex: 1,
@@ -124,6 +126,8 @@ const styles = StyleSheet.create({
     width: '100%',
   }, 
   input: {
-    paddingLeft: 20
+    paddingLeft: 20, 
+    flex: 1, 
+    paddingVertical: SPACING.spacing10, // Aumenta para más altura
   }
 })

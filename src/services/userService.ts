@@ -1,3 +1,4 @@
+// TODO: add error handling
 import firestore from '@react-native-firebase/firestore';
 import { DbUser } from '../types';
 

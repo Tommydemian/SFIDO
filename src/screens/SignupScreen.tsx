@@ -1,6 +1,6 @@
 // React and React-native imports
 import React, { useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 
 // External libraries imports
 
@@ -38,11 +38,11 @@ export const SignupScreen: React.FC<Props> = ({navigation}) => {
 
   // conext hook
   const {user, handleSignUp, errorMessageSignUp, setErrorMessageSignUp } = useAuthContext()
-
+  
   // dialogVisibility hook
   const {isVisible, showDialog, hideDialog} = useDialogVisibility()
 
-  const {control, emailRules, handleSubmit} = useFormHandler('onChange', navigation)
+  const {control, emailRules, handleSubmit, passwordRules} = useFormHandler('onChange', navigation)
 
   // function sign up
   const onSubmit = ({email, password}: FormData) => {
@@ -60,6 +60,11 @@ export const SignupScreen: React.FC<Props> = ({navigation}) => {
       {/* Contenedor de imagen de fondo */}
       <AbsoluteFillBgImage imageKey='authbg'/>
 
+      <KeyboardAvoidingView 
+      style={{flex: 1}}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+
       <AuthContainer>
         <OfficialLogo style={{alignSelf: 'center'}}/>   
         <SfidoWhiteTextLogo style={{marginVertical: 10}} />
@@ -73,7 +78,6 @@ export const SignupScreen: React.FC<Props> = ({navigation}) => {
       autoCapitalize='none'
       control={control}
       placeholder='Email'
-      onInputChange={clearErrorMessage} 
       name='email'
       rules={emailRules}
       setError={setErrorMessageSignUp}
@@ -83,7 +87,6 @@ export const SignupScreen: React.FC<Props> = ({navigation}) => {
       autoCapitalize='none'
       control={control}
       placeholder='Password'
-      onInputChange={clearErrorMessage}
       name='password'
       rules={passwordRules}
       setError={setErrorMessageSignUp}
@@ -100,6 +103,7 @@ export const SignupScreen: React.FC<Props> = ({navigation}) => {
 
       <AuthSwitchLink actionText='Sign In' navigationText='Already have an account?' onActionPress={() => navigation.navigate('LoginScreen')}   />
     </AuthContainer>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
   }
