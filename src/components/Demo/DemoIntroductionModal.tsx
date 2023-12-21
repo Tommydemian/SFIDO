@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
 import React, { useState } from 'react'
 import Modal from "react-native-modal";
-import { BORDER, COLORS } from '../../assets/theme';
-import { NunitoText } from './NunitoText';
-import { SubmitButton } from './SubmitButton';
+import { BORDER, COLORS } from '../../../assets/theme';
+import { NunitoText } from '../NunitoText';
+import { SubmitButton } from '../SubmitButton';
 
-export const DemoModal = () => {
+export const DemoIntroductionModal = () => {
 
  const [isVisible, setIsVisible] = useState(true)
 

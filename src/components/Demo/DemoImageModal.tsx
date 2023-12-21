@@ -1,9 +1,9 @@
 import { Modal, StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
 
-import { SubmitButton } from './SubmitButton'
-import { NunitoText } from './NunitoText'
-import { COLORS, SPACING } from '../../assets/theme'
+import { SubmitButton } from '../SubmitButton'
+import { NunitoText } from '../NunitoText'
+import { COLORS, SPACING } from '../../../assets/theme'
 
 type Props = {
     selectedImage: string;
@@ -17,7 +17,7 @@ export const DemoImageModal: React.FC<Props> = ({ selectedImage, isModalVisible,
         <Modal
            visible={isModalVisible}
            animationType='fade'
-            transparent={true}
+           transparent={true}
         >
             <View style={styles.modalContainer}>
                 {selectedImage && (
@@ -30,11 +30,12 @@ export const DemoImageModal: React.FC<Props> = ({ selectedImage, isModalVisible,
                         <View style={styles.submitButtonContainer}>
                         
                         <SubmitButton 
-                        customStyles={[styles.submitButton, styles.success]}
+                        success
+                        customStyles={[styles.submitButton]}
                         onPress={() => handleModalSelectedImage(selectedImage)}
                         >
                             <NunitoText 
-                            customStyles={styles.submitButtonText}
+                            customStyles={[styles.submitButtonText, styles.successText]}
                             type='bold'
                             >
                                 Confirm
@@ -44,11 +45,12 @@ export const DemoImageModal: React.FC<Props> = ({ selectedImage, isModalVisible,
                         <View style={styles.submitButtonContainer} >
                         
                         <SubmitButton 
-                        customStyles={[styles.submitButton, styles.error]}
+                        error
+                        customStyles={[styles.submitButton]}
                         onPress={() => setIsModalVisible(false)}>
                         <NunitoText 
                         type='bold'
-                        customStyles={styles.submitButtonText}>
+                        customStyles={[styles.submitButtonText, styles.errorText]}>
                             Cancel</NunitoText>
                         </SubmitButton>
                                 </View>
@@ -65,38 +67,40 @@ const styles = StyleSheet.create({
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente para el overlay
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente
     },
     contentContainer: {
         backgroundColor: COLORS.whiteText,
-        padding: SPACING.spacing10,
+        width: '90%', // Ajusta el ancho al 90% de la pantalla
         borderRadius: 10,
-        width: '90%', // Ajusta el ancho al 80% de la pantalla
-        alignSelf: 'center',
+        overflow: 'hidden', // Asegura que todo el contenido se quede dentro de los bordes redondeados
     },
     image: {
-        width: '100%', // Ajusta según sea necesario
-        height: '80%', // Ajusta según sea necesario
-        resizeMode: 'contain',
+        width: '100%', // Ocupa todo el ancho
+        height: undefined, // Altura indefinida para mantener la proporción
+        aspectRatio: 1, // Mantiene la proporción de la imagen
+        resizeMode: 'cover', // Cubre el área asignada
     },
     buttonContainer: {
         flexDirection: 'row',
-        columnGap: SPACING.spacing20,
+        justifyContent: 'space-evenly', // Distribuye los botones uniformemente
+        padding: SPACING.spacing10,
     },
     submitButtonContainer: {
-        flexGrow: 1, 
-    }, 
+        flex: 1, // Cada botón ocupa la mitad del espacio
+    },
     submitButton: {
-        backgroundColor: 'red'
-    }, 
+        marginHorizontal: SPACING.spacing5, // Añade un pequeño margen entre los botones
+        backgroundColor: 'transparent',
+    },
     submitButtonText: {
         textAlign: 'center',
-    }, 
-    success: {
-        backgroundColor: COLORS.successGreen
-    }, 
-    error: {
-        backgroundColor: COLORS.errorRed
+    },
+    successText: {
+        color: COLORS.successGreen
+    },
+    errorText: {
+        color: COLORS.errorRed
     }
-    // ... otros estilos
 });

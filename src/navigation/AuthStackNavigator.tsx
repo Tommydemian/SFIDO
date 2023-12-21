@@ -15,7 +15,7 @@ export const AuthStackNavigator = () => {
   return (
     <Stack.Navigator initialRouteName='LoginScreen'>
       <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown: false}} />
-      <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerTitle: 'Create Account', headerShown: false}} />
+      <Stack.Screen name="SignupScreen" component={SignupScreen} options={{headerTitle: 'Create Account'}} />
       <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} options={{headerTitle: 'Recover Password' }} />
     </Stack.Navigator>
   );

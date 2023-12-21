@@ -1,6 +1,7 @@
 import { TextInput, StyleSheet, Dimensions } from 'react-native';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
-import { useDemoTextInput } from '../hooks/useDemoTextInput';
+import { useDemoTextInput } from '../../hooks/useDemoTextInput';
+import { useDemoMessageContext } from '../../contexts/DemoMessageContext';
 
 type Props = {
   placeholder: string;
@@ -15,7 +16,9 @@ const { width } = Dimensions.get('window');
 
 export const DemoTextInput: React.FC<Props> = ({ placeholder, render }) => {
 
-  const {scale, setText, text, textInputRef, handleWriteMyOwn} = useDemoTextInput('Remember why you started. Every step brings you closer to your goals. Keep pushing forward!')
+  const {scale, textInputRef, handleWriteMyOwn} = useDemoTextInput('Remember why you started. Every step brings you closer to your goals. Keep pushing forward!')
+
+  const {text, setText} = useDemoMessageContext()
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
@@ -36,7 +39,7 @@ export const DemoTextInput: React.FC<Props> = ({ placeholder, render }) => {
         keyboardType='default'
       />
     </Animated.View>
-    {render({ handleWriteMyOwn })}
+    {render({ handleWriteMyOwn})}
     </>
     );
 };

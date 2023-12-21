@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from "react";
-import { Button, View, Alert } from "react-native";
+import { View, Alert } from "react-native";
 import YoutubePlayer, {YoutubeIframeRef} from "react-native-youtube-iframe";
 
 type Props = {
@@ -32,18 +32,6 @@ export const YoutubeVideo: React.FC<Props> = ({videoId}) => {
         videoId={videoId}
         onChangeState={onStateChange}
         volume={100}
-      />
-      <Button
-        title="log details"
-        onPress={() => {
-          playerRef.current?.getCurrentTime().then(
-            currentTime => console.log({currentTime})
-          );
-
-          playerRef.current?.getVolume().then(
-            getVolume => console.log({getVolume})
-          );
-        }}
       />
     </View>
   )

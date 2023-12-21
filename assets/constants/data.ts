@@ -43,5 +43,6 @@ export const data: Data[] = [
 export const bgImages = {
   authbg: require('../../assets/images/authbg.png'),
   demobg: require('../../assets/images/demoshades.png'),
+  demoprepbg: require('../../assets/images/demoprepbg.png'),
   categoriebg: require('../../assets/images/categorybg.png'),
 };

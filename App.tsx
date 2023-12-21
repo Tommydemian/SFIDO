@@ -3,7 +3,6 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { AuthProvider } from './src/contexts/AuthContext';
 import { GoogleProvider } from './src/contexts/GoogleContext'; // Importa GoogleProvider
 import { NavResolutionNavigator } from './src/navigation/NavResolution';
-import { MessageProvider } from './src/contexts/MessageContext';
 import * as Notifications from 'expo-notifications';
 import {navigate, navigationRef} from './src/navigation/navigationRef'
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -36,11 +35,9 @@ export default function App() {
   return (
     <GoogleProvider> 
     <AuthProvider>
-      <MessageProvider>
         <NavigationContainer ref={navigationRef}>
           <NavResolutionNavigator />
         </NavigationContainer>
-      </MessageProvider>
     </AuthProvider>
   </GoogleProvider>
   );

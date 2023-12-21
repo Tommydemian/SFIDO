@@ -19,11 +19,14 @@ export const COLORS = {
 }
 
 export const SPACING = {
+    spacing5: 5,
     spacing10: 10, 
     spacing15:15,
     spacing20: 20,
     spacing25: 25, 
     spacing30: 30,
+    spacing40: 40,
+    spacing50: 50,
 }
 
 export const BORDER = {
