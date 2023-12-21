@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
 const useHandleMessageContent = () => {
-    const [image, setImage] = useState<string | null>('')
-    const [text, setText] = useState('')
+  const [image, setImage] = useState<string | null>("");
+  const [text, setText] = useState("");
 
-    return {image, setImage, text, setText}  
-}
+  return { image, setImage, text, setText };
+};
 
-export default useHandleMessageContent
-
+export default useHandleMessageContent;

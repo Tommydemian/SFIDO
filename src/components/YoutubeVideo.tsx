@@ -1,31 +1,30 @@
 import React, { useState, useCallback, useRef } from "react";
 import { View, Alert } from "react-native";
-import YoutubePlayer, {YoutubeIframeRef} from "react-native-youtube-iframe";
+import YoutubePlayer, { YoutubeIframeRef } from "react-native-youtube-iframe";
 
 type Props = {
-    videoId: string
-}
+  videoId: string;
+};
 
-export const YoutubeVideo: React.FC<Props> = ({videoId}) => {
-    const [playing, setPlaying] = useState(false);
-  
-   const playerRef = useRef<YoutubeIframeRef>(null);
+export const YoutubeVideo: React.FC<Props> = ({ videoId }) => {
+  const [playing, setPlaying] = useState(false);
 
-  const onStateChange = useCallback((state:string) => {
+  const playerRef = useRef<YoutubeIframeRef>(null);
+
+  const onStateChange = useCallback((state: string) => {
     if (state === "ended") {
       setPlaying(false);
       Alert.alert("video has finished playing!");
     }
   }, []);
 
-  
   const togglePlaying = useCallback(() => {
     setPlaying((prev) => !prev);
   }, []);
-  
+
   return (
     <View>
-        <YoutubePlayer
+      <YoutubePlayer
         ref={playerRef}
         height={300}
         play={playing}
@@ -34,5 +33,5 @@ export const YoutubeVideo: React.FC<Props> = ({videoId}) => {
         volume={100}
       />
     </View>
-  )
-}
+  );
+};

@@ -1,11 +1,4 @@
-// import URL from 'url-parse';
-
-// export const extractIdFromYoutubeLink = (uri: string) => {
-//   const url = new URL(uri, true);
-//   return url.query.v;
-// };
-
 export const extractIdFromYoutubeLink = (uri: string) => {
-  const match = uri.match(/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/);
+  const match = uri.match(/^https?:\/\/youtu\.be\/([a-zA-Z0-9_-]{11})/);
   return match ? match[1] : null;
 };

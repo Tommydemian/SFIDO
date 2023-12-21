@@ -13,17 +13,32 @@ type DemoMessageContextType = {
 };
 
 // Creación del contexto
-export const DemoMessageContext = createContext<DemoMessageContextType | undefined>(undefined);
+export const DemoMessageContext = createContext<
+  DemoMessageContextType | undefined
+>(undefined);
 
 // Provider del contexto
-export const DemoMessageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [text, setText] = useState('');
-  const [selectedImage, setSelectedImage] = useState('');
-  const [modalSelectedImage, setModalSelectedImage] = useState('');
-  const [videoId, setVideoId] = useState('');
+export const DemoMessageProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [text, setText] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
+  const [modalSelectedImage, setModalSelectedImage] = useState("");
+  const [videoId, setVideoId] = useState("");
 
   return (
-    <DemoMessageContext.Provider value={{ text, setText, selectedImage, setSelectedImage, modalSelectedImage, setModalSelectedImage, videoId, setVideoId }}>
+    <DemoMessageContext.Provider
+      value={{
+        text,
+        setText,
+        selectedImage,
+        setSelectedImage,
+        modalSelectedImage,
+        setModalSelectedImage,
+        videoId,
+        setVideoId,
+      }}
+    >
       {children}
     </DemoMessageContext.Provider>
   );

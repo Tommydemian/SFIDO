@@ -1,5 +1,6 @@
-import * as AppleAuthentication from 'expo-apple-authentication';
-import { View, StyleSheet } from 'react-native';
+import React from "react";
+import * as AppleAuthentication from "expo-apple-authentication";
+import { View, StyleSheet } from "react-native";
 
 export function AppleButton() {
   return (
@@ -10,8 +11,8 @@ export function AppleButton() {
         cornerRadius={5}
         style={styles.button}
         onPress={async () => {
-            console.log('done');
-            
+          console.log("done");
+
           try {
             const credential = await AppleAuthentication.signInAsync({
               requestedScopes: [
@@ -21,7 +22,7 @@ export function AppleButton() {
             });
             // signed in
           } catch (e) {
-            if (e.code === 'ERR_REQUEST_CANCELED') {
+            if (e.code === "ERR_REQUEST_CANCELED") {
               // handle that the user canceled the sign-in flow
             } else {
               // handle other errors
@@ -36,8 +37,8 @@ export function AppleButton() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   button: {
     width: 200,

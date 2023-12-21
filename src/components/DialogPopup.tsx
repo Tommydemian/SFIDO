@@ -1,47 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Button } from 'react-native';
-import Modal from 'react-native-modal';
-import { COLORS } from '../../assets/theme';
-import { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { useAuthContext } from '../hooks/useAuthContext';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  Button,
+} from "react-native";
+import Modal from "react-native-modal";
+import { COLORS } from "../../assets/theme";
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 type Props = {
-  visible: boolean
-  email: string
-  password: string
-  setPassword: React.Dispatch<React.SetStateAction<string>>
-  googleCredential: FirebaseAuthTypes.AuthCredential
-}
+  visible: boolean;
+  email: string;
+  password: string;
+  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  googleCredential: FirebaseAuthTypes.AuthCredential;
+};
 
-export const DialogPopup: React.FC<Props> = ({visible, email, password, setPassword, googleCredential}) => {
+export const DialogPopup: React.FC<Props> = ({
+  visible,
+  email,
+  password,
+  setPassword,
+  googleCredential,
+}) => {
   const [isModalVisible, setModalVisible] = useState(visible);
 
-  const {linkGoogleAccount} = useAuthContext()
+  const { linkGoogleAccount } = useAuthContext();
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
-  }
+  };
 
   const handlePassword = (text: string) => {
-    setPassword(text)
-  }
+    setPassword(text);
+  };
 
   useEffect(() => {
     setModalVisible(visible);
-    console.log(isModalVisible, 'here babe');
+    console.log(isModalVisible, "here babe");
   }, [visible]);
 
   const handleLinkWithGoogle = () => {
     linkGoogleAccount(googleCredential, email, password)
-    .then((res) => {
-      console.log(res, 'atalk to me');
-      
-    }).catch((err) => {
-      console.log(err);
-      
-    })
-  }
-  
+      .then((res) => {
+        console.log(res, "atalk to me");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <View style={styles.container}>
@@ -60,14 +71,14 @@ export const DialogPopup: React.FC<Props> = ({visible, email, password, setPassw
         <View style={styles.modalContent}>
           <Text>Hello {email}!</Text>
           <Text style={styles.infoText}>
-          Please enter your password to link your account with Google.
+            Please enter your password to link your account with Google.
           </Text>
 
-          <TextInput 
-          autoCapitalize='none'
-          placeholder='password'
-          secureTextEntry={true}
-          onChangeText={handlePassword}
+          <TextInput
+            autoCapitalize="none"
+            placeholder="password"
+            secureTextEntry={true}
+            onChangeText={handlePassword}
           />
 
           <Button title="Link Account" onPress={handleLinkWithGoogle} />
@@ -80,9 +91,9 @@ export const DialogPopup: React.FC<Props> = ({visible, email, password, setPassw
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.blackBg
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: COLORS.blackBg,
   },
   // modal: {
   //   justifyContent: 'center', // Alinea el modal a un lado
@@ -90,15 +101,15 @@ const styles = StyleSheet.create({
   //   backgroundColor: COLORS.orangeWeb
   // },
   modalContent: {
-    width: '80%', // O el ancho que prefieras
-    height: '40%', // O la altura que prefieras
+    width: "80%", // O el ancho que prefieras
+    height: "40%", // O la altura que prefieras
     backgroundColor: COLORS.whiteText,
     padding: 22,
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    justifyContent: "space-around",
+    alignItems: "center",
     borderRadius: 4,
     borderColor: COLORS.silver,
-    alignSelf: 'center', // Asegúrate de que se centre en el modal
+    alignSelf: "center", // Asegúrate de que se centre en el modal
   },
   modalText: {
     color: COLORS.textBlack, // Color del texto dentro del modal
@@ -109,8 +120,7 @@ const styles = StyleSheet.create({
   infoText: {
     color: COLORS.textBlack, // Color del texto
     fontSize: 16, // Tamaño de la fuente
-    textAlign: 'center', // Alineación del texto
+    textAlign: "center", // Alineación del texto
     marginVertical: 10, // Margen vertical para separarlo de otros elementos
   },
 });
-

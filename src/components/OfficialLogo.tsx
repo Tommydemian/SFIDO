@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 import Svg, {
   SvgProps,
   G,
@@ -6,14 +6,9 @@ import Svg, {
   Defs,
   LinearGradient,
   Stop,
-} from "react-native-svg"
+} from "react-native-svg";
 export const OfficialLogo = (props: SvgProps) => (
-  <Svg
-    width={127}
-    height={173}
-    fill="none"
-    {...props}
-  >
+  <Svg width={127} height={173} fill="none" {...props}>
     <G filter="url(#a)">
       <Path
         fill="#F8F1F3"
@@ -90,5 +85,4 @@ export const OfficialLogo = (props: SvgProps) => (
       </LinearGradient>
     </Defs>
   </Svg>
-)
-
+);
