@@ -1,7 +1,7 @@
 import React from "react";
 import { categoryIcons } from "../../../assets/constants/data";
-import { COLORS } from "../../../assets/theme";
 import { CustomIcon } from "../CustomIcon";
+import { COLORS } from "../../../assets/theme";
 
 type Props = {
   title: string;

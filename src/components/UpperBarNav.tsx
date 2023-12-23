@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   Text,
@@ -6,12 +6,12 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
-} from "react-native";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
-import { COLORS } from "../../assets/theme";
-import { useAuthContext } from "../contexts/AuthContext";
+} from 'react-native';
+import { Ionicons, AntDesign } from '@expo/vector-icons';
+import { COLORS } from '../../assets/theme';
+import { useAuthContext } from '../contexts/AuthContext';
 
-const screenHeight = Dimensions.get("window").height;
+const screenHeight = Dimensions.get('window').height;
 
 export const UpperBarNav = () => {
   const { user } = useAuthContext();
@@ -28,7 +28,7 @@ export const UpperBarNav = () => {
           <Text style={styles.secondaryText}>Texto Secundario</Text>
         </View>
         <View style={styles.iconsContainer}>
-          <TouchableOpacity onPress={() => console.log("Icono presionado")}>
+          <TouchableOpacity onPress={() => console.log('Icono presionado')}>
             <AntDesign name="setting" size={24} color={COLORS.orangeWeb} />
           </TouchableOpacity>
         </View>
@@ -40,12 +40,12 @@ export const UpperBarNav = () => {
 const styles = StyleSheet.create({
   safeArea: {
     backgroundColor: COLORS.blackBg,
-    width: "100%",
+    width: '100%',
   },
   container: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 10,
     height: screenHeight * 0.1,
     // Otros estilos que necesites
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     // Otros estilos para el texto secundario
   },
   iconsContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     // Estilos para el contenedor de iconos
   },
 });

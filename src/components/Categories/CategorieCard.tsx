@@ -1,11 +1,5 @@
-import {
-  StyleSheet,
-  Text,
-  Pressable,
-  PressableProps,
-  View,
-} from "react-native";
-import React, { useState } from "react";
+import React from "react";
+import { StyleSheet, Pressable, PressableProps, View } from "react-native";
 import { COLORS, SPACING } from "../../../assets/theme";
 import Animated, {
   useAnimatedStyle,

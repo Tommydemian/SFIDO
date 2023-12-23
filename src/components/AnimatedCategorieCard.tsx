@@ -1,17 +1,6 @@
-import {
-  StyleSheet,
-  Text,
-  Pressable,
-  PressableProps,
-  View,
-} from "react-native";
-import React from "react";
-import { COLORS } from "../../assets/theme";
-import Animated, {
-  SharedValue,
-  useAnimatedStyle,
-  interpolate,
-} from "react-native-reanimated";
+import { StyleSheet, Text, Pressable, PressableProps } from 'react-native';
+import React from 'react';
+import { COLORS } from '../../assets/theme';
 
 type Props = PressableProps & {
   title: string;
@@ -39,7 +28,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     backgroundColor: COLORS.whiteText, // Fondo claro para contraste
     borderRadius: 10,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -49,7 +38,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: COLORS.black, // Texto oscuro para contraste
     marginBottom: 5,
   },

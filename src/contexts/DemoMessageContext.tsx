@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext } from "react";
+import { COLORS } from "../../assets/theme";
 
 // Definición del tipo para el contexto
 type DemoMessageContextType = {
@@ -10,6 +11,8 @@ type DemoMessageContextType = {
   setModalSelectedImage: React.Dispatch<React.SetStateAction<string>>;
   videoId: string;
   setVideoId: React.Dispatch<React.SetStateAction<string>>;
+  textColor: string;
+  setTextColor: React.Dispatch<React.SetStateAction<string>>;
 };
 
 // Creación del contexto
@@ -25,6 +28,7 @@ export const DemoMessageProvider: React.FC<{ children: React.ReactNode }> = ({
   const [selectedImage, setSelectedImage] = useState("");
   const [modalSelectedImage, setModalSelectedImage] = useState("");
   const [videoId, setVideoId] = useState("");
+  const [textColor, setTextColor] = useState(COLORS.blackSecondaryText); // Color por defecto
 
   return (
     <DemoMessageContext.Provider
@@ -37,6 +41,8 @@ export const DemoMessageProvider: React.FC<{ children: React.ReactNode }> = ({
         setModalSelectedImage,
         videoId,
         setVideoId,
+        textColor,
+        setTextColor,
       }}
     >
       {children}

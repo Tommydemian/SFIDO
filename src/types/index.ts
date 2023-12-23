@@ -1,4 +1,4 @@
-import { FieldValue, Timestamp } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 export type Message = {
@@ -52,4 +52,9 @@ export type DraftUserCredentials = FirebaseAuthTypes.UserCredential & {
 export type FormData = {
   email: string;
   password: string;
+};
+
+// BottomSheet logic
+export type ActiveBottomSheet = {
+  activeOne: "colorPicker" | "inspiration";
 };

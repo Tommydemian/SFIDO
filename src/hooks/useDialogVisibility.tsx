@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react';
 
 export const useDialogVisibility = () => {
   const [isVisible, setIsVisible] = useState(false);

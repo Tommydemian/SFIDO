@@ -1,7 +1,7 @@
-import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
-import { COLORS, SPACING } from "../../assets/theme";
-import { NunitoText } from "./Fonts/NunitoText";
+import React from 'react';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { COLORS, SPACING } from '../../assets/theme';
+import { NunitoText } from './Fonts/NunitoText';
 
 type Props = {
   navigationText: string;
@@ -32,9 +32,9 @@ export const AuthSwitchLink: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     columnGap: SPACING.spacing20,
     // otros estilos necesarios
   },

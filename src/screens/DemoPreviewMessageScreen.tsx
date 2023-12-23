@@ -11,8 +11,9 @@ import { COLORS } from "../../assets/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { YoutubeVideo } from "../components/YoutubeVideo";
 import { DemoStackParams } from "../navigation/DemoStackNavigator";
-import { CustomBottomSheet } from "../components/CustomBottomSheet";
+//import { CustomBottomSheet } from "../components/CustomNeedInspirationBottomSheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useDemoMessageContext } from "../contexts/DemoMessageContext";
 
 type NavigationProps = NativeStackScreenProps<
   DemoStackParams,
@@ -24,6 +25,7 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
   navigation,
 }) => {
   const { image, text, videoId } = route.params;
+  const { textColor } = useDemoMessageContext();
 
   useEffect(() => {
     console.log(videoId, "VIDEOID");
@@ -50,7 +52,9 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
         <AbsoluteFillBgImage imageKey="demobg" />
         <OnBoardingContainer>
           <View style={styles.quoteBodyContainer}>
-            <YungJakesText customStyles={styles.quoteBody}>
+            <YungJakesText
+              customStyles={[styles.quoteBody, { color: textColor }]}
+            >
               {text}
             </YungJakesText>
           </View>
@@ -59,11 +63,11 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
             <Text>Sign out</Text>
           </TouchableOpacity>
 
-          <CustomBottomSheet>
+          {/* <CustomBottomSheet>
             <View style={styles.videoContainer}>
               <YoutubeVideo videoId={videoId!} />
             </View>
-          </CustomBottomSheet>
+          </CustomBottomSheet> */}
         </OnBoardingContainer>
       </View>
     </GestureHandlerRootView>

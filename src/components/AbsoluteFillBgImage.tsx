@@ -1,6 +1,6 @@
-import { StyleSheet, View, Image } from "react-native";
-import React from "react";
-import { bgImages } from "../../assets/constants/data";
+import { StyleSheet, View, Image } from 'react-native';
+import React from 'react';
+import { bgImages } from '../../assets/constants/data';
 
 type Props = {
   imageKey: keyof typeof bgImages; // Esto asegura que sólo se puedan usar claves válidas

@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View, Button, TextInput } from "react-native";
-import React, { useState } from "react";
-import Modal from "react-native-modal";
-import { COLORS } from "../../assets/theme";
+import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import Modal from 'react-native-modal';
+import { COLORS } from '../../assets/theme';
 
 type Props = {
   isModalVisible: boolean;
@@ -42,10 +42,10 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: COLORS.whiteText,
     borderRadius: 30,
-    justifyContent: "space-around",
+    justifyContent: 'space-around',
   },
   hideModalButton: {
-    marginTop: "auto",
-    alignSelf: "flex-end",
+    marginTop: 'auto',
+    alignSelf: 'flex-end',
   },
 });

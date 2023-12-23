@@ -1,8 +1,8 @@
-import * as AppleAuthentication from "expo-apple-authentication";
-import { signInWithApple } from "../services/appleServices";
-import { addUserToFirestore } from "../services/userService";
-import { type DbUser } from "../types";
-import firestore from "@react-native-firebase/firestore";
+import * as AppleAuthentication from 'expo-apple-authentication';
+import { signInWithApple } from '../services/appleServices';
+import { addUserToFirestore } from '../services/userService';
+import { type DbUser } from '../types';
+import firestore from '@react-native-firebase/firestore';
 
 export const useAppleAuthentication = () => {
   const handleAppleSignIn = async () => {
@@ -15,16 +15,16 @@ export const useAppleAuthentication = () => {
       });
       if (credential.identityToken)
         signInWithApple({ identityToken: credential.identityToken });
-      console.log("credential", credential);
+      console.log('credential', credential);
 
       // create user based on Apple response
       const newUser: DbUser = {
-        email: credential.email || "No Email provided",
+        email: credential.email || 'No Email provided',
         uid: credential.user,
         insertedAt: firestore.Timestamp.now().toDate(),
         quoteIndex: 1,
         lastQuoteUpdate: new Date().toLocaleDateString(),
-        profilePic: "", // Apple does not provide photo URL
+        profilePic: '', // Apple does not provide photo URL
         isGoogleAccountLinked: false,
       };
 
@@ -33,8 +33,8 @@ export const useAppleAuthentication = () => {
 
       // signed in
     } catch (e) {
-      if (e instanceof Error && "code" in e)
-        if (e.code === "ERR_REQUEST_CANCELED") {
+      if (e instanceof Error && 'code' in e)
+        if (e.code === 'ERR_REQUEST_CANCELED') {
           // handle that the user canceled the sign-in flow
         } else {
           // handle other errors

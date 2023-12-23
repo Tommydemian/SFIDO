@@ -17,9 +17,9 @@ export const NunitoText: React.FC<Props> = ({
   type = "regular",
 }) => {
   const [fontsLoaded] = useFonts({
-    NunitoRegular: require("../../assets/fonts/Nunito-Regular.ttf"),
-    NunitoSemiBold: require("../../assets/fonts/Nunito-SemiBold.ttf"),
-    NunitoBold: require("../../assets/fonts/Nunito-Bold.ttf"),
+    NunitoRegular: require("../../../assets/fonts/Nunito-Regular.ttf"),
+    NunitoSemiBold: require("../../../assets/fonts/Nunito-SemiBold.ttf"),
+    NunitoBold: require("../../../assets/fonts/Nunito-Bold.ttf"),
   });
 
   if (!fontsLoaded) {

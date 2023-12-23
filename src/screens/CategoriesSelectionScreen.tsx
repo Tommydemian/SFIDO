@@ -1,38 +1,38 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   StyleSheet,
   SafeAreaView,
   StatusBar,
   Dimensions,
-} from "react-native";
+} from 'react-native';
 
 // External libraries imports
-import auth from "@react-native-firebase/auth";
-import Animated from "react-native-reanimated";
-import Spinner from "react-native-loading-spinner-overlay";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { MainStackParams } from "../navigation/MainStackNavigator";
+import auth from '@react-native-firebase/auth';
+import Animated from 'react-native-reanimated';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MainStackParams } from '../navigation/MainStackNavigator';
 
 // Custom Component imports
-import { CategorieCard } from "../components/Categories/CategorieCard";
-import { SubmitButton } from "../components/SubmitButton";
-import { NunitoText } from "../components/Fonts/NunitoText";
-import { CategorieCardIcon } from "../components/Categories/CategorieCardIcon";
-import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContainer";
-import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
+import { CategorieCard } from '../components/Categories/CategorieCard';
+import { SubmitButton } from '../components/SubmitButton';
+import { NunitoText } from '../components/Fonts/NunitoText';
+import { CategorieCardIcon } from '../components/Categories/CategorieCardIcon';
+import { OnBoardingContainer } from '../components/OnBoarding/OnBoardingContainer';
+import { AbsoluteFillBgImage } from '../components/AbsoluteFillBgImage';
 
 // Custom Hooks imports
-import { useHandleCategories } from "../hooks/useHandleCategories";
+import { useHandleCategories } from '../hooks/useHandleCategories';
 
 // types and resources
-import { COLORS, FONT_SIZE } from "../../assets/theme";
+import { COLORS, FONT_SIZE } from '../../assets/theme';
 
-const screenHeight = Dimensions.get("screen").height;
+const screenHeight = Dimensions.get('screen').height;
 
 export type CategoriesNavigationProps = NativeStackScreenProps<
   MainStackParams,
-  "CategoriesSelectionScreen"
+  'CategoriesSelectionScreen'
 >;
 
 export const CategoriesSelectionScreen: React.FC<CategoriesNavigationProps> = ({
@@ -123,14 +123,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: FONT_SIZE.title,
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 10,
     // Estilos adicionales
   },
   subtitle: {
     fontSize: 16,
     color: COLORS.grayText,
-    textAlign: "center",
+    textAlign: 'center',
   },
   categoriesContainer: {
     height: screenHeight * 0.7,
@@ -146,10 +146,10 @@ const styles = StyleSheet.create({
   ctaButton: {
     padding: 15,
     borderRadius: 10,
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 30,
   },
   ctaButtonText: {
-    textAlign: "center",
+    textAlign: 'center',
   },
 });

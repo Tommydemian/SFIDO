@@ -1,6 +1,6 @@
-import React from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { COLORS } from "../../assets/theme";
+import React from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import { COLORS } from '../../assets/theme';
 
 export const OrDivider = () => {
   return (
@@ -14,8 +14,8 @@ export const OrDivider = () => {
 
 const styles = StyleSheet.create({
   orDividerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginVertical: 10,
   },
   orDividerLine: {

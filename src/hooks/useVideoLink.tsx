@@ -12,15 +12,23 @@ export const useVideoLink = () => {
   const [error, setError] = useState("");
   const [isTouched, setIsTouched] = useState(false);
 
-  const validateLink = (link: string) => {
-    return /^https?:\/\/youtu\.be\/[a-zA-Z0-9_-]{11}$/.test(link);
+  const validateYouTubeLink = (link: string) => {
+    const patterns = [
+      /^https?:\/\/youtu\.be\/[a-zA-Z0-9_-]+(\?.*)?$/, // Formato corto youtu.be
+      /^https?:\/\/www\.youtube\.com\/watch\?v=[a-zA-Z0-9_-]+(&.*)?$/, // Formato completo
+      /^https?:\/\/youtube\.com\/watch\?v=[a-zA-Z0-9_-]+(&.*)?$/, // Sin www
+      /^https?:\/\/m\.youtube\.com\/watch\?v=[a-zA-Z0-9_-]+(&.*)?$/, // Versión móvil
+    ];
+
+    return patterns.some((pattern) => pattern.test(link));
   };
 
   useEffect(() => {
     if (isTouched) {
       setError(""); // Reset error state on each change
-      const valid = validateLink(videoLink);
+      const valid: boolean = validateYouTubeLink(videoLink);
       setIsLinkValid(valid);
+      console.log(isLinkValid, "es valido");
 
       if (valid) {
         const id = extractIdFromYoutubeLink(videoLink);
@@ -37,9 +45,9 @@ export const useVideoLink = () => {
   }, [videoLink, setVideoId, videoId, isTouched]);
 
   useEffect(() => {
-    console.log(isTouched);
-    console.log(isLinkValid);
-  }, [isTouched]);
+    console.log("istouched", isTouched);
+    console.log("isLinkvalid:", isLinkValid);
+  }, [isTouched, isLinkValid]);
 
   const handleInputChange = (newText: string) => {
     setIsTouched(true); // Marcar como tocado cuando el usuario cambia el texto

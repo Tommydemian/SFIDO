@@ -1,13 +1,13 @@
-import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { HomeScreen } from "../screens/HomeScreen";
-import { UserProfileScreen } from "../screens/UserProfileScreen";
-import { ConversationsScreen } from "../screens/ConversationsScreen";
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { HomeScreen } from '../screens/HomeScreen';
+import { UserProfileScreen } from '../screens/UserProfileScreen';
+import { ConversationsScreen } from '../screens/ConversationsScreen';
 
-import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
-import { InspirationScreen } from "../screens/InspirationScreen";
-import { Entypo } from "@expo/vector-icons";
+import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { InspirationScreen } from '../screens/InspirationScreen';
+import { Entypo } from '@expo/vector-icons';
 
 export type TabNavigatorParams = {
   HomeScreen: undefined;

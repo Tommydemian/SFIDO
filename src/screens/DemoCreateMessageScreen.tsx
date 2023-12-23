@@ -1,13 +1,12 @@
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
-  Text,
   View,
   TouchableOpacity,
   Image,
   Keyboard,
 } from "react-native";
-import React, { useState, useEffect } from "react";
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -19,7 +18,8 @@ import { DemoIntroductionModal } from "../components/Demo/DemoIntroductionModal"
 import { SubmitButton } from "../components/SubmitButton";
 import { NunitoText } from "../components/Fonts/NunitoText";
 import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContainer";
-import { CustomBottomSheet } from "../components/CustomBottomSheet";
+import { CustomNeedInspirationBottomSheet } from "../components/CustomNeedInspirationBottomSheet";
+import { CustomColorPickerBottomSheet } from "../components/CustomColorPickerBottomSheet";
 import { DemoTextInput } from "../components/Demo/DemoTextInput";
 import { DemoImageModal } from "../components/Demo/DemoImageModal";
 import { VideoLinkInput } from "../components/VideoLinkInput";
@@ -30,7 +30,7 @@ import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
 import { useAuthContext } from "../contexts/AuthContext";
 import { useBottomSheet } from "../hooks/useBottomSheet";
 
-import { BORDER, COLORS, SPACING } from "../../assets/theme";
+import { COLORS, SPACING } from "../../assets/theme";
 
 import { useDemoMessageContext } from "../contexts/DemoMessageContext";
 import { DemoStackParams } from "../navigation/DemoStackNavigator";
@@ -71,6 +71,7 @@ export const DemoCreateMessageScreen: React.FC<NavigationProps> = ({
     handleBottomSheetOpen,
     isBottomSheetVisible,
     bottomSheetRef,
+    activeBottomSheet,
   } = useBottomSheet();
 
   //const {signOutUser} = useAuthContext()
@@ -90,6 +91,9 @@ export const DemoCreateMessageScreen: React.FC<NavigationProps> = ({
           <OnBoardingContainer>
             <DemoTextInput
               placeholder="Write what you need to listen..."
+              onPress={() =>
+                handleBottomSheetOpen({ activeOne: "colorPicker" })
+              }
               render={({ handleWriteMyOwn }) => {
                 return (
                   <View style={styles.actionsContainer}>
@@ -108,7 +112,13 @@ export const DemoCreateMessageScreen: React.FC<NavigationProps> = ({
                           </NunitoText>
                         </SubmitButton>
                         {/* Need inspiration */}
-                        <DemoNeedInspiration onPress={handleBottomSheetOpen} />
+                        <DemoNeedInspiration
+                          onPress={() =>
+                            handleBottomSheetOpen({
+                              activeOne: "inspiration",
+                            })
+                          }
+                        />
                       </View>
                     </View>
 
@@ -149,7 +159,7 @@ export const DemoCreateMessageScreen: React.FC<NavigationProps> = ({
                   navigation.navigate("DemoPreviewMessageScreen", {
                     image: modalSelectedImage,
                     text: text,
-                    videoId: "fnGcsc4Wrr0",
+                    videoId: videoId,
                   })
                 }
               >
@@ -164,28 +174,20 @@ export const DemoCreateMessageScreen: React.FC<NavigationProps> = ({
           </OnBoardingContainer>
         </SafeAreaView>
 
-        {isBottomSheetVisible && (
-          <CustomBottomSheet ref={bottomSheetRef}>
-            <View style={styles.bottomSheetContentContainer}>
-              <TouchableOpacity
-                style={styles.bottomSheetCloseButton}
-                onPress={handleBottomSheetClose}
-              >
-                <CustomIcon
-                  library="AntDesign"
-                  name="closecircleo"
-                  size={24}
-                  color={COLORS.blackSecondaryText}
-                />
-              </TouchableOpacity>
-              <NunitoText customStyles={styles.bottomSheetContent}>
-                If you're feeling a bit lost or just unsure what to write, visit
-                our [Inspiration Section] to find famous quotes that might
-                motivate you.
-              </NunitoText>
-            </View>
-          </CustomBottomSheet>
-        )}
+        {isBottomSheetVisible &&
+          activeBottomSheet?.activeOne === "inspiration" && (
+            <CustomNeedInspirationBottomSheet
+              ref={bottomSheetRef}
+              onPress={handleBottomSheetClose}
+            />
+          )}
+        {isBottomSheetVisible &&
+          activeBottomSheet?.activeOne === "colorPicker" && (
+            <CustomColorPickerBottomSheet
+              ref={bottomSheetRef}
+              onPress={handleBottomSheetClose}
+            />
+          )}
       </TouchableOpacity>
     </GestureHandlerRootView>
   );
@@ -211,17 +213,6 @@ const styles = StyleSheet.create({
   continueButtonText: {
     color: "white",
     fontSize: 18,
-  },
-  bottomSheetContent: {
-    color: COLORS.blackSecondaryText,
-    fontSize: 18,
-  },
-  bottomSheetContentContainer: {
-    padding: SPACING.spacing20,
-  },
-  bottomSheetCloseButton: {
-    alignSelf: "flex-end",
-    margin: SPACING.spacing10,
   },
   submitButtonContainer: {
     width: "60%",

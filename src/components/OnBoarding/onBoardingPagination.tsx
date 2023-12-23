@@ -1,13 +1,13 @@
-import { StyleSheet, View } from "react-native";
-import React from "react";
-import { Data } from "../../../assets/constants/data";
+import { StyleSheet, View } from 'react-native';
+import React from 'react';
+import { Data } from '../../../assets/constants/data';
 import Animated, {
   useAnimatedStyle,
   interpolate,
   Extrapolate,
-} from "react-native-reanimated";
-import { COLORS } from "../../../assets/theme";
-import { ViewProps } from "react-native-svg/lib/typescript/fabric/utils";
+} from 'react-native-reanimated';
+import { COLORS } from '../../../assets/theme';
+import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
 
 type Props = ViewProps & {
   data: Data[];
@@ -79,10 +79,10 @@ export const OnBoardingPagination: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   paginationContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     height: 40,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   dots: {
     width: 10,

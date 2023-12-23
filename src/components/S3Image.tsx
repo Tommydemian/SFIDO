@@ -1,12 +1,12 @@
-import { StyleSheet, Text, View, Image, ImageProps } from "react-native";
-import React, { useMemo } from "react";
+import { StyleSheet, Text, View, Image, ImageProps } from 'react-native';
+import React, { useMemo } from 'react';
 
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-const bucket = "sfido";
+const bucket = 'sfido';
 const URL = process.env.SERVERLESS_HANDLER_URL;
 
-type Props = Omit<ImageProps, "source"> & {
+type Props = Omit<ImageProps, 'source'> & {
   imgKey: string;
 };
 
@@ -19,12 +19,12 @@ export const S3Image: React.FC<Props> = ({ imgKey, ...rest }) => {
         resize: {
           width: 500,
           height: 1000,
-          fit: "cover",
+          fit: 'cover',
         },
       },
     });
 
-    const encoded = Buffer.from(imageRequest).toString("base64");
+    const encoded = Buffer.from(imageRequest).toString('base64');
     return `${URL}/${encoded}`;
   }, [imgKey]);
 

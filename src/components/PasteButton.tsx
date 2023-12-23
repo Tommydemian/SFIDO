@@ -1,8 +1,8 @@
-import React from "react";
-import { TouchableOpacity, TouchableOpacityProps } from "react-native";
-import { CustomIcon } from "./CustomIcon";
-import { COLORS } from "../../assets/theme";
-import * as Clipboard from "expo-clipboard";
+import React from 'react';
+import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
+import { CustomIcon } from './CustomIcon';
+import { COLORS } from '../../assets/theme';
+import * as Clipboard from 'expo-clipboard';
 
 type Props = TouchableOpacityProps & {
   customStyles?: object;

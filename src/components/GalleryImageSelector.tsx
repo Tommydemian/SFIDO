@@ -1,11 +1,11 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 
-import { DemoIconButton } from "./Demo/DemoIconButton";
-import { CustomIcon } from "./CustomIcon";
-import * as ImagePicker from "expo-image-picker";
+import { DemoIconButton } from './Demo/DemoIconButton';
+import { CustomIcon } from './CustomIcon';
+import * as ImagePicker from 'expo-image-picker';
 
-import { COLORS, SPACING } from "../../assets/theme";
+import { COLORS, SPACING } from '../../assets/theme';
 
 type Props = {
   onImageSelected: (uri: string) => void;
@@ -15,8 +15,8 @@ export const GalleryImageSelector: React.FC<Props> = ({ onImageSelected }) => {
   const pickImage = async () => {
     // Request media library permissions
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      alert("Sorry, we need permissions to access your photos!");
+    if (status !== 'granted') {
+      alert('Sorry, we need permissions to access your photos!');
       return;
     }
 
@@ -50,11 +50,11 @@ export const GalleryImageSelector: React.FC<Props> = ({ onImageSelected }) => {
 
 const styles = StyleSheet.create({
   imagePickerContainer: {
-    alignSelf: "flex-start",
-    alignItems: "center",
-    justifyContent: "center",
+    alignSelf: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginVertical: SPACING.spacing10,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,

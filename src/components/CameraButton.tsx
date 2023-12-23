@@ -1,8 +1,8 @@
-import { StyleSheet, Pressable, PressableProps } from "react-native";
-import React, { useState } from "react";
+import { StyleSheet, Pressable, PressableProps } from 'react-native';
+import React, { useState } from 'react';
 
-import { Entypo } from "@expo/vector-icons";
-import { COLORS, SPACING } from "../../assets/theme";
+import { Entypo } from '@expo/vector-icons';
+import { COLORS, SPACING } from '../../assets/theme';
 
 export const CameraButton: React.FC<PressableProps> = ({ ...rest }) => {
   const [isPressed, setIsPressed] = useState(false);
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     padding: SPACING.spacing15,
     borderRadius: 100,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

@@ -1,13 +1,13 @@
-import React from "react";
-import { SubmitButton } from "./SubmitButton";
-import { InputField } from "./InputField";
-import { COLORS } from "../../assets/theme";
-import { StyleSheet } from "react-native";
-import { useForm } from "react-hook-form";
-import { FormData } from "../types";
-import { MaterialIcons, Entypo, AntDesign } from "@expo/vector-icons";
-import { useEffect } from "react";
-import { NunitoText } from "./Fonts/NunitoText";
+import React from 'react';
+import { SubmitButton } from './SubmitButton';
+import { InputField } from './InputField';
+import { COLORS } from '../../assets/theme';
+import { StyleSheet } from 'react-native';
+import { useForm } from 'react-hook-form';
+import { FormData } from '../types';
+import { MaterialIcons, Entypo, AntDesign } from '@expo/vector-icons';
+import { useEffect } from 'react';
+import { NunitoText } from './Fonts/NunitoText';
 
 type Props = {
   children?: React.ReactNode;
@@ -36,7 +36,7 @@ export const AuthForm: React.FC<Props> = ({
   return (
     <>
       <InputField
-        rules={{ required: "Email is required" }}
+        rules={{ required: 'Email is required' }}
         name="email"
         control={control}
         placeholder="jonhdoe@gmail.com"
@@ -47,7 +47,7 @@ export const AuthForm: React.FC<Props> = ({
       />
 
       <InputField
-        rules={{ required: "Password is required" }}
+        rules={{ required: 'Password is required' }}
         name="password"
         setVisibility
         control={control}

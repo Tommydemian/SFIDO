@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import { Platform } from "react-native";
+import { useState } from 'react';
+import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { Platform } from 'react-native';
 
-type PickerMode = "date" | "time";
+type PickerMode = 'date' | 'time';
 
 export const useDateTimePicker = () => {
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
-  const [mode, setMode] = useState<PickerMode>("date");
-  const [res, setRes] = useState("");
+  const [mode, setMode] = useState<PickerMode>('date');
+  const [res, setRes] = useState('');
 
   const setModeAndShowPicker = (currentMode: PickerMode) => {
     setShowPicker(true);
@@ -17,19 +17,19 @@ export const useDateTimePicker = () => {
 
   const handleChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
     const currentDate = selectedDate || date;
-    setShowPicker(Platform.OS === "ios");
+    setShowPicker(Platform.OS === 'ios');
     setDate(currentDate);
 
     const tempDate = new Date(currentDate);
     const fullDate =
       tempDate.getDate() +
-      "/" +
+      '/' +
       tempDate.getMonth() +
-      "/" +
+      '/' +
       tempDate.getFullYear();
     const fullTime =
-      "Hour: " + tempDate.getHours() + ":" + tempDate.getMinutes();
-    setRes(fullDate + " " + fullTime);
+      'Hour: ' + tempDate.getHours() + ':' + tempDate.getMinutes();
+    setRes(fullDate + ' ' + fullTime);
   };
 
   return { date, showPicker, mode, res, setModeAndShowPicker, handleChange };

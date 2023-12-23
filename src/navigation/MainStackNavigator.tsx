@@ -1,11 +1,11 @@
-import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { MessageScreen } from "../screens/MessageScreen";
-import { QuoteScreen } from "../screens/QuoteScreen";
-import { BottomTabsNavigator } from "./BottomTabsNavigator";
-import { CategoriesSelectionScreen } from "../screens/CategoriesSelectionScreen";
-import { OnBoardingScreen } from "../screens/OnBoardingScreen";
-import { DemoStackNavigator } from "./DemoStackNavigator";
+import React from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { MessageScreen } from '../screens/MessageScreen';
+import { QuoteScreen } from '../screens/QuoteScreen';
+import { BottomTabsNavigator } from './BottomTabsNavigator';
+import { CategoriesSelectionScreen } from '../screens/CategoriesSelectionScreen';
+import { OnBoardingScreen } from '../screens/OnBoardingScreen';
+import { DemoStackNavigator } from './DemoStackNavigator';
 
 export type MainStackParams = {
   QuoteScreen: undefined;

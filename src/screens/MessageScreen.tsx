@@ -12,7 +12,6 @@ import { MainStackParams } from "../navigation/MainStackNavigator";
 import { SubmitButton } from "../components/SubmitButton";
 
 import { format } from "date-fns";
-import { useMessageContext } from "../hooks/useMessageContext";
 import { COLORS } from "../../assets/theme";
 
 type Props = NativeStackScreenProps<MainStackParams, "MessageScreen">;

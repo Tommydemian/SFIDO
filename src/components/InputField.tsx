@@ -5,11 +5,11 @@ import {
   TextInputProps,
   TouchableOpacity,
   View,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { BORDER, COLORS, SPACING } from "../../assets/theme";
-import { Control, Controller } from "react-hook-form";
-import { NunitoText } from "./Fonts/NunitoText";
+} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { BORDER, COLORS, SPACING } from '../../assets/theme';
+import { Control, Controller } from 'react-hook-form';
+import { NunitoText } from './Fonts/NunitoText';
 
 type Props = TextInputProps & {
   label?: string;
@@ -58,7 +58,7 @@ export const InputField: React.FC<Props> = ({
         const handleChange = (text: string) => {
           // Call the setter to clean the message once the user starts writing
           if (setError) {
-            setError("");
+            setError('');
           }
 
           // Call the original onChangeText if it exists
@@ -112,7 +112,7 @@ export const InputField: React.FC<Props> = ({
             </View>
             {error && (
               <NunitoText type="bold" customStyles={styles.errorText}>
-                {error.message || "Error"}
+                {error.message || 'Error'}
               </NunitoText>
             )}
           </>
@@ -124,17 +124,17 @@ export const InputField: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   inputFieldLabel: {
-    fontWeight: "500",
+    fontWeight: '500',
   },
   inputFieldContainer: {
     backgroundColor: COLORS.whiteText,
     borderRadius: BORDER.buttons, // Aumenta para más redondez
     marginBottom: 10,
-    width: "auto",
+    width: 'auto',
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    shadowColor: "#000", // Color de la sombra
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: '#000', // Color de la sombra
     shadowOffset: {
       width: 0, // Desplazamiento horizontal de la sombra
       height: 2, // Desplazamiento vertical de la sombra
@@ -147,19 +147,19 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   inputFieldRightIcon: {
-    marginLeft: "auto",
+    marginLeft: 'auto',
     paddingRight: 10,
   },
   errorText: {
     color: COLORS.errorRed,
-    alignSelf: "stretch",
-    fontWeight: "400",
+    alignSelf: 'stretch',
+    fontWeight: '400',
   },
   outerInputFieldContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
   },
   input: {
     paddingLeft: 20,

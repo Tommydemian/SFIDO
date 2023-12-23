@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, Dimensions, ViewProps } from "react-native";
-import React from "react";
-import { COLORS } from "../../assets/theme";
+import { StyleSheet, Text, View, Dimensions, ViewProps } from 'react-native';
+import React from 'react';
+import { COLORS } from '../../assets/theme';
 
 type Props = ViewProps & {
   text: string;
@@ -8,7 +8,7 @@ type Props = ViewProps & {
   customStyles?: object;
 };
 
-const deviceWidth: number = Dimensions.get("screen").width;
+const deviceWidth: number = Dimensions.get('screen').width;
 
 export const QuoteCard: React.FC<Props> = ({ text, author, customStyles }) => {
   return (
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
   },
   quoteAuthor: {
     color: COLORS.textBlack,
-    textAlign: "right",
-    fontWeight: "bold",
+    textAlign: 'right',
+    fontWeight: 'bold',
     paddingRight: 10,
   },
 });

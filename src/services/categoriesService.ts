@@ -1,5 +1,5 @@
-import firestore from "@react-native-firebase/firestore";
+import firestore from '@react-native-firebase/firestore';
 
 export const getCategoriesFromFirestore = () => {
-  return firestore().collection("categories").get();
+  return firestore().collection('categories').get();
 };

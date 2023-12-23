@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 import {
   Pressable,
   PressableProps,
   StyleSheet,
   ActivityIndicator,
-} from "react-native";
-import { BORDER, COLORS, SPACING } from "../../assets/theme";
+} from 'react-native';
+import { BORDER, COLORS, SPACING } from '../../assets/theme';
 
 type Props = PressableProps & {
   customStyles?: object;
@@ -56,9 +56,9 @@ const styles = StyleSheet.create({
   submitText: {
     color: COLORS.whiteText,
     fontSize: 16,
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "capitalize",
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    textTransform: 'capitalize',
   },
   pressed: {
     opacity: 0.8,

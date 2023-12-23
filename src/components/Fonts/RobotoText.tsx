@@ -17,9 +17,9 @@ export const RobotoText: React.FC<Props> = ({
   type = "regular",
 }) => {
   const [fontsLoaded] = useFonts({
-    RobotoRegular: require("../../assets/fonts/Roboto-Regular.ttf"),
-    RobotoMedium: require("../../assets/fonts/Roboto-Medium.ttf"),
-    RobotoBold: require("../../assets/fonts/Roboto-Bold.ttf"),
+    RobotoRegular: require("../../../assets/fonts/Roboto-Regular.ttf"),
+    RobotoMedium: require("../../../assets/fonts/Roboto-Medium.ttf"),
+    RobotoBold: require("../../../assets/fonts/Roboto-Bold.ttf"),
   });
 
   if (!fontsLoaded) {

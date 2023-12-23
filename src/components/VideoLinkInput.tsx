@@ -1,13 +1,9 @@
 import { StyleSheet, View, TextInput } from "react-native";
 import React, { useEffect } from "react";
-
 import { DemoIconButton } from "./Demo/DemoIconButton";
 import { CustomIcon } from "./CustomIcon";
-
 import { useVideoLink } from "../hooks/useVideoLink";
-
 import { PasteButton } from "./PasteButton";
-
 import { SPACING, COLORS } from "../../assets/theme";
 import { NunitoText } from "./Fonts/NunitoText";
 
@@ -141,7 +137,7 @@ const styles = StyleSheet.create({
   },
   pasteButton: {
     position: "absolute",
-    top: 1,
-    right: 1,
+    top: 2,
+    right: 2,
   },
 });

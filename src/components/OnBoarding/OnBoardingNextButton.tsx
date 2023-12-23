@@ -1,15 +1,15 @@
-import { StyleSheet, Pressable } from "react-native";
-import React from "react";
-import { AntDesign } from "@expo/vector-icons";
-import { COLORS } from "../../../assets/theme";
-import { NunitoText } from "../Fonts/NunitoText";
+import { StyleSheet, Pressable } from 'react-native';
+import React from 'react';
+import { AntDesign } from '@expo/vector-icons';
+import { COLORS } from '../../../assets/theme';
+import { NunitoText } from '../Fonts/NunitoText';
 import Animated, {
   SharedValue,
   useAnimatedStyle,
   withSpring,
   withTiming,
-} from "react-native-reanimated";
-import { useNavigation } from "@react-navigation/native";
+} from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   flatListRef: React.RefObject<React.Component<{}, {}, any>>;
@@ -68,7 +68,7 @@ export const OnBoardingNextButton: React.FC<Props> = ({
 
   const handlePress = () => {
     if (flatListIndex.value === dataLength - 1) {
-      navigation.navigate("DemoStack");
+      navigation.navigate('DemoStack');
     }
   };
 
@@ -89,15 +89,15 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.folly,
     padding: 10,
     borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
   },
   arrowIcon: {
-    position: "absolute",
+    position: 'absolute',
   },
   buttonText: {
     fontSize: 16,
-    position: "absolute",
+    position: 'absolute',
   },
 });

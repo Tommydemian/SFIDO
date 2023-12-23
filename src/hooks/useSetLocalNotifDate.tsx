@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
-import { Platform } from "react-native";
-import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import { useState, useCallback } from 'react';
+import { Platform } from 'react-native';
+import { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
 export const useSetLocalNotifDate = () => {
   const [localNotifDate, setLocalNotifDate] = useState(new Date());
@@ -22,14 +22,14 @@ export const useSetLocalNotifDate = () => {
     event: DateTimePickerEvent,
     selectedDate?: Date,
   ) => {
-    if (event.type === "set") {
+    if (event.type === 'set') {
       const currentDate = selectedDate;
       setDate(currentDate!);
-      if (Platform.OS === "android") {
+      if (Platform.OS === 'android') {
         toggleDatePickerVisibility();
         setLocalNotifDate(currentDate!);
       }
-    } else if (Platform.OS === "android") {
+    } else if (Platform.OS === 'android') {
       toggleDatePickerVisibility();
     }
   };
@@ -38,14 +38,14 @@ export const useSetLocalNotifDate = () => {
     event: DateTimePickerEvent,
     selectedTime?: Date,
   ) => {
-    if (event.type === "set") {
+    if (event.type === 'set') {
       const currentTime = selectedTime;
       setTime(currentTime!); // Actualiza el estado 'time' si es necesari
-      if (Platform.OS === "android") {
+      if (Platform.OS === 'android') {
         toggleTimePickerVisibility(); // Oculta el selector en Android después de seleccionar
         setLocalNotiTime(currentTime!);
       }
-    } else if (Platform.OS === "android") {
+    } else if (Platform.OS === 'android') {
       toggleTimePickerVisibility(); // Oculta el selector si se cancela la selección
     }
   };
