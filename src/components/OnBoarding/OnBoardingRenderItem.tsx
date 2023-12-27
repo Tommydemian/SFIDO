@@ -6,9 +6,8 @@ import Animated, {
   interpolate,
   Extrapolation,
 } from "react-native-reanimated";
-import { AbsoluteFillBgImage } from "../AbsoluteFillBgImage";
 import { NunitoText } from "../Fonts/NunitoText";
-import { COLORS, SPACING } from "../../../assets/theme";
+import { BORDER, COLORS, FONT_SIZE, SPACING } from "../../../assets/theme";
 
 type RenderItemProps = {
   item: Data;
@@ -23,6 +22,7 @@ export const OnBoardingRenderItem: React.FC<RenderItemProps> = ({
   offSetX,
 }) => {
   const SCREEN_WIDTH = Dimensions.get("screen").width;
+  const SCREEN_HEIGHT = Dimensions.get("screen").height;
 
   // ANIMATED STYLES
   // Animated styles for image
@@ -52,9 +52,10 @@ export const OnBoardingRenderItem: React.FC<RenderItemProps> = ({
 
     return {
       opacity: opacityAnimation,
-      width: SCREEN_WIDTH * 0.5,
-      height: SCREEN_WIDTH * 0.5,
+      width: SCREEN_WIDTH,
+      height: SCREEN_HEIGHT * 0.55,
       transform: [{ translateY: translateYAnimation }],
+      resizeMode: "cover",
     };
   });
 
@@ -90,9 +91,7 @@ export const OnBoardingRenderItem: React.FC<RenderItemProps> = ({
 
   return (
     <View style={[styles.itemContainer, { width: SCREEN_WIDTH }]}>
-      <AbsoluteFillBgImage imageKey="authbg" />
-
-      <StatusBar barStyle={"dark-content"} />
+      <StatusBar barStyle={"default"} />
       <Animated.Image source={item.image} style={[imageAnimatedStyle]} />
       <Animated.View style={textAnimationStyle}>
         <NunitoText type="bold" customStyles={styles.itemTitle}>
@@ -108,20 +107,20 @@ const styles = StyleSheet.create({
   itemContainer: {
     flex: 1,
     justifyContent: "center",
-    rowGap: SPACING.spacing30,
+    rowGap: SPACING.spacing10,
     alignItems: "center",
     backgroundColor: COLORS.indigoDye,
     paddingHorizontal: SPACING.spacing30,
   },
   itemTitle: {
     color: COLORS.whiteText,
-    fontSize: 28, // Tamaño de fuente más grande
+    fontSize: FONT_SIZE.onBoardingTitle,
     textAlign: "center",
-    marginBottom: SPACING.spacing20, // Espaciado mayor
+    marginBottom: SPACING.spacing10,
   },
   itemText: {
     color: COLORS.whiteText,
-    fontSize: 16, // Tamaño de fuente ligeramente mayor
-    lineHeight: 24, // Aumenta el interlineado para mejorar la legibilidad
+    fontSize: FONT_SIZE.onBoardingDesc,
+    lineHeight: 24,
   },
 });

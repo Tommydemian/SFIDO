@@ -52,7 +52,7 @@ export const OnBoardingScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={"dark-content"} />
+      <StatusBar barStyle={"default"} />
 
       <Animated.FlatList
         ref={flatListRef}
@@ -89,7 +89,7 @@ export const OnBoardingScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.whiteText,
+    backgroundColor: COLORS.indigoDye,
   },
   bottomContainer: {
     flexDirection: "row",

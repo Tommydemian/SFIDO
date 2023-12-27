@@ -40,6 +40,8 @@ export const BORDER = {
 
 export const FONT_SIZE = {
   title: 24,
+  onBoardingTitle: 30,
+  onBoardingDesc: 16,
 };
 
 export const ICON_SIZE = {

@@ -9,7 +9,7 @@ export const useAppState = () => {
       setAppState(nextAppState);
     });
 
-    return () => {
+    return () => {π
       subscription.remove();
     };
   }, []);
