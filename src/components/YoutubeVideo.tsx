@@ -18,9 +18,9 @@ export const YoutubeVideo: React.FC<Props> = ({ videoId }) => {
     }
   }, []);
 
-  const togglePlaying = useCallback(() => {
-    setPlaying((prev) => !prev);
-  }, []);
+  // const togglePlaying = useCallback(() => {
+  //   setPlaying((prev) => !prev);
+  // }, []);
 
   return (
     <View>

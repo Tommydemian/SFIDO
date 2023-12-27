@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,23 +11,18 @@ import {
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import { CustomIcon } from "../components/CustomIcon";
-
-import { GalleryImageSelector } from "../components/GalleryImageSelector";
 import { DemoIntroductionModal } from "../components/Demo/DemoIntroductionModal";
 import { SubmitButton } from "../components/SubmitButton";
 import { NunitoText } from "../components/Fonts/NunitoText";
 import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContainer";
-import { CustomNeedInspirationBottomSheet } from "../components/CustomNeedInspirationBottomSheet";
 import { CustomColorPickerBottomSheet } from "../components/CustomColorPickerBottomSheet";
 import { DemoTextInput } from "../components/Demo/DemoTextInput";
 import { DemoImageModal } from "../components/Demo/DemoImageModal";
 import { VideoLinkInput } from "../components/VideoLinkInput";
 import { DemoNeedInspiration } from "../components/Demo/DemoNeedInspiration";
-
+import { DemoMessageCreationActions } from "../components/Demo/DemoMessageCreationActions";
 import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
 
-import { useAuthContext } from "../contexts/AuthContext";
 import { useBottomSheet } from "../hooks/useBottomSheet";
 
 import { COLORS, SPACING } from "../../assets/theme";
@@ -74,8 +69,6 @@ export const DemoCreateMessageScreen: React.FC<NavigationProps> = ({
     activeBottomSheet,
   } = useBottomSheet();
 
-  //const {signOutUser} = useAuthContext()
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <TouchableOpacity
@@ -96,40 +89,16 @@ export const DemoCreateMessageScreen: React.FC<NavigationProps> = ({
               }
               render={({ handleWriteMyOwn }) => {
                 return (
-                  <View style={styles.actionsContainer}>
-                    <View style={styles.submitButtonContainer}>
-                      {/* Button to clean the Text input */}
-                      <View style={{ flexDirection: "column" }}>
-                        <SubmitButton
-                          onPress={handleWriteMyOwn}
-                          style={styles.button}
-                        >
-                          <NunitoText
-                            customStyles={styles.buttonText}
-                            type="bold"
-                          >
-                            Write My Message
-                          </NunitoText>
-                        </SubmitButton>
-                        {/* Need inspiration */}
-                        <DemoNeedInspiration
-                          onPress={() =>
-                            handleBottomSheetOpen({
-                              activeOne: "inspiration",
-                            })
-                          }
-                        />
-                      </View>
-                    </View>
-
-                    {/* Image Selector */}
-                    <GalleryImageSelector
-                      onImageSelected={handleImageSelected}
-                    />
-                  </View>
+                  <DemoMessageCreationActions
+                    handleWriteMyOwn={handleWriteMyOwn}
+                    handleImageSelected={handleImageSelected}
+                  />
                 );
               }}
             />
+
+            {/* Need inspiration */}
+            <DemoNeedInspiration />
 
             {/* Video section */}
             <VideoLinkInput />
@@ -175,17 +144,10 @@ export const DemoCreateMessageScreen: React.FC<NavigationProps> = ({
         </SafeAreaView>
 
         {isBottomSheetVisible &&
-          activeBottomSheet?.activeOne === "inspiration" && (
-            <CustomNeedInspirationBottomSheet
-              ref={bottomSheetRef}
-              onPress={handleBottomSheetClose}
-            />
-          )}
-        {isBottomSheetVisible &&
           activeBottomSheet?.activeOne === "colorPicker" && (
             <CustomColorPickerBottomSheet
               ref={bottomSheetRef}
-              onPress={handleBottomSheetClose}
+              handleBottomSheetClose={handleBottomSheetClose}
             />
           )}
       </TouchableOpacity>
@@ -197,7 +159,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: COLORS.whiteText,
+    backgroundColor: COLORS.indigoDye,
   },
   continueButton: {
     backgroundColor: "#007bff",
@@ -214,22 +176,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
   },
-  submitButtonContainer: {
-    width: "60%",
-    marginBottom: 20,
-  },
-  buttonText: {
-    textAlign: "center",
-  },
   previewImage: {
     width: "100%",
     height: "80%", // Ajusta según sea necesario
     resizeMode: "contain",
-  },
-  actionsContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
   },
   modalSelectedImageContainer: {
     shadowColor: "#000",
@@ -238,8 +188,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   modalselectedImage: {
-    height: 200,
-    width: 200,
+    height: 300,
+    width: 300,
     alignSelf: "center",
     borderRadius: SPACING.spacing10,
   },

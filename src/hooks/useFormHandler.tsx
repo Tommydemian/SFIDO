@@ -1,16 +1,16 @@
-import { useForm } from 'react-hook-form';
-import { type FormData } from '../types';
-import { useEffect } from 'react';
+import { useForm } from "react-hook-form";
+import { type FormData } from "../types";
+import { useEffect } from "react";
 
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { AuthStackParams } from '../navigation/AuthStackNavigator';
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { AuthStackParams } from "../navigation/AuthStackNavigator";
 
 type Mode =
-  | 'onBlur'
-  | 'onChange'
-  | 'onSubmit'
-  | 'onTouched'
-  | 'all'
+  | "onBlur"
+  | "onChange"
+  | "onSubmit"
+  | "onTouched"
+  | "all"
   | undefined;
 
 type Navigation = NativeStackNavigationProp<
@@ -32,7 +32,7 @@ export const useFormHandler = (mode: Mode, navigation: Navigation) => {
   });
 
   const setupFormNavigationCleanup = () => {
-    const unsubscribe = navigation.addListener('blur', () => {
+    const unsubscribe = navigation.addListener("blur", () => {
       clearErrors();
       reset();
     });
@@ -46,19 +46,19 @@ export const useFormHandler = (mode: Mode, navigation: Navigation) => {
 
   // Rules for the email input field
   const emailRules = {
-    required: 'Email is required',
+    required: "Email is required",
     pattern: {
       value: /^\S+@\S+$/i,
-      message: 'Invalid email format',
+      message: "Invalid email format",
     },
   };
 
   // Rules for the password input field
   const passwordRules = {
-    required: 'Password is required',
+    required: "Password is required",
     minLength: {
       value: 6,
-      message: 'Password must be at least 6 characters',
+      message: "Password must be at least 6 characters",
     },
   };
 

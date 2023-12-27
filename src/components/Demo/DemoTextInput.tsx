@@ -73,13 +73,14 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.semiTransparent,
     textAlignVertical: "top",
     minHeight: 150,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowColor: "#000", // Color de la sombra
+    shadowOffset: { width: 0, height: 1 }, // Desplazamiento de la sombra
+    shadowOpacity: 0.5, // Opacidad de la sombra
+    shadowRadius: 1, // Radio de la sombra
     elevation: 5,
     alignSelf: "center",
-    marginVertical: 20,
+    marginTop: 20,
+    marginBottom: SPACING.spacing10,
   },
   paletteIcon: {
     position: "absolute",

@@ -53,7 +53,7 @@ export const useHandleCategories = (
     if (selectedCategories.length > 0) {
       addIntererstsToFirestoreUser(uid, selectedCategories)
         .then(() => {
-          navigation.navigate("DemoPreparationScreen");
+          navigation.navigate("DemoStack");
         })
         .catch((err) => {
           console.log(err);

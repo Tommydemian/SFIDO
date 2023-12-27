@@ -1,14 +1,14 @@
-import { StyleSheet, View, Dimensions, StatusBar } from 'react-native';
-import React from 'react';
-import { Data } from '../../../assets/constants/data';
+import { StyleSheet, View, Dimensions, StatusBar } from "react-native";
+import React from "react";
+import { Data } from "../../../assets/constants/data";
 import Animated, {
   useAnimatedStyle,
   interpolate,
   Extrapolation,
-} from 'react-native-reanimated';
-import { AbsoluteFillBgImage } from '../AbsoluteFillBgImage';
-import { NunitoText } from '../Fonts/NunitoText';
-import { COLORS, SPACING } from '../../../assets/theme';
+} from "react-native-reanimated";
+import { AbsoluteFillBgImage } from "../AbsoluteFillBgImage";
+import { NunitoText } from "../Fonts/NunitoText";
+import { COLORS, SPACING } from "../../../assets/theme";
 
 type RenderItemProps = {
   item: Data;
@@ -22,7 +22,7 @@ export const OnBoardingRenderItem: React.FC<RenderItemProps> = ({
   index,
   offSetX,
 }) => {
-  const SCREEN_WIDTH = Dimensions.get('screen').width;
+  const SCREEN_WIDTH = Dimensions.get("screen").width;
 
   // ANIMATED STYLES
   // Animated styles for image
@@ -92,7 +92,7 @@ export const OnBoardingRenderItem: React.FC<RenderItemProps> = ({
     <View style={[styles.itemContainer, { width: SCREEN_WIDTH }]}>
       <AbsoluteFillBgImage imageKey="authbg" />
 
-      <StatusBar barStyle={'dark-content'} />
+      <StatusBar barStyle={"dark-content"} />
       <Animated.Image source={item.image} style={[imageAnimatedStyle]} />
       <Animated.View style={textAnimationStyle}>
         <NunitoText type="bold" customStyles={styles.itemTitle}>
@@ -107,16 +107,16 @@ export const OnBoardingRenderItem: React.FC<RenderItemProps> = ({
 const styles = StyleSheet.create({
   itemContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     rowGap: SPACING.spacing30,
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: COLORS.indigoDye,
     paddingHorizontal: SPACING.spacing30,
   },
   itemTitle: {
     color: COLORS.whiteText,
     fontSize: 28, // Tamaño de fuente más grande
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: SPACING.spacing20, // Espaciado mayor
   },
   itemText: {

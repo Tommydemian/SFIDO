@@ -17,6 +17,7 @@ export const COLORS = {
   nianza: "#D4ECD6",
   claret: "#840032",
   semiTransparent: "#FFFFFFAA",
+  shadow: "#000",
 };
 
 export const SPACING = {
@@ -33,6 +34,8 @@ export const SPACING = {
 export const BORDER = {
   buttons: 30,
   border10: 10,
+  border20: 20,
+  border30: 30,
 };
 
 export const FONT_SIZE = {

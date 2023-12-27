@@ -8,8 +8,14 @@ import { SPACING, COLORS } from "../../assets/theme";
 import { NunitoText } from "./Fonts/NunitoText";
 
 export const VideoLinkInput = () => {
-  const { isLinkValid, handleInputChange, videoLink, error, setVideoLink } =
-    useVideoLink();
+  const {
+    isLinkValid,
+    handleInputChange,
+    videoLink,
+    error,
+    setVideoLink,
+    setIsTouched,
+  } = useVideoLink();
 
   useEffect(() => {
     console.log(videoLink);
@@ -48,11 +54,13 @@ export const VideoLinkInput = () => {
             numberOfLines={2}
             placeholder={"https://youtu.be/fnGcsc4Wrr0?si=Dn0H_4OHf3gmlx-u"}
             onChangeText={handleInputChange}
+            onEndEditing={(e) => handleInputChange(e.nativeEvent.text)}
             keyboardType="default"
           />
           <PasteButton
             setCopiedText={setVideoLink}
             customStyles={styles.pasteButton}
+            setIsTouched={setIsTouched}
           />
           {isLinkValid === true ? (
             <CustomIcon
@@ -92,6 +100,7 @@ const styles = StyleSheet.create({
   videoLinkInput: {
     flexGrow: 1,
     minHeight: SPACING.spacing50, // Ajusta este valor según sea necesario
+    paddingRight: SPACING.spacing20,
   },
   videoLinkInputContainer: {
     backgroundColor: "#FFFFFFAA", // Semi-transparente
@@ -139,5 +148,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 2,
     right: 2,
+    padding: SPACING.spacing5,
   },
 });

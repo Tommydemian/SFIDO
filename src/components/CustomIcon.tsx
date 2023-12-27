@@ -1,12 +1,23 @@
 import React from "react";
-import { Entypo, AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
+import {
+  Entypo,
+  AntDesign,
+  FontAwesome,
+  Ionicons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { ActiveBottomSheet } from "../types";
 
 type Props = {
   name: string;
   size: number;
   color: string;
-  library: "Entypo" | "AntDesign" | "FontAwesome" | "Ionicons";
+  library:
+    | "Entypo"
+    | "AntDesign"
+    | "FontAwesome"
+    | "Ionicons"
+    | "MaterialIcons";
   customStyles?: object;
   onPress?: () => void;
   onBottomSheetPress?: (type: ActiveBottomSheet) => void;
@@ -63,6 +74,16 @@ export const CustomIcon: React.FC<Props> = ({
     case "Ionicons":
       return (
         <Ionicons
+          onPress={handlePress}
+          style={customStyles}
+          name={name}
+          size={size}
+          color={color}
+        />
+      );
+    case "MaterialIcons":
+      return (
+        <MaterialIcons
           onPress={handlePress}
           style={customStyles}
           name={name}

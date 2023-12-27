@@ -1,5 +1,12 @@
-import { StyleSheet, Text, View, Image } from "react-native";
-import React, { useEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  useWindowDimensions,
+  AppState,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContainer";
 import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
 import { YungJakesText } from "../components/YungJakesText";
@@ -8,12 +15,18 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { S3Image } from "../components/S3Image";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { COLORS } from "../../assets/theme";
-import { Ionicons } from "@expo/vector-icons";
 import { YoutubeVideo } from "../components/YoutubeVideo";
+import { CustomBottomSheet } from "../components/CustomBottomSheet";
 import { DemoStackParams } from "../navigation/DemoStackNavigator";
-//import { CustomBottomSheet } from "../components/CustomNeedInspirationBottomSheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useDemoMessageContext } from "../contexts/DemoMessageContext";
+import { useBottomSheet } from "../hooks/useBottomSheet";
+import { NunitoText } from "../components/Fonts/NunitoText";
+import { CustomIcon } from "../components/CustomIcon";
+
+import { CustomVideoBottomSheet } from "../components/CustomVideoBottomSheet";
+
+import { useAppState } from "../hooks/useAppState";
 
 type NavigationProps = NativeStackScreenProps<
   DemoStackParams,
@@ -26,6 +39,23 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
 }) => {
   const { image, text, videoId } = route.params;
   const { textColor } = useDemoMessageContext();
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(true);
+
+  const { appState } = useAppState();
+
+  const getIconStyles = (isVisible: boolean, baseStyles) => {
+    return isVisible
+      ? [styles.invisibleButton]
+      : [...baseStyles, styles.actionButton];
+  };
+  // const {
+  //   bottomSheetRef,
+  //   isBottomSheetVisible,
+  //   handleBottomSheetClose,
+  //   handleBottomSheetOpen,
+  //   setIsBottomSheetVisible,
+  //   handleRefClose,
+  // } = useBottomSheet();
 
   useEffect(() => {
     console.log(videoId, "VIDEOID");
@@ -37,16 +67,22 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
     navigation.goBack();
   };
 
+  useEffect(() => {
+    console.log(appState);
+  }, [appState]);
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Ionicons
-        onPress={handleGoBack}
-        style={{ position: "absolute", top: "50%" }}
-        name="arrow-back-circle"
-        size={30}
-        color={COLORS.black}
-      />
       <View style={styles.container}>
+        {/* Back Button */}
+        <CustomIcon
+          library="Ionicons"
+          onPress={handleGoBack}
+          name="arrow-back-circle"
+          size={30}
+          color={COLORS.semiTransparent}
+          customStyles={[styles.actionButton, styles.backButton]}
+        />
         <S3Image imgKey="doberman.jpeg" style={styles.backgroundImage} />
         <Image source={{ uri: image }} style={styles.backgroundImage} />
         <AbsoluteFillBgImage imageKey="demobg" />
@@ -58,16 +94,46 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
               {text}
             </YungJakesText>
           </View>
-
           <TouchableOpacity onPress={signOutUser}>
             <Text>Sign out</Text>
           </TouchableOpacity>
 
-          {/* <CustomBottomSheet>
+          <CustomIcon
+            library="MaterialIcons"
+            name="navigate-next"
+            size={30}
+            color={COLORS.semiTransparent}
+            customStyles={getIconStyles(isBottomSheetVisible, [
+              styles.nextButton,
+            ])}
+            onPress={() => navigation.navigate("BottomTabs")}
+          />
+          {/* <CustomIcon
+            library="AntDesign"
+            name="totop"
+            size={30}
+            color={COLORS.semiTransparent}
+            customStyles={[styles.showBottomSheetButton, styles.actionButton]}
+          /> */}
+          <CustomVideoBottomSheet
+            setIsBottomSheetVisible={setIsBottomSheetVisible}
+            renderIcon={(handleOpenPress) => (
+              <CustomIcon
+                library="AntDesign"
+                name="totop"
+                size={30}
+                color={COLORS.semiTransparent}
+                customStyles={getIconStyles(isBottomSheetVisible, [
+                  styles.showBottomSheetButton,
+                ])}
+                onPress={handleOpenPress}
+              />
+            )}
+          >
             <View style={styles.videoContainer}>
               <YoutubeVideo videoId={videoId!} />
             </View>
-          </CustomBottomSheet> */}
+          </CustomVideoBottomSheet>
         </OnBoardingContainer>
       </View>
     </GestureHandlerRootView>
@@ -77,7 +143,6 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "red",
   },
   quoteBody: {
     fontSize: 40,
@@ -98,5 +163,24 @@ const styles = StyleSheet.create({
   videoContainer: {
     alignSelf: "center",
     width: 300,
+  },
+  actionButton: {
+    position: "absolute",
+    zIndex: 100,
+  },
+  backButton: {
+    top: "10%",
+    left: "5%",
+  },
+  nextButton: {
+    bottom: "20%",
+    right: "10%",
+  },
+  showBottomSheetButton: {
+    bottom: "10%",
+    alignSelf: "center",
+  },
+  invisibleButton: {
+    opacity: 0,
   },
 });

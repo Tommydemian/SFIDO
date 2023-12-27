@@ -54,5 +54,12 @@ export const useVideoLink = () => {
     setVideoLink(newText);
   };
 
-  return { isLinkValid, handleInputChange, videoLink, error, setVideoLink };
+  return {
+    isLinkValid,
+    handleInputChange,
+    videoLink,
+    error,
+    setVideoLink,
+    setIsTouched,
+  };
 };

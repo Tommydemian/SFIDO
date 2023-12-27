@@ -52,6 +52,7 @@
     "react-native-svg": "13.9.0",
     "react-native-webview": "13.2.2",
     "react-native-youtube-iframe": "^2.3.0",
+    "rn-tooltip": "^3.0.3",
     "url-parse": "^1.5.10"
   },
   "devDependencies": {

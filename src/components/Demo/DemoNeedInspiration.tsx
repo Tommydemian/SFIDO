@@ -1,27 +1,52 @@
 import { StyleSheet, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { CustomIcon } from "../CustomIcon";
 import { NunitoText } from "../Fonts/NunitoText";
 import { COLORS, SPACING } from "../../../assets/theme";
+import Tooltip from "rn-tooltip";
 
-type Props = {
-  onPress: () => void;
-};
+export const DemoNeedInspiration = () => {
+  const [isPressed, setIsPressed] = React.useState(false);
 
-export const DemoNeedInspiration: React.FC<Props> = ({ onPress }) => {
+  useEffect(() => {
+    console.log(isPressed);
+  }, [isPressed]);
+
   return (
-    <View style={styles.needInspTextContainer}>
-      <NunitoText type="bold" customStyles={styles.needInspText}>
-        Need some inspiration?
-      </NunitoText>
-      <CustomIcon
-        library="AntDesign"
-        name="infocirlce"
-        size={24}
-        color={COLORS.black}
-        onPress={onPress}
-      />
+    <View style={styles.container}>
+      <Tooltip
+        popover={
+          <NunitoText type="semiBold">
+            This is just a demo section. In the app, you'll find many quotes
+            tailored to your interests. For now, feel free to write anything to
+            see how it works.🤗
+          </NunitoText>
+        }
+        overlayColor="transparent"
+        backgroundColor={COLORS.blackSecondaryText}
+        width={300}
+        height={125}
+        containerStyle={{ padding: SPACING.spacing10 }}
+        highlightColor={COLORS.whiteText}
+      >
+        <View style={styles.contentContainer}>
+          <NunitoText
+            type="bold"
+            customStyles={isPressed ? styles.pressedText : styles.needInspText}
+            onPressIn={() => setIsPressed(true)}
+            onPressOut={() => setIsPressed(false)}
+          >
+            Need some inspiration?
+          </NunitoText>
+          {/* <CustomIcon
+            library="AntDesign"
+            name="infocirlce"
+            size={24}
+            color={COLORS.black}
+          /> */}
+        </View>
+      </Tooltip>
     </View>
   );
 };
@@ -29,10 +54,22 @@ export const DemoNeedInspiration: React.FC<Props> = ({ onPress }) => {
 const styles = StyleSheet.create({
   needInspText: {
     color: COLORS.blackSecondaryText,
+    textDecorationLine: "underline", // Añade subrayado
+    textTransform: "capitalize",
+    fontSize: 14,
   },
-  needInspTextContainer: {
+  container: {
     flexDirection: "row",
-    margin: SPACING.spacing10,
-    columnGap: SPACING.spacing10,
+    marginBottom: SPACING.spacing20,
+    width: "100%",
+  },
+  contentContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: SPACING.spacing5,
+  },
+  // Estilos para el texto cuando se presiona
+  pressedText: {
+    color: COLORS.folly, // Cambia el color al presionar
   },
 });

@@ -1,17 +1,17 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext } from "react";
 
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 
-import { GoogleContext } from './GoogleContext';
+import { GoogleContext } from "./GoogleContext";
 
 // services
-import { addUserToFirestore } from '../services/userService';
-import * as authService from '../services/authService';
+import { addUserToFirestore } from "../services/userService";
+import * as authService from "../services/authService";
 
 // types
-import { DbUser } from '../types';
-import { UseFormReset } from 'react-hook-form';
+import { DbUser } from "../types";
+import { UseFormReset } from "react-hook-form";
 
 // AuthProviderProps defines the expected properties for the AuthProvider.
 type AuthProviderProps = {
@@ -52,21 +52,21 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // State to manage user information and error state.
   const [user, setUser] = useState<User>({
-    email: '',
-    uid: '',
+    email: "",
+    uid: "",
     isLoggedIn: false,
     loading: false,
   });
-  const [errorMessageSignIn, setErrorMessageSignIn] = useState('');
-  const [errorMessageSignUp, setErrorMessageSignUp] = useState('');
-  const [errorMessageSignOut, setErrorMessageSignOut] = useState('');
+  const [errorMessageSignIn, setErrorMessageSignIn] = useState("");
+  const [errorMessageSignUp, setErrorMessageSignUp] = useState("");
+  const [errorMessageSignOut, setErrorMessageSignOut] = useState("");
   const [errorMessageForgotPassword, setErrorMessageForgotPassword] =
-    useState('');
+    useState("");
 
   const googleContext = useContext(GoogleContext);
 
   if (!googleContext) {
-    throw new Error('useContext must be used within a GoogleProvider');
+    throw new Error("useContext must be used within a GoogleProvider");
   }
   const { isLinking } = googleContext;
 
@@ -88,7 +88,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           quoteIndex: 1,
           lastQuoteUpdate: new Date().toLocaleDateString(),
           profilePic:
-            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D',
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D",
           isGoogleAccountLinked: false,
         };
         return addUserToFirestore(userCredential.user.uid, newUser)
@@ -118,7 +118,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser((current) => ({ ...current, loading: true }));
     try {
       const userCredential = await authService.signInWithEmail(email, password);
-      console.log(userCredential, 'MOBB DEEP');
+      console.log(userCredential, "MOBB DEEP");
     } catch (error) {
       const err = error as Error;
       setErrorMessageSignIn(err.message);
@@ -151,7 +151,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       authService
         .sendPasswordResetEmail(email)
         .then(() => {
-          resolve('Email sent successfully'); // Resuelve con un mensaje de éxito
+          resolve("Email sent successfully"); // Resuelve con un mensaje de éxito
         })
         .catch((error) => {
           const err = error as Error;
@@ -174,7 +174,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser((current) => ({
           ...current,
           isLoggedIn: true,
-          email: firebaseUser.email || '',
+          email: firebaseUser.email || "",
           loading: false,
           uid: firebaseUser.uid,
         }));
@@ -183,9 +183,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser((current) => ({
           ...current,
           isLoggedIn: false,
-          email: '',
+          email: "",
           loading: false,
-          uid: '',
+          uid: "",
         }));
       }
     });
@@ -220,7 +220,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 export const useAuthContext = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuthContext must be used within a AuthProvider');
+    throw new Error("useAuthContext must be used within a AuthProvider");
   }
   return context;
 };
