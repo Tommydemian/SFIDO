@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React from "react";
+import { View, StyleSheet } from "react-native";
 
 type Props = {
   children: React.ReactNode;
@@ -11,7 +11,7 @@ export const AuthContainer: React.FC<Props> = ({ children }) => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingHorizontal: 40,
     paddingVertical: 40,
   },

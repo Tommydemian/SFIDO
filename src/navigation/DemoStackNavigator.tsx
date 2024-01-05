@@ -5,8 +5,10 @@ import { DemoCreateMessageScreen } from "../screens/DemoCreateMessageScreen";
 
 import { DemoMessageProvider } from "../contexts/DemoMessageContext";
 import { BottomTabsNavigator } from "./BottomTabsNavigator";
+import { DemoCreateMessageTextScreen } from "../screens/DemoCreateMessageTextScreen";
 
 export type DemoStackParams = {
+  DemoCreateMessageTextScreen: undefined;
   DemoCreateMessageScreen: undefined;
   DemoPreviewMessageScreen: {
     image: string;
@@ -22,9 +24,14 @@ export const DemoStackNavigator = () => {
   return (
     <DemoMessageProvider>
       <Stack.Navigator
-        initialRouteName="DemoCreateMessageScreen"
+        initialRouteName="DemoCreateMessageTextScreen"
         screenOptions={{ headerShown: false }}
       >
+        <Stack.Screen
+          name="DemoCreateMessageTextScreen"
+          component={DemoCreateMessageTextScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="DemoCreateMessageScreen"
           component={DemoCreateMessageScreen}

@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContainer";
 import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
-import { YungJakesText } from "../components/YungJakesText";
+import { YungJakesText } from "../components/Fonts/YungJakesText";
 import { TouchableOpacity } from "react-native";
 import { useAuthContext } from "../contexts/AuthContext";
 import { S3Image } from "../components/S3Image";

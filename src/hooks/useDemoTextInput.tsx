@@ -4,7 +4,7 @@ import { TextInput } from "react-native";
 import { useSharedValue, withSpring } from "react-native-reanimated";
 import { useDemoMessageContext } from "../contexts/DemoMessageContext";
 
-export const useDemoTextInput = (initialValue?: string) => {
+export const useDemoTextInput = () => {
   const { text, setText } = useDemoMessageContext();
   const textInputRef = useRef<TextInput>(null);
   const scale = useSharedValue(1);

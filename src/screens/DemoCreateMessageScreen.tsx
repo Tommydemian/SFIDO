@@ -60,7 +60,6 @@ export const DemoCreateMessageScreen: React.FC<NavigationProps> = ({
     setIsModalVisible(true); // Abre el modal
   };
 
-  // hooks
   const {
     handleBottomSheetClose,
     handleBottomSheetOpen,

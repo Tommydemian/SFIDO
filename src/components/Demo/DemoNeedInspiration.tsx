@@ -24,11 +24,11 @@ export const DemoNeedInspiration = () => {
           </NunitoText>
         }
         overlayColor="transparent"
-        backgroundColor={COLORS.blackSecondaryText}
+        backgroundColor={COLORS.blackBg}
         width={300}
         height={125}
         containerStyle={{ padding: SPACING.spacing10 }}
-        highlightColor={COLORS.whiteText}
+        highlightColor={COLORS.blackBg}
       >
         <View style={styles.contentContainer}>
           <NunitoText
@@ -53,7 +53,7 @@ export const DemoNeedInspiration = () => {
 
 const styles = StyleSheet.create({
   needInspText: {
-    color: COLORS.blackSecondaryText,
+    color: COLORS.ghostWhite,
     textDecorationLine: "underline", // Añade subrayado
     textTransform: "capitalize",
     fontSize: 14,
@@ -67,9 +67,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     columnGap: SPACING.spacing5,
-  },
-  // Estilos para el texto cuando se presiona
-  pressedText: {
-    color: COLORS.folly, // Cambia el color al presionar
   },
 });

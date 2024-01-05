@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { AuthProvider } from "./src/contexts/AuthContext";
 import { GoogleProvider } from "./src/contexts/GoogleContext"; // Importa GoogleProvider
 import { NavResolutionNavigator } from "./src/navigation/NavResolution";
 import * as Notifications from "expo-notifications";
 import { navigate, navigationRef } from "./src/navigation/navigationRef";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { COLORS } from "./assets/theme";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 GoogleSignin.configure({
   webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
@@ -34,10 +36,18 @@ export default function App() {
     };
   }, []);
 
+  const MyTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: COLORS.indigoDye,
+    },
+  };
+
   return (
     <GoogleProvider>
       <AuthProvider>
-        <NavigationContainer ref={navigationRef}>
+        <NavigationContainer theme={MyTheme} ref={navigationRef}>
           <NavResolutionNavigator />
         </NavigationContainer>
       </AuthProvider>

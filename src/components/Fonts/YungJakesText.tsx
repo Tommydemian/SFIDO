@@ -1,7 +1,7 @@
-import React from 'react';
-import { Text, StyleSheet } from 'react-native';
-import { useFonts } from 'expo-font';
-import { COLORS } from '../../assets/theme';
+import React from "react";
+import { Text, StyleSheet } from "react-native";
+import { useFonts } from "expo-font";
+import { COLORS } from "../../../assets/theme";
 
 type Props = {
   children: React.ReactNode;
@@ -15,7 +15,7 @@ export const YungJakesText: React.FC<Props> = ({
   customStyles,
 }) => {
   const [fontsLoaded] = useFonts({
-    YungJakesTextRegular: require('../../assets/fonts/YungJakesNewHandwriting-Regular.ttf'),
+    YungJakesTextRegular: require("../../../assets/fonts/YungJakesNewHandwriting-Regular.ttf"),
   });
 
   if (!fontsLoaded) {
@@ -26,7 +26,7 @@ export const YungJakesText: React.FC<Props> = ({
     <Text
       onPress={onPress}
       style={[
-        { fontFamily: 'YungJakesTextRegular' },
+        { fontFamily: "YungJakesTextRegular" },
         styles.default,
         customStyles,
       ]}

@@ -13,6 +13,8 @@ type DemoMessageContextType = {
   setVideoId: React.Dispatch<React.SetStateAction<string>>;
   textColor: string;
   setTextColor: React.Dispatch<React.SetStateAction<string>>;
+  font: string;
+  setFont: React.Dispatch<React.SetStateAction<string>>;
 };
 
 // Creación del contexto
@@ -24,7 +26,10 @@ export const DemoMessageContext = createContext<
 export const DemoMessageProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState(
+    "The future's still inside of me, therefore I just need to keep moving. As long as I am moving, there's nothing to fear.",
+  );
+  const [font, setFont] = useState("");
   const [selectedImage, setSelectedImage] = useState("");
   const [modalSelectedImage, setModalSelectedImage] = useState("");
   const [videoId, setVideoId] = useState("");
@@ -43,6 +48,8 @@ export const DemoMessageProvider: React.FC<{ children: React.ReactNode }> = ({
         setVideoId,
         textColor,
         setTextColor,
+        font,
+        setFont,
       }}
     >
       {children}

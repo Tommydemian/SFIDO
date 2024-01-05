@@ -13,18 +13,14 @@ import Animated from "react-native-reanimated";
 import Spinner from "react-native-loading-spinner-overlay";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParams } from "../navigation/MainStackNavigator";
-
 // Custom Component imports
 import { CategorieCard } from "../components/Categories/CategorieCard";
 import { SubmitButton } from "../components/SubmitButton";
 import { NunitoText } from "../components/Fonts/NunitoText";
 import { CategorieCardIcon } from "../components/Categories/CategorieCardIcon";
 import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContainer";
-import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
-
 // Custom Hooks imports
 import { useHandleCategories } from "../hooks/useHandleCategories";
-
 // types and resources
 import { COLORS, FONT_SIZE } from "../../assets/theme";
 
@@ -60,13 +56,11 @@ export const CategoriesSelectionScreen: React.FC<CategoriesNavigationProps> = ({
 
   // loading return
   if (loading) {
-    return <Spinner />;
+    return <Spinner visible={loading} />;
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <AbsoluteFillBgImage imageKey="categoriebg" />
-
       <OnBoardingContainer>
         <NunitoText type="bold" customStyles={styles.title}>
           Pick Your Categories
@@ -119,13 +113,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.indigoDye,
-    // Estilos adicionales
   },
   title: {
     fontSize: FONT_SIZE.title,
     textAlign: "center",
     marginTop: 10,
-    // Estilos adicionales
   },
   subtitle: {
     fontSize: 16,
@@ -144,12 +136,13 @@ const styles = StyleSheet.create({
     rowGap: 15,
   },
   ctaButton: {
-    padding: 15,
-    borderRadius: 10,
+    position: "absolute",
+    bottom: 0,
     alignItems: "center",
-    marginBottom: 30,
+    height: 100,
   },
   ctaButtonText: {
     textAlign: "center",
+    fontSize: 16,
   },
 });

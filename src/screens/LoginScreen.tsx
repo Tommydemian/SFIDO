@@ -23,7 +23,6 @@ import { AuthContainer } from "../components/AuthContainer";
 import { AuthSwitchLink } from "../components/AuthSwitchLink";
 import { AuthForm } from "../components/AuthForm";
 import { OfficialLogo } from "../components/OfficialLogo";
-import { SfidoWhiteTextLogo } from "../components/SfidoWhiteTextLogo";
 import { NunitoText } from "../components/Fonts/NunitoText";
 import { InputField } from "../components/InputField";
 import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
@@ -38,16 +37,12 @@ import { useGoogleAuthentication } from "../hooks/useGoogleAuthentication";
 import { FormData } from "../types";
 import { COLORS, SPACING } from "../../assets/theme";
 import { AuthStackParams } from "../navigation/AuthStackNavigator";
-import { useSharedValue, withTiming } from "react-native-reanimated";
 import { usePasswordVisibility } from "../hooks/usePasswordVisibility";
 import { useAuthContext } from "../contexts/AuthContext";
-import { useGoogleContext } from "../contexts/GoogleContext";
 import { useFormHandler } from "../hooks/useFormHandler";
 
 import { useAppleAuthentication } from "../hooks/useAppleAuthentication";
-
-import { RobotoText } from "../components/Fonts/RobotoText";
-import { GoogleIcon } from "../components/GoogleIcon";
+import { SFIDOLogoAndMotto } from "../components/SFIDOBrand/SFIDOLogoAndMotto";
 
 // Estilos y otros recursos
 
@@ -57,8 +52,6 @@ export const LoginScreen: React.FC<NavigationProps> = ({ navigation }) => {
   // context hook
   const { user, handleSignIn, errorMessageSignIn, setErrorMessageSignIn } =
     useAuthContext();
-  const { isGoogleLinked, onGoogleButtonPress, linkGoogleAccount } =
-    useGoogleContext();
 
   const { handlPasswordSecured, isPaswordSecured } = usePasswordVisibility();
 
@@ -89,15 +82,11 @@ export const LoginScreen: React.FC<NavigationProps> = ({ navigation }) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <AuthContainer>
-          <OfficialLogo style={{ alignSelf: "center" }} />
-          <SfidoWhiteTextLogo style={{ marginVertical: 10 }} />
+          <SFIDOLogoAndMotto />
 
           {/* <DialogPopup visible={visible} email={email} setPassword={setPassword} googleCredential={googleCredential!} password={password} /> */}
-          <NunitoText customStyles={styles.subHeader}>
-            Your goals, your dreams, your journey means a lot.
-          </NunitoText>
 
-          <InputField
+          {/* <InputField
             autoCapitalize="none"
             control={control}
             placeholder="Email"
@@ -137,23 +126,21 @@ export const LoginScreen: React.FC<NavigationProps> = ({ navigation }) => {
             <NunitoText customStyles={styles.errorMessage}>
               {errorMessageSignIn}
             </NunitoText>
-          )}
+          )} */}
 
           {/* <AuthForm 
       submitButtonText='Sign In'
       onSignIn={onSignIn}
       >
     </AuthForm> */}
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <NunitoText
               onPress={() => navigation.navigate("ForgotPasswordScreen")}
               customStyles={styles.forgotPassword}
             >
               Forgot your password?
             </NunitoText>
-          </TouchableOpacity>
-
-          <OrDivider />
+          </TouchableOpacity> */}
 
           <View style={styles.providerButtonsContainer}>
             {/* Apple Login */}
@@ -179,7 +166,19 @@ export const LoginScreen: React.FC<NavigationProps> = ({ navigation }) => {
     </SubmitButton> */}
 
             <GoogleButton onPress={handleOnGoogleButtonPress} />
+            <GoogleButton onPress={handleOnGoogleButtonPress} />
           </View>
+
+          <OrDivider />
+
+          <SubmitButton
+            customStyles={styles.signInButton}
+            onPress={handleSubmit(onSubmit)}
+          >
+            <NunitoText type="bold" customStyles={styles.signInButtonText}>
+              Sing In
+            </NunitoText>
+          </SubmitButton>
 
           <AuthSwitchLink
             actionText="Sign Up"
@@ -212,6 +211,7 @@ const styles = StyleSheet.create({
   providerButtonsContainer: {
     justifyContent: "center",
     rowGap: SPACING.spacing20,
+    marginTop: SPACING.spacing40,
   },
   providerButton: {
     flexGrow: 1, // TODO: ask GPT

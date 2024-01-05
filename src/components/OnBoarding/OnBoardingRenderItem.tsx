@@ -1,122 +1,86 @@
-import { StyleSheet, View, Dimensions, StatusBar } from "react-native";
 import React from "react";
-import { Data } from "../../../assets/constants/data";
-import Animated, {
-  useAnimatedStyle,
-  interpolate,
-  Extrapolation,
-} from "react-native-reanimated";
+import {
+  StyleSheet,
+  View,
+  Image,
+  StatusBar,
+  useWindowDimensions,
+} from "react-native";
+import { OnBoardingData } from "../../../assets/constants/data";
 import { NunitoText } from "../Fonts/NunitoText";
 import { BORDER, COLORS, FONT_SIZE, SPACING } from "../../../assets/theme";
+import { SharedValue } from "react-native-reanimated";
 
 type RenderItemProps = {
-  item: Data;
+  item: OnBoardingData;
   index: number;
-  offSetX: Animated.SharedValue<number>;
+  x?: SharedValue<number>;
 };
 
-// RenderItem component for rendering each onboarding item
 export const OnBoardingRenderItem: React.FC<RenderItemProps> = ({
   item,
   index,
-  offSetX,
+  x,
 }) => {
-  const SCREEN_WIDTH = Dimensions.get("screen").width;
-  const SCREEN_HEIGHT = Dimensions.get("screen").height;
-
-  // ANIMATED STYLES
-  // Animated styles for image
-  const imageAnimatedStyle = useAnimatedStyle(() => {
-    // Interpolation for opacity and translateY based on scroll offset
-    const opacityAnimation = interpolate(
-      offSetX.value,
-      [
-        (index - 1) * SCREEN_WIDTH,
-        index * SCREEN_WIDTH,
-        (index + 1) * SCREEN_WIDTH,
-      ],
-      [0, 1, 0],
-      Extrapolation.CLAMP,
-    );
-    //
-    const translateYAnimation = interpolate(
-      offSetX.value,
-      [
-        (index - 1) * SCREEN_WIDTH,
-        index * SCREEN_WIDTH,
-        (index + 1) * SCREEN_WIDTH,
-      ],
-      [100, 0, 100],
-      Extrapolation.CLAMP,
-    );
-
-    return {
-      opacity: opacityAnimation,
-      width: SCREEN_WIDTH,
-      height: SCREEN_HEIGHT * 0.55,
-      transform: [{ translateY: translateYAnimation }],
-      resizeMode: "cover",
-    };
-  });
-
-  // Animated styles for text
-  const textAnimationStyle = useAnimatedStyle(() => {
-    // Interpolation for opacity and translateY based on scroll offset
-    const opacityAnimation = interpolate(
-      offSetX.value,
-      [
-        (index - 1) * SCREEN_WIDTH,
-        index * SCREEN_WIDTH,
-        (index + 1) * SCREEN_WIDTH,
-      ],
-      [0, 1, 0],
-      Extrapolation.CLAMP,
-    );
-    const translateYAnimation = interpolate(
-      offSetX.value,
-      [
-        (index - 1) * SCREEN_WIDTH,
-        index * SCREEN_WIDTH,
-        (index + 1) * SCREEN_WIDTH,
-      ],
-      [100, 0, 100],
-      Extrapolation.CLAMP,
-    );
-
-    return {
-      opacity: opacityAnimation,
-      transform: [{ translateY: translateYAnimation }],
-    };
-  });
-
+  const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = useWindowDimensions();
   return (
-    <View style={[styles.itemContainer, { width: SCREEN_WIDTH }]}>
+    <View
+      style={[
+        styles.itemContainer,
+        { width: SCREEN_WIDTH, height: SCREEN_HEIGHT },
+      ]}
+    >
       <StatusBar barStyle={"default"} />
-      <Animated.Image source={item.image} style={[imageAnimatedStyle]} />
-      <Animated.View style={textAnimationStyle}>
-        <NunitoText type="bold" customStyles={styles.itemTitle}>
-          {item.title}
-        </NunitoText>
-        <NunitoText customStyles={styles.itemText}>{item.text}</NunitoText>
-      </Animated.View>
+      <View style={StyleSheet.absoluteFill}>
+        <Image
+          style={[
+            styles.itemImage,
+            { width: SCREEN_WIDTH, height: SCREEN_HEIGHT * 0.7 },
+          ]}
+          source={item.image}
+        />
+      </View>
+      <View
+        style={[
+          styles.itemContent,
+          { width: SCREEN_WIDTH, height: SCREEN_HEIGHT * 0.4 },
+        ]}
+      >
+        <View style={styles.itemTextContainer}>
+          <NunitoText type="bold" customStyles={styles.itemTitle}>
+            {item.title}
+          </NunitoText>
+          <NunitoText customStyles={styles.itemText}>{item.text}</NunitoText>
+        </View>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   itemContainer: {
-    flex: 1,
-    justifyContent: "center",
-    rowGap: SPACING.spacing10,
     alignItems: "center",
+  },
+  itemImage: {
+    resizeMode: "cover",
+  },
+  itemContent: {
+    alignItems: "center",
+    paddingHorizontal: SPACING.spacing20,
     backgroundColor: COLORS.indigoDye,
-    paddingHorizontal: SPACING.spacing30,
+    position: "absolute",
+    bottom: 0,
+    borderTopRightRadius: BORDER.border20,
+    borderTopLeftRadius: BORDER.border20,
+  },
+  itemTextContainer: {
+    marginTop: SPACING.spacing15,
   },
   itemTitle: {
     color: COLORS.whiteText,
     fontSize: FONT_SIZE.onBoardingTitle,
     textAlign: "center",
-    marginBottom: SPACING.spacing10,
+    marginBottom: SPACING.spacing15,
   },
   itemText: {
     color: COLORS.whiteText,

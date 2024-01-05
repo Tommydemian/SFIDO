@@ -5,7 +5,8 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
-import { BORDER, COLORS, SPACING } from "../../assets/theme";
+import { BORDER, COLORS, FONT_SIZE, SPACING } from "../../assets/theme";
+import { NunitoText } from "./Fonts/NunitoText";
 
 type Props = PressableProps & {
   customStyles?: object;
@@ -25,6 +26,13 @@ export const SubmitButton: React.FC<Props> = ({
   disabled,
   ...rest
 }) => {
+  const renderChildren = () => {
+    if (typeof children === "string") {
+      return <NunitoText style={styles.buttonText}>{children}</NunitoText>;
+    }
+    return children;
+  };
+
   return (
     <Pressable
       {...rest}
@@ -32,15 +40,15 @@ export const SubmitButton: React.FC<Props> = ({
         styles.submitButton,
         customStyles,
         disabled && styles.disabled,
-        success && pressed && styles.success, // Estilo para éxito
-        error && pressed && styles.error, // Estilo para error
+        success && pressed && styles.success, // Success Styles
+        error && pressed && styles.error, // Error Styles
         pressed && styles.pressed,
       ]}
     >
       {isLoading ? (
         <ActivityIndicator size="small" color={COLORS.whiteText} />
       ) : (
-        children
+        renderChildren()
       )}
     </Pressable>
   );
@@ -49,16 +57,13 @@ export const SubmitButton: React.FC<Props> = ({
 const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: COLORS.folly,
-    paddingVertical: SPACING.spacing10,
+    paddingVertical: SPACING.spacing15,
     borderRadius: BORDER.buttons,
     marginVertical: 10,
   },
-  submitText: {
+  buttonText: {
     color: COLORS.whiteText,
-    fontSize: 16,
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "capitalize",
+    fontSize: FONT_SIZE.buttonText,
   },
   pressed: {
     opacity: 0.8,

@@ -1,11 +1,13 @@
-export type Data = {
+import { ImageProps } from "react-native";
+
+export type OnBoardingData = {
   id: number;
-  image: any;
+  image: ImageProps;
   title: string;
   text: string;
 };
 
-export const data: Data[] = [
+export const data: OnBoardingData[] = [
   {
     id: 1,
     image: require("../images/onBoarding1.jpeg"),

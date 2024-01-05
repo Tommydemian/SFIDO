@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import Svg, {
   SvgProps,
   G,
@@ -6,14 +6,14 @@ import Svg, {
   Defs,
   LinearGradient,
   Stop,
-} from 'react-native-svg';
-import { SPACING } from '../../assets/theme';
+} from "react-native-svg";
+import { SPACING } from "../../assets/theme";
 /* SVGR has dropped some elements not supported by react-native-svg: filter */
 export const SvgLogo = (props: SvgProps) => (
   <Svg
     width={127}
     height={173}
-    style={{ alignSelf: 'center', marginVertical: SPACING.spacing10 }}
+    style={{ alignSelf: "center", marginVertical: SPACING.spacing10 }}
     fill="none"
     {...props}
   >

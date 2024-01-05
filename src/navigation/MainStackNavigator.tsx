@@ -32,12 +32,15 @@ export const MainStackNavigator = () => {
       <Stack.Screen
         name="CategoriesSelectionScreen"
         component={CategoriesSelectionScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          // presentation: "transparentModal",
+        }}
       />
       <Stack.Screen
         name="OnBoardingScreen"
         component={OnBoardingScreen}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, animation: "fade" }}
       />
       <Stack.Screen
         name="DemoStack"

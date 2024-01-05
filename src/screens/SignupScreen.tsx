@@ -20,7 +20,6 @@ import { AuthContainer } from "../components/AuthContainer";
 import { AuthSwitchLink } from "../components/AuthSwitchLink";
 
 import { OfficialLogo } from "../components/OfficialLogo";
-import { SfidoWhiteTextLogo } from "../components/SfidoWhiteTextLogo";
 import { NunitoText } from "../components/Fonts/NunitoText";
 import { InputField } from "../components/InputField";
 import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";

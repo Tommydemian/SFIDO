@@ -4,8 +4,13 @@ export const COLORS = {
   grayText: "#c0c0c0",
   blackBg: "#2C2929",
   whiteText: "#F8F1F3",
+  whiteSmoke: "#F5F3F5",
+  ghostWhite: "#FFFAFF",
   black: "#030303",
-  folly: "#FF2E63",
+  // folly: "#FF2E63",
+  folly: "#FF5A84",
+  // folly: "#1B998B",
+  // folly: "#2ECC71",
   ligthFolly: "#FF4775",
   robinEggBlue: "#08D9D6",
   indigoDye: "#0B526E",
@@ -18,6 +23,7 @@ export const COLORS = {
   claret: "#840032",
   semiTransparent: "#FFFFFFAA",
   shadow: "#000",
+  onBoardingDot: "#D9D9D9",
 };
 
 export const SPACING = {
@@ -36,15 +42,18 @@ export const BORDER = {
   border10: 10,
   border20: 20,
   border30: 30,
+  circle: 100,
 };
 
 export const FONT_SIZE = {
   title: 24,
   onBoardingTitle: 30,
   onBoardingDesc: 16,
+  buttonText: 16,
 };
 
 export const ICON_SIZE = {
+  small: 20,
   default: 24,
 };
 
@@ -64,4 +73,8 @@ export const BOX_COLORS = {
   saddleBrown: "#8B4513",
   olive: "#808000",
   teal: "#008080",
+};
+
+export const LINE_HEIGHT = {
+  default: 22,
 };

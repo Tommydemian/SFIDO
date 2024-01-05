@@ -1,18 +1,18 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext } from "react";
 
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 
 // types
-import { DbUser } from '../types';
+import { DbUser } from "../types";
 
 // services:
 import {
   checkIfUserExistsInFirestore,
   addUserToFirestore,
-} from '../services/userService';
-import { isGoogleAccountLinked } from '../services/googleService';
+} from "../services/userService";
+import { isGoogleAccountLinked } from "../services/googleService";
 
 type GoogleProviderProps = {
   children: React.ReactNode;
@@ -54,12 +54,12 @@ export const GoogleProvider: React.FC<GoogleProviderProps> = ({ children }) => {
       );
       if (currentUser) {
         await currentUser.user.linkWithCredential(googleCredential);
-        console.log('Cuenta de Google vinculada con éxito');
+        console.log("Cuenta de Google vinculada con éxito");
       } else {
-        console.error('No se pudo iniciar sesión con la cuenta existente');
+        console.error("No se pudo iniciar sesión con la cuenta existente");
       }
     } catch (error) {
-      console.error('Error al vincular la cuenta de Google: ', error);
+      console.error("Error al vincular la cuenta de Google: ", error);
     } finally {
       setIsLinking(false);
     }
@@ -74,7 +74,7 @@ export const GoogleProvider: React.FC<GoogleProviderProps> = ({ children }) => {
       });
       // Attempt to sign in with Google
       const response = await GoogleSignin.signIn();
-      console.log('Google Sign-In response:', response);
+      console.log("Google Sign-In response:", response);
 
       // Create a new user object based on the Google response
       const newUser: DbUser = {
@@ -83,7 +83,7 @@ export const GoogleProvider: React.FC<GoogleProviderProps> = ({ children }) => {
         insertedAt: firestore.Timestamp.now().toDate(),
         quoteIndex: 1,
         lastQuoteUpdate: new Date().toLocaleDateString(),
-        profilePic: response.user.photo || '',
+        profilePic: response.user.photo || "",
         isGoogleAccountLinked: false,
       };
 
@@ -98,18 +98,18 @@ export const GoogleProvider: React.FC<GoogleProviderProps> = ({ children }) => {
         isGoogleAccountLinked(response.user.email)
           //isLinked: boolean
           .then((isLinked) => {
-            console.log('isLinked in then:', isLinked);
+            console.log("isLinked in then:", isLinked);
             setIsGoogleLinked(isLinked!);
 
             // Sign in to Firebase with the Google credential
             return auth().signInWithCredential(googleCredential);
           })
           .catch((err) => {
-            console.log('Error in isUserGoogleAccountLinked:', err);
+            console.log("Error in isUserGoogleAccountLinked:", err);
           });
 
         // Log for debugging
-        console.log('After isUserGoogleAccountLinked call');
+        console.log("After isUserGoogleAccountLinked call");
 
         // Check if the user already exists in Firestore
         const existingUser = await checkIfUserExistsInFirestore(
@@ -133,10 +133,10 @@ export const GoogleProvider: React.FC<GoogleProviderProps> = ({ children }) => {
             });
         }
       } else {
-        console.log('No idToken received');
+        console.log("No idToken received");
       }
     } catch (error) {
-      console.error('Google Sign-In Error: ', error);
+      console.error("Google Sign-In Error: ", error);
     }
   };
 
@@ -157,7 +157,7 @@ export const GoogleProvider: React.FC<GoogleProviderProps> = ({ children }) => {
 export const useGoogleContext = () => {
   const context = useContext(GoogleContext);
   if (!context) {
-    throw new Error('useAuthContext must be used within a AuthProvider');
+    throw new Error("useAuthContext must be used within a AuthProvider");
   }
   return context;
 };

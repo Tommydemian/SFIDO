@@ -6,7 +6,7 @@ import { GalleryImageSelector } from "../GalleryImageSelector";
 
 type Props = {
   handleWriteMyOwn: () => void;
-  handleImageSelected: (uri: string) => void;
+  handleImageSelected?: (uri: string) => void;
 };
 
 export const DemoMessageCreationActions: React.FC<Props> = ({
