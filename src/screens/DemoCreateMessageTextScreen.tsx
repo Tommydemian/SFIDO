@@ -4,8 +4,8 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-  Image,
   Keyboard,
+  StatusBar,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -18,15 +18,15 @@ import { DemoTextInput } from "../components/Demo/DemoTextInput";
 import { SubmitButton } from "../components/SubmitButton";
 import { DemoNeedInspiration } from "../components/Demo/DemoNeedInspiration";
 import { DemoTextPreview } from "../components/Demo/DemoTextPreview";
-
-import { FontPicker } from "../components/Demo/FontPicker";
-
 import { useBottomSheet } from "../hooks/useBottomSheet";
 
-import { COLORS, SPACING } from "../../assets/theme";
+import { DemoScreenTitle } from "../components/Demo/DemoScreenTitle";
 
-import { useDemoMessageContext } from "../contexts/DemoMessageContext";
+import { COLORS, FONT_SIZE, SPACING } from "../../assets/theme";
+
 import { DemoStackParams } from "../navigation/DemoStackNavigator";
+import DemoTextActions from "../components/Demo/DemoTextActions";
+import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
 
 type NavigationProps = NativeStackScreenProps<
   DemoStackParams,
@@ -36,8 +36,11 @@ type NavigationProps = NativeStackScreenProps<
 export const DemoCreateMessageTextScreen: React.FC<NavigationProps> = ({
   navigation,
 }) => {
-  const { videoId, text, modalSelectedImage } = useDemoMessageContext();
   const [isFontPickerOpen, setIsFontPickerOpen] = useState(false);
+
+  const handleFontPickerOpen = () => {
+    setIsFontPickerOpen((prev) => !prev);
+  };
 
   const {
     handleBottomSheetClose,
@@ -55,55 +58,38 @@ export const DemoCreateMessageTextScreen: React.FC<NavigationProps> = ({
         onPress={() => Keyboard.dismiss()}
       >
         <SafeAreaView style={styles.container}>
+          <AbsoluteFillBgImage imageKey="vector" />
           <DemoIntroductionModal />
-          {/* <AbsoluteFillBgImage imageKey="demoprepbg" /> */}
-          <OnBoardingContainer>
+          <OnBoardingContainer customStyles={styles.contentContainer}>
+            <DemoScreenTitle>Craft a message</DemoScreenTitle>
+
             <DemoTextInput
               placeholder="Write what you need to listen..."
-              setIsFontPickerOpen={setIsFontPickerOpen}
+              handleFontPickerOpen={handleFontPickerOpen}
               onPress={() =>
                 handleBottomSheetOpen({ activeOne: "colorPicker" })
               }
               render={({ handleWriteMyOwn }) => {
                 return (
-                  <View style={styles.actionsContainer}>
-                    <SubmitButton
-                      customStyles={styles.writeOwnMssgButton}
-                      onPress={handleWriteMyOwn}
-                    >
-                      <NunitoText
-                        customStyles={styles.writeOwnMssgButtonText}
-                        type="bold"
-                      >
-                        Write My Message
-                      </NunitoText>
-                    </SubmitButton>
-                    {isFontPickerOpen && <FontPicker />}
-                  </View>
+                  <DemoTextActions
+                    handleFontPickerOpen={handleFontPickerOpen}
+                    handleWriteMyOwn={handleWriteMyOwn}
+                    isFontPickerOpen={isFontPickerOpen}
+                  />
                 );
               }}
             />
 
-            <DemoNeedInspiration />
-
-            <DemoTextPreview />
-
-            <View
-              style={{
-                width: "50%",
-                alignSelf: "center",
-                backgroundColor: "red",
-              }}
+            <SubmitButton
+              customStyles={styles.continueButton}
+              onPress={() =>
+                navigation.navigate("DemoCreateMessageMediaScreen")
+              }
             >
-              <SubmitButton
-                customStyles={styles.ctaButton}
-                onPress={() => navigation.navigate("DemoCreateMessageScreen")}
-              >
-                <NunitoText customStyles={styles.textButton} type="bold">
-                  Continue
-                </NunitoText>
-              </SubmitButton>
-            </View>
+              <NunitoText customStyles={styles.textButton} type="bold">
+                Continue
+              </NunitoText>
+            </SubmitButton>
           </OnBoardingContainer>
         </SafeAreaView>
 
@@ -123,14 +109,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: COLORS.indigoDye,
+    backgroundColor: COLORS.blueNCS,
   },
-  ctaButton: {
+  contentContainer: {
+    // backgroundColor: COLORS.celadon,
+  },
+  continueButton: {
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    alignSelf: "center",
   },
   previewImage: {
     width: "100%",
@@ -142,18 +135,5 @@ const styles = StyleSheet.create({
   },
   textAlign: {
     textAlign: "center",
-  },
-  writeOwnMssgButton: {
-    backgroundColor: COLORS.celadon,
-    width: "60%",
-  },
-  writeOwnMssgButtonText: {
-    // color: "#363636",
-    color: COLORS.blackSecondaryText,
-    textAlign: "center",
-  },
-  actionsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
   },
 });

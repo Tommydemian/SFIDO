@@ -6,9 +6,11 @@ import { DemoCreateMessageScreen } from "../screens/DemoCreateMessageScreen";
 import { DemoMessageProvider } from "../contexts/DemoMessageContext";
 import { BottomTabsNavigator } from "./BottomTabsNavigator";
 import { DemoCreateMessageTextScreen } from "../screens/DemoCreateMessageTextScreen";
+import { DemoCreateMessageMediaScreen } from "../screens/DemoCreateMessageMediaScreen";
 
 export type DemoStackParams = {
   DemoCreateMessageTextScreen: undefined;
+  DemoCreateMessageMediaScreen: undefined;
   DemoCreateMessageScreen: undefined;
   DemoPreviewMessageScreen: {
     image: string;
@@ -30,6 +32,11 @@ export const DemoStackNavigator = () => {
         <Stack.Screen
           name="DemoCreateMessageTextScreen"
           component={DemoCreateMessageTextScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DemoCreateMessageMediaScreen"
+          component={DemoCreateMessageMediaScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

@@ -1,12 +1,21 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ViewProps } from "react-native";
 
-type Props = {
+type Props = ViewProps & {
   children: React.ReactNode;
+  customStyles?: object;
 };
 
-export const OnBoardingContainer: React.FC<Props> = ({ children }) => {
-  return <View style={styles.container}>{children}</View>;
+export const OnBoardingContainer: React.FC<Props> = ({
+  children,
+  customStyles,
+  ...rest
+}) => {
+  return (
+    <View {...rest} style={[styles.container, customStyles]}>
+      {children}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

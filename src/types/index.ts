@@ -58,3 +58,15 @@ export type FormData = {
 export type ActiveBottomSheet = {
   activeOne: "colorPicker" | "inspiration";
 };
+
+// DemoSection Image FlatList
+export type ImageItem = {
+  id: number;
+  uri: any;
+};
+
+export type SpacerItem = {
+  key: string;
+};
+
+export type CarouselItem = ImageItem | SpacerItem;

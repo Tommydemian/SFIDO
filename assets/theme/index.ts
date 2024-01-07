@@ -13,6 +13,7 @@ export const COLORS = {
   // folly: "#2ECC71",
   ligthFolly: "#FF4775",
   robinEggBlue: "#08D9D6",
+  blueNCS: "#2383AC",
   indigoDye: "#0B526E",
   errorRed: "#FF4747",
   // TODO: Folly contrast
@@ -21,7 +22,7 @@ export const COLORS = {
   robinEggBlueDarker: "#07C5C2",
   nianza: "#D4ECD6",
   claret: "#840032",
-  semiTransparent: "#FFFFFFAA",
+  semiTransparent: "rgba(217, 217, 217, 0.50)",
   shadow: "#000",
   onBoardingDot: "#D9D9D9",
 };
@@ -46,10 +47,12 @@ export const BORDER = {
 };
 
 export const FONT_SIZE = {
+  textPreview: 20,
   title: 24,
   onBoardingTitle: 30,
   onBoardingDesc: 16,
   buttonText: 16,
+  screenTitle: 16,
 };
 
 export const ICON_SIZE = {

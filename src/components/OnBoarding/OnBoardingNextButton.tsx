@@ -8,7 +8,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useFonts } from "expo-font";
 import { AntDesign } from "@expo/vector-icons";
-import { COLORS, SPACING } from "../../../assets/theme";
+import { BORDER, COLORS, SPACING } from "../../../assets/theme";
 import { OnBoardingData } from "../../../assets/constants/data";
 import { OnBoardingNavigationProps } from "../../screens/OnBoardingScreen";
 
@@ -64,7 +64,7 @@ export const OnBoardingNextButton: React.FC<Props> = ({
     if (flatListIndex.value < dataLength - 1) {
       flatListRef.current?.scrollToIndex({ index: flatListIndex.value + 1 });
     } else {
-      navigation.navigate("CategoriesSelectionScreen");
+      navigation.navigate("DemoStack");
     }
   };
 
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.folly,
     padding: SPACING.spacing10,
-    borderRadius: 100,
+    borderRadius: BORDER.circle,
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",

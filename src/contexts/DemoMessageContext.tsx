@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext } from "react";
 import { COLORS } from "../../assets/theme";
+import { initialImagesArr } from "../../assets/constants/data";
 
 // Definición del tipo para el contexto
 type DemoMessageContextType = {
@@ -13,8 +14,8 @@ type DemoMessageContextType = {
   setVideoId: React.Dispatch<React.SetStateAction<string>>;
   textColor: string;
   setTextColor: React.Dispatch<React.SetStateAction<string>>;
-  font: string;
-  setFont: React.Dispatch<React.SetStateAction<string>>;
+  fontSelected: string;
+  setFontSelected: React.Dispatch<React.SetStateAction<string>>;
 };
 
 // Creación del contexto
@@ -29,9 +30,11 @@ export const DemoMessageProvider: React.FC<{ children: React.ReactNode }> = ({
   const [text, setText] = useState(
     "The future's still inside of me, therefore I just need to keep moving. As long as I am moving, there's nothing to fear.",
   );
-  const [font, setFont] = useState("");
-  const [selectedImage, setSelectedImage] = useState("");
-  const [modalSelectedImage, setModalSelectedImage] = useState("");
+  const [fontSelected, setFontSelected] = useState("");
+  const [selectedImage, setSelectedImage] = useState(initialImagesArr[0].uri);
+  const [modalSelectedImage, setModalSelectedImage] = useState(
+    initialImagesArr[0].uri,
+  );
   const [videoId, setVideoId] = useState("");
   const [textColor, setTextColor] = useState(COLORS.blackSecondaryText); // Color por defecto
 
@@ -48,8 +51,8 @@ export const DemoMessageProvider: React.FC<{ children: React.ReactNode }> = ({
         setVideoId,
         textColor,
         setTextColor,
-        font,
-        setFont,
+        fontSelected,
+        setFontSelected,
       }}
     >
       {children}

@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     columnGap: SPACING.spacing10,
+    width: "100%",
   },
   videoLinkInput: {
     flexGrow: 1,

@@ -13,7 +13,7 @@ const CustomColorPickerBottomSheet = forwardRef<BottomSheet, Props>(
   ({ handleBottomSheetClose }, ref) => {
     const { setTextColor } = useDemoMessageContext();
 
-    const snapPoints = useMemo(() => ["30%", "40%"], []); // Ajusta según la necesidad
+    const snapPoints = useMemo(() => ["30%", "40%"], []);
 
     const colorBoxes = Object.values(BOX_COLORS).map((color) => (
       <ColorBox
@@ -29,10 +29,6 @@ const CustomColorPickerBottomSheet = forwardRef<BottomSheet, Props>(
         handleBottomSheetClose();
       }
     }
-
-    // useEffect(() => {
-    //   if (handleBottomSheetClose) handleBottomSheetClose();
-    // }, [textColor, handleColorSelect]);
 
     return (
       <BottomSheet
@@ -59,10 +55,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: BORDER.border10,
     flexWrap: "wrap",
-    justifyContent: "space-around", // Asegura un espaciado uniforme
+    justifyContent: "space-around",
   },
   colorBox: {
-    margin: SPACING.spacing5, // Añade un poco de margen alrededor de cada caja
+    margin: SPACING.spacing5,
   },
   bottomSheet: {
     borderTopLeftRadius: 20,
@@ -71,5 +67,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
+    backgroundColor: COLORS.ghostWhite,
   },
 });

@@ -44,7 +44,24 @@ export const categoryIcons: CategoryIcons = {
 // Images mapping
 export const bgImages = {
   authbg: require("../../assets/images/authbg.png"),
-  demobg: require("../../assets/images/demoshades.png"),
-  demoprepbg: require("../../assets/images/demoprepbg.png"),
-  categoriebg: require("../../assets/images/categorybg.png"),
+  // demobg: require("../../assets/images/demoshades.png"),
+  // demoprepbg: require("../../assets/images/demoprepbg.png"),
+  // categoriebg: require("../../assets/images/categorybg.png"),
+  vector: require("../../assets/images/vector.png"),
 };
+
+const initialImages = {
+  image1: require("../../assets/images/initialImage1.jpg"),
+  image2: require("../../assets/images/initialImage2.jpg"),
+  image3: require("../../assets/images/initialImage3.jpg"),
+  image4: require("../../assets/images/citysmall.jpg"),
+  image5: require("../../assets/images/dobermancool.jpeg"),
+};
+
+export const initialImagesArr = [
+  { id: 1, uri: initialImages.image1 },
+  { id: 2, uri: initialImages.image2 },
+  { id: 3, uri: initialImages.image3 },
+  { id: 4, uri: initialImages.image4 },
+  { id: 5, uri: initialImages.image5 },
+];

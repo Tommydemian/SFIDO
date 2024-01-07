@@ -14,8 +14,6 @@ import { QuoteCard } from "../components/QuoteCard";
 import { AntDesign } from "@expo/vector-icons";
 import { COLORS } from "../../assets/theme";
 
-const forestImg = require("../../assets/images/forest.jpg");
-
 export const InspirationScreen = () => {
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [loading, setLoading] = useState(false);
@@ -67,7 +65,7 @@ export const InspirationScreen = () => {
   // TODO: lazy lodad quotes => check FlashList package
   return (
     <SafeAreaView style={styles.container}>
-      <Image source={forestImg} style={styles.image} />
+      <Image style={styles.image} />
 
       <FlatList
         ref={quoteListRef}

@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     marginBottom: SPACING.spacing20,
-    width: "100%",
   },
   contentContainer: {
     flexDirection: "row",
