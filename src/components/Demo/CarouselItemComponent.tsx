@@ -64,7 +64,7 @@ export const CarouselItemComponent: React.FC<Props> = ({
             source={item.uri}
             style={[
               styles.modalselectedImage,
-              { width: SIZE, height: SCREEN_WIDTH * 1.2 },
+              { width: SIZE, height: SCREEN_WIDTH * 1.1 },
             ]}
           />
         </TouchableOpacity>
@@ -89,10 +89,10 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   shadow: {
-    shadowColor: COLORS.claret,
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.7,
-    shadowRadius: 15,
-    elevation: 15, // Solo para Android
+    shadowColor: "#000000", // Black color
+    shadowOffset: { width: 0, height: 4 }, // X and Y offset of the shadow
+    shadowOpacity: 0.25, // Opacity of the shadow
+    shadowRadius: 4, // Blur radius of the shadow
+    elevation: 4, // For Android elevation of the shadow
   },
 });

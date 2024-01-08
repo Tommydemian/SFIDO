@@ -12,11 +12,12 @@ import {
 } from "../../../assets/theme";
 import { ActiveBottomSheet } from "../../types";
 import { useDemoMessageContext } from "../../contexts/DemoMessageContext";
+import { useFontsLoader } from "../../hooks/useLoadFonts";
 
 type Props = {
   placeholder: string;
   render: (props: RenderProps) => React.ReactNode;
-  onPress: (type: ActiveBottomSheet) => void;
+  onPress?: (type: ActiveBottomSheet) => void;
   handleFontPickerOpen: () => void;
 };
 
@@ -33,8 +34,8 @@ export const DemoTextInput: React.FC<Props> = ({
   handleFontPickerOpen,
 }) => {
   const { scale, textInputRef, handleWriteMyOwn } = useDemoTextInput();
-
-  const { text, setText, fontSelected } = useDemoMessageContext();
+  const { text, setText, fontSelected, textColor } = useDemoMessageContext();
+  const fontsLoaded = useFontsLoader();
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
@@ -46,12 +47,23 @@ export const DemoTextInput: React.FC<Props> = ({
     console.log(fontSelected, "fontSelected");
   }, [fontSelected]);
 
+  if (!fontsLoaded) {
+    return (
+      <View>
+        <Text>Loading Fonts...</Text>
+      </View>
+    );
+  }
+
   return (
     <>
       <Animated.View style={animatedStyles}>
         <TextInput
           ref={textInputRef}
-          style={[styles.textInput, { fontFamily: fontSelected }]}
+          style={[
+            styles.textInput,
+            { fontFamily: fontSelected, color: textColor },
+          ]}
           value={text}
           multiline={true}
           placeholder={placeholder}
@@ -86,6 +98,7 @@ const styles = StyleSheet.create({
   textInput: {
     // borderWidth: 1,
     // borderColor: "#CCCCCC",
+    marginTop: SPACING.spacing50,
     borderRadius: BORDER.border10,
     width: width - 40,
     padding: SPACING.spacing15,

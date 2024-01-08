@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import { GoogleIcon } from "./GoogleIcon";
+import { GoogleIcon } from "./GoogleIconSvg";
 import { SubmitButton } from "./SubmitButton";
 import { RobotoText } from "./Fonts/RobotoText";
 import { COLORS, SPACING } from "../../assets/theme";

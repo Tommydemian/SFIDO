@@ -1,12 +1,25 @@
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SubmitButton } from "../SubmitButton";
 import { NunitoText } from "../Fonts/NunitoText";
-import { FontPicker } from "./FontPicker";
-import { COLORS, ICON_SIZE, SPACING } from "../../../assets/theme";
 import { CustomIcon } from "../CustomIcon";
 import { useDemoMessageContext } from "../../contexts/DemoMessageContext";
 import { DemoNeedInspiration } from "./DemoNeedInspiration";
+import { ColorBox } from "../ColorBox";
+import { useToggle } from "../../hooks/useToggle";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
+import { useIterateAndSelectFont } from "../../hooks/useIterateAndSelectFont";
+import {
+  COLORS,
+  ICON_SIZE,
+  SPACING,
+  BOX_COLORS,
+  BORDER,
+} from "../../../assets/theme";
 
 type Props = {
   handleWriteMyOwn: () => void;
@@ -14,48 +27,55 @@ type Props = {
   handleFontPickerOpen: () => void;
 };
 
-export const DemoTextActions: React.FC<Props> = ({
-  handleFontPickerOpen,
-  handleWriteMyOwn,
-  isFontPickerOpen,
-}) => {
-  const { fontSelected, setFontSelected } = useDemoMessageContext();
-
-  const fonts = [
-    "NunitoRegular",
-    "RobotoRegular",
-    "MerriweatherRegular",
-    "BebasNeueRegular",
-    "YungJakesTextRegular",
-  ];
-
-  const [fontIndex, setFontIndex] = useState(0);
-
-  const fontIndexIncrease = () => {
-    setFontIndex((prev) => prev + 1);
-  };
+export const DemoTextActions: React.FC<Props> = ({ handleWriteMyOwn }) => {
+  const { fontSelected, setFontSelected, setTextColor } =
+    useDemoMessageContext();
+  const [isColorPickerOpen, toggle] = useToggle();
+  const { fontIndexIncrease } = useIterateAndSelectFont();
+  const colorPickerHeight = useSharedValue(0);
 
   useEffect(() => {
-    setFontSelected(fonts[fontIndex]);
-  }, [fontIndex]);
+    colorPickerHeight.value = withTiming(isColorPickerOpen ? 250 : 0, {
+      duration: 300,
+    });
+  }, [isColorPickerOpen]);
 
-  useEffect(() => {
-    console.log(fontSelected);
-  }, [fontSelected]);
+  const animatedColorPickerStyle = useAnimatedStyle(() => {
+    return {
+      height: colorPickerHeight.value,
+      overflow: "hidden",
+    };
+  });
+
+  function handleColorSelect(color: string) {
+    setTextColor(color);
+    toggle();
+  }
 
   return (
     <View style={styles.actionsContainer}>
       <View style={styles.iconsContainer}>
-        <View style={styles.iconWrapper}>
+        {isColorPickerOpen && (
+          <Animated.View style={[styles.colorPicker, animatedColorPickerStyle]}>
+            {Object.values(BOX_COLORS).map((color) => (
+              <ColorBox
+                onPress={() => handleColorSelect(color)}
+                key={color}
+                color={color}
+              />
+            ))}
+          </Animated.View>
+        )}
+        <Pressable onPress={toggle} style={styles.iconWrapper}>
           <CustomIcon
             library="Ionicons"
             name="color-palette"
             size={ICON_SIZE.default}
             color={COLORS.whiteText}
-            // onBottomSheetPress={onPress}
+            onPress={toggle}
           />
-        </View>
-        <View style={styles.iconWrapper}>
+        </Pressable>
+        <Pressable style={styles.iconWrapper}>
           <CustomIcon
             library="FontAwesome"
             name="font"
@@ -63,7 +83,7 @@ export const DemoTextActions: React.FC<Props> = ({
             color={COLORS.whiteText}
             onPress={fontIndexIncrease}
           />
-        </View>
+        </Pressable>
       </View>
       <DemoNeedInspiration />
       {/* <SubmitButton 
@@ -76,12 +96,10 @@ export const DemoTextActions: React.FC<Props> = ({
         </SubmitButton>
         {isFontPickerOpen && (
           <FontPicker handleFontPickerOpen={handleFontPickerOpen} />
-        )}  */}
+        )}   */}
     </View>
   );
 };
-
-export default DemoTextActions;
 
 const styles = StyleSheet.create({
   actionsContainer: {
@@ -95,7 +113,6 @@ const styles = StyleSheet.create({
   },
   writeOwnMssgButton: {
     backgroundColor: COLORS.ghostWhite,
-    width: "60%",
   },
   writeOwnMssgButtonText: {
     // color: "#363636",
@@ -109,5 +126,18 @@ const styles = StyleSheet.create({
     height: 34,
     width: 34,
     borderRadius: 100,
+    position: "relative",
+    zIndex: 4,
+  },
+  colorPicker: {
+    width: 34,
+    height: 200,
+    backgroundColor: COLORS.semiTransparentDark,
+    position: "absolute",
+    top: 16,
+    zIndex: 1,
+    alignItems: "center",
+    paddingTop: SPACING.spacing20,
+    borderRadius: BORDER.circle,
   },
 });

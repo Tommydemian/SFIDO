@@ -8,6 +8,7 @@ import {
   Image,
   Keyboard,
   FlatList,
+  Pressable,
   useWindowDimensions,
 } from "react-native";
 
@@ -27,7 +28,7 @@ import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContaine
 import { DemoImageModal } from "../components/Demo/DemoImageModal";
 import { VideoLinkInput } from "../components/VideoLinkInput";
 
-import { BORDER, COLORS, SPACING } from "../../assets/theme";
+import { BORDER, COLORS, ICON_SIZE, SPACING, WIDTH } from "../../assets/theme";
 
 import { useDemoMessageContext } from "../contexts/DemoMessageContext";
 import { DemoStackParams } from "../navigation/DemoStackNavigator";
@@ -36,6 +37,10 @@ import { GalleryImageSelector } from "../components/GalleryImageSelector";
 import { initialImagesArr } from "../../assets/constants/data";
 import { CarouselItem, ImageItem, SpacerItem } from "../types";
 import { CarouselItemComponent } from "../components/Demo/CarouselItemComponent";
+import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
+import { DemoScreenTitle } from "../components/Demo/DemoScreenTitle";
+import { CollageSvg } from "../components/CollageSvg";
+import { CustomIcon } from "../components/CustomIcon";
 
 type NavigationProps = NativeStackScreenProps<
   DemoStackParams,
@@ -101,6 +106,23 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
         onPress={() => Keyboard.dismiss()}
       >
         <SafeAreaView style={styles.container}>
+          <AbsoluteFillBgImage imageKey="vector" />
+
+          <View style={styles.spacer} />
+          <View style={styles.headerContainer}>
+            <CustomIcon
+              library="Ionicons"
+              name="chevron-back"
+              size={ICON_SIZE.goBack}
+              color={COLORS.white}
+              onPress={() => navigation.goBack()}
+              customStyles={styles.goBack}
+            />
+            <DemoScreenTitle title="Include a Picture">
+              <CollageSvg />
+            </DemoScreenTitle>
+          </View>
+
           <Animated.FlatList
             data={data}
             keyExtractor={(item) =>
@@ -109,10 +131,11 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
             horizontal={true}
             bounces={false}
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingTop: 10 }}
+            contentContainerStyle={{ paddingTop: 20 }}
             decelerationRate={0}
             onScroll={onScroll}
             snapToInterval={SIZE}
+            snapToAlignment={"start"}
             scrollEventThrottle={16}
             renderItem={({ item, index }) => {
               return (
@@ -128,9 +151,6 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
               );
             }}
           />
-
-          <NunitoText>Hello</NunitoText>
-
           {/* {modalSelectedImage && (
         <View style={styles.modalSelectedImageContainer}>
         <Image
@@ -143,10 +163,17 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
         />
         </View>
       )} */}
-
           <View style={styles.cameraAndVideoContainer}>
             <GalleryImageSelector onImageSelected={handleImageSelect} />
-            <VideoLinkInput />
+            {/* <VideoLinkInput /> */}
+            <Pressable style={styles.videoIconContainer}>
+              <CustomIcon
+                library="Entypo"
+                name="video"
+                size={28}
+                color={COLORS.whiteText}
+              />
+            </Pressable>
 
             {/* <DemoImageModal
               selectedImage={selectedImage}
@@ -154,22 +181,21 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
               setIsModalVisible={setIsModalVisible}
               handleModalSelectedImage={handleModalSelectedImage}
             /> */}
-
-            <SubmitButton
-              customStyles={styles.continueButton}
-              onPress={() =>
-                navigation.navigate("DemoPreviewMessageScreen", {
-                  image: modalSelectedImage,
-                  text: text,
-                  videoId: videoId,
-                })
-              }
-            >
-              <NunitoText type="bold" customStyles={styles.continueTextButton}>
-                Continue
-              </NunitoText>
-            </SubmitButton>
           </View>
+          <SubmitButton
+            customStyles={styles.nextButton}
+            onPress={() =>
+              navigation.navigate("DemoPreviewMessageScreen", {
+                image: modalSelectedImage,
+                text: text,
+                videoId: videoId,
+              })
+            }
+          >
+            <NunitoText type="bold" customStyles={styles.textButton}>
+              Next
+            </NunitoText>
+          </SubmitButton>
         </SafeAreaView>
       </TouchableOpacity>
     </GestureHandlerRootView>
@@ -179,21 +205,25 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.indigoDye,
+    backgroundColor: COLORS.blueNCS,
     justifyContent: "center",
     paddingVertical: SPACING.spacing40,
     paddingHorizontal: SPACING.spacing40,
   },
-  continueButton: {
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+  nextButton: {
+    shadowColor: "rgba(0, 0, 0, 0.25)",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 5, // Para Android
     position: "absolute",
-    bottom: 0,
-    width: "100%",
+    bottom: SPACING.nextButtonBottom,
+    width: 111,
     alignSelf: "center",
+  },
+  textButton: {
+    textAlign: "center",
+    color: "#fff",
   },
   continueButtonText: {
     color: "white",
@@ -205,8 +235,37 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   cameraAndVideoContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
     paddingHorizontal: SPACING.spacing40,
-    paddingBottom: 100,
+    width: "100%",
+    position: "absolute",
+    bottom: 180,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  goBack: {
+    position: "absolute",
+    left: SPACING.spacing40,
+  },
+  spacer: {
+    padding: 22,
+  },
+  videoIconContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 45,
+    height: 45,
+    backgroundColor: COLORS.folly,
+    borderRadius: BORDER.circle,
+    shadowColor: "rgba(27, 30, 54, 0.25)",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 4,
   },
 
   //   modalSelectedImageContainer: {

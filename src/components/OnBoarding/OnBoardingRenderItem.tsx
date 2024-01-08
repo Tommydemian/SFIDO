@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   itemContent: {
     alignItems: "center",
     paddingHorizontal: SPACING.spacing20,
-    backgroundColor: COLORS.indigoDye,
+    backgroundColor: COLORS.blueNCS,
     position: "absolute",
     bottom: 0,
     borderTopRightRadius: BORDER.border20,

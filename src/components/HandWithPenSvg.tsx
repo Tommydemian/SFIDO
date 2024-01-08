@@ -7,7 +7,7 @@ import Svg, {
   Use,
   Image,
 } from "react-native-svg";
-export const HandWithPen = (props: SvgProps) => (
+export const HandWithPenSvg = (props: SvgProps) => (
   <Svg width={28} height={28} fill="none" {...props}>
     <Path fill="url(#a)" d="M0 0h28v28H0z" />
     <Defs>

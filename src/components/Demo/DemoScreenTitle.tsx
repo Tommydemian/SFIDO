@@ -6,15 +6,16 @@ import { COLORS, FONT_SIZE, SPACING } from "../../../assets/theme";
 
 type Props = {
   children: React.ReactNode;
+  title: string;
 };
 
-export const DemoScreenTitle: React.FC<Props> = ({ children }) => {
+export const DemoScreenTitle: React.FC<Props> = ({ children, title }) => {
   return (
     <View style={styles.screenTitleContainer}>
       <NunitoText type="bold" customStyles={styles.screenTitle}>
-        {children}
+        {title}
       </NunitoText>
-      <HandWithPen />
+      {children}
     </View>
   );
 };
@@ -24,7 +25,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: SPACING.spacing50,
     zIndex: 300,
   },
   screenTitle: {

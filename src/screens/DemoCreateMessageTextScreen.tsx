@@ -5,7 +5,6 @@ import {
   View,
   TouchableOpacity,
   Keyboard,
-  StatusBar,
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -13,20 +12,24 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { DemoIntroductionModal } from "../components/Demo/DemoIntroductionModal";
 import { NunitoText } from "../components/Fonts/NunitoText";
 import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContainer";
-import { CustomColorPickerBottomSheet } from "../components/CustomColorPickerBottomSheet";
 import { DemoTextInput } from "../components/Demo/DemoTextInput";
 import { SubmitButton } from "../components/SubmitButton";
-import { DemoNeedInspiration } from "../components/Demo/DemoNeedInspiration";
-import { DemoTextPreview } from "../components/Demo/DemoTextPreview";
-import { useBottomSheet } from "../hooks/useBottomSheet";
+import { DemoTextActions } from "../components/Demo/DemoTextActions";
 
 import { DemoScreenTitle } from "../components/Demo/DemoScreenTitle";
 
-import { COLORS, FONT_SIZE, SPACING } from "../../assets/theme";
+import {
+  COLORS,
+  FONT_SIZE,
+  ICON_SIZE,
+  SPACING,
+  WIDHT,
+} from "../../assets/theme";
 
 import { DemoStackParams } from "../navigation/DemoStackNavigator";
-import DemoTextActions from "../components/Demo/DemoTextActions";
 import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
+import { HandWithPenSvg } from "../components/HandWithPenSvg";
+import { CustomIcon } from "../components/CustomIcon";
 
 type NavigationProps = NativeStackScreenProps<
   DemoStackParams,
@@ -42,14 +45,6 @@ export const DemoCreateMessageTextScreen: React.FC<NavigationProps> = ({
     setIsFontPickerOpen((prev) => !prev);
   };
 
-  const {
-    handleBottomSheetClose,
-    handleBottomSheetOpen,
-    isBottomSheetVisible,
-    bottomSheetRef,
-    activeBottomSheet,
-  } = useBottomSheet();
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <TouchableOpacity
@@ -60,15 +55,24 @@ export const DemoCreateMessageTextScreen: React.FC<NavigationProps> = ({
         <SafeAreaView style={styles.container}>
           <AbsoluteFillBgImage imageKey="vector" />
           <DemoIntroductionModal />
-          <OnBoardingContainer customStyles={styles.contentContainer}>
-            <DemoScreenTitle>Craft a message</DemoScreenTitle>
+          <OnBoardingContainer>
+            <View style={styles.headerContainer}>
+              <CustomIcon
+                library="Ionicons"
+                name="chevron-back"
+                size={ICON_SIZE.goBack}
+                color={COLORS.white}
+                onPress={() => navigation.goBack()}
+                customStyles={styles.goBack}
+              />
+              <DemoScreenTitle title="Craft a message">
+                <HandWithPenSvg />
+              </DemoScreenTitle>
+            </View>
 
             <DemoTextInput
               placeholder="Write what you need to listen..."
               handleFontPickerOpen={handleFontPickerOpen}
-              onPress={() =>
-                handleBottomSheetOpen({ activeOne: "colorPicker" })
-              }
               render={({ handleWriteMyOwn }) => {
                 return (
                   <DemoTextActions
@@ -81,25 +85,17 @@ export const DemoCreateMessageTextScreen: React.FC<NavigationProps> = ({
             />
 
             <SubmitButton
-              customStyles={styles.continueButton}
+              customStyles={styles.nextButton}
               onPress={() =>
                 navigation.navigate("DemoCreateMessageMediaScreen")
               }
             >
               <NunitoText customStyles={styles.textButton} type="bold">
-                Continue
+                Next
               </NunitoText>
             </SubmitButton>
           </OnBoardingContainer>
         </SafeAreaView>
-
-        {isBottomSheetVisible &&
-          activeBottomSheet?.activeOne === "colorPicker" && (
-            <CustomColorPickerBottomSheet
-              ref={bottomSheetRef}
-              handleBottomSheetClose={handleBottomSheetClose}
-            />
-          )}
       </TouchableOpacity>
     </GestureHandlerRootView>
   );
@@ -111,18 +107,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: COLORS.blueNCS,
   },
-  contentContainer: {
-    // backgroundColor: COLORS.celadon,
-  },
-  continueButton: {
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+  nextButton: {
+    shadowColor: "rgba(0, 0, 0, 0.25)",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 5, // Para Android
     position: "absolute",
-    bottom: 0,
-    width: "100%",
+    bottom: SPACING.nextButtonBottom,
+    width: 111,
     alignSelf: "center",
   },
   previewImage: {
@@ -132,8 +125,17 @@ const styles = StyleSheet.create({
   },
   textButton: {
     textAlign: "center",
+    color: "#fff",
   },
   textAlign: {
     textAlign: "center",
+  },
+  goBack: {
+    position: "absolute",
+    left: 0,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
   },
 });

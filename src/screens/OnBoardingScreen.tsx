@@ -93,7 +93,7 @@ export const OnBoardingScreen: React.FC<OnBoardingNavigationProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.indigoDye,
+    backgroundColor: COLORS.blueNCS,
   },
   // TODO:Not sure about the color tho
   statusBarBg: {

@@ -28,6 +28,7 @@ export const data: OnBoardingData[] = [
   },
 ];
 
+// Categories data
 export type CategoryIcons = {
   [key: string]: string;
 };
@@ -41,7 +42,6 @@ export const categoryIcons: CategoryIcons = {
   "Empowerment and Leadership": "black-tie",
 };
 
-// Images mapping
 export const bgImages = {
   authbg: require("../../assets/images/authbg.png"),
   // demobg: require("../../assets/images/demoshades.png"),
@@ -50,6 +50,7 @@ export const bgImages = {
   vector: require("../../assets/images/vector.png"),
 };
 
+// Images mapping
 const initialImages = {
   image1: require("../../assets/images/initialImage1.jpg"),
   image2: require("../../assets/images/initialImage2.jpg"),

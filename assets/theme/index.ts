@@ -3,6 +3,7 @@ export const COLORS = {
   inputGrayText: "#a9a9a9",
   grayText: "#c0c0c0",
   blackBg: "#2C2929",
+  white: "#FFFFFF",
   whiteText: "#F8F1F3",
   whiteSmoke: "#F5F3F5",
   ghostWhite: "#FFFAFF",
@@ -22,9 +23,12 @@ export const COLORS = {
   robinEggBlueDarker: "#07C5C2",
   nianza: "#D4ECD6",
   claret: "#840032",
+  semiTransparentLight: "rgba(255, 255, 255, 0.70);",
   semiTransparent: "rgba(217, 217, 217, 0.50)",
+  semiTransparentDark: "rgba(49, 67, 89, 0.51);",
   shadow: "#000",
   onBoardingDot: "#D9D9D9",
+  cerulean: "#1D779D",
 };
 
 export const SPACING = {
@@ -36,6 +40,7 @@ export const SPACING = {
   spacing30: 30,
   spacing40: 40,
   spacing50: 50,
+  nextButtonBottom: 72,
 };
 
 export const BORDER = {
@@ -47,6 +52,9 @@ export const BORDER = {
 };
 
 export const FONT_SIZE = {
+  tooltip: 14,
+  small: 14,
+  default: 16,
   textPreview: 20,
   title: 24,
   onBoardingTitle: 30,
@@ -58,24 +66,41 @@ export const FONT_SIZE = {
 export const ICON_SIZE = {
   small: 20,
   default: 24,
+  goBack: 34,
+  mediaActions: 30,
 };
 
+export const WIDTH = {
+  nextButton: 111,
+};
+
+// export const BOX_COLORS = {
+//   white: "#FFFFFF",
+//   black: "#000000",
+//   darkGray: "#333333",
+//   lightGray: "#CCCCCC",
+//   crimson: "#DC143C",
+//   deepSkyBlue: "#00BFFF",
+//   gold: "#FFD700",
+//   coral: "#FF7F50",
+//   limeGreen: "#32CD32",
+//   hotPink: "#FF69B4",
+//   royalBlue: "#4169E1",
+//   violet: "#EE82EE",
+//   saddleBrown: "#8B4513",
+//   olive: "#808000",
+//   teal: "#008080",
+// };
+
 export const BOX_COLORS = {
+  greenYellow: "#C3FF77",
+  vistaBlue: "#77A5FF",
+  helioTrope: "#BD68FF",
+  royalBlue: "#1C2569",
+  jasmine: "#FFD177",
+  lightRed: "#F77",
+  blackPearl: "#1E1E1E",
   white: "#FFFFFF",
-  black: "#000000",
-  darkGray: "#333333",
-  lightGray: "#CCCCCC",
-  crimson: "#DC143C",
-  deepSkyBlue: "#00BFFF",
-  gold: "#FFD700",
-  coral: "#FF7F50",
-  limeGreen: "#32CD32",
-  hotPink: "#FF69B4",
-  royalBlue: "#4169E1",
-  violet: "#EE82EE",
-  saddleBrown: "#8B4513",
-  olive: "#808000",
-  teal: "#008080",
 };
 
 export const LINE_HEIGHT = {

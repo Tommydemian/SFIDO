@@ -5,6 +5,7 @@ import {
   View,
 } from "react-native";
 import React from "react";
+import { BORDER } from "../../assets/theme";
 
 type Props = TouchableOpacityProps & {
   color: string;
@@ -21,16 +22,14 @@ export const ColorBox: React.FC<Props> = ({ color, onPress, ...rest }) => {
 
 const styles = StyleSheet.create({
   colorBox: {
-    width: 50,
-    height: 50,
-    borderRadius: 10,
-    margin: 5,
-    justifyContent: "center", // Center the content
-    alignItems: "center", // Center the content
-    elevation: 3, // Adds elevation for Android
-    shadowColor: "#000", // Shadow color for iOS
-    shadowOffset: { width: 0, height: 2 }, // Shadow position for iOS
-    shadowOpacity: 0.25, // Shadow opacity for iOS
-    shadowRadius: 3.84, // Shadow blur for iOS
+    width: 22,
+    height: 22,
+    borderRadius: BORDER.circle,
+    margin: 3,
+    shadowColor: "rgba(27, 30, 54, 0.25)",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });

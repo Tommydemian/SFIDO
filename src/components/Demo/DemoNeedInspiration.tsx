@@ -1,52 +1,50 @@
 import { StyleSheet, View } from "react-native";
-import React, { useEffect } from "react";
-
+import React from "react";
 import { CustomIcon } from "../CustomIcon";
 import { NunitoText } from "../Fonts/NunitoText";
-import { COLORS, SPACING } from "../../../assets/theme";
-import Tooltip from "rn-tooltip";
+import {
+  BORDER,
+  COLORS,
+  FONT_SIZE,
+  ICON_SIZE,
+  SPACING,
+} from "../../../assets/theme";
+import { useToggle } from "../../hooks/useToggle";
 
 export const DemoNeedInspiration = () => {
-  const [isPressed, setIsPressed] = React.useState(false);
-
-  useEffect(() => {
-    console.log(isPressed);
-  }, [isPressed]);
+  const [isTooltipOpened, toggle] = useToggle();
 
   return (
     <View style={styles.container}>
-      <Tooltip
-        popover={
-          <NunitoText type="semiBold">
-            This is just a demo section. In the app, you'll find many quotes
-            tailored to your interests. For now, feel free to write anything to
-            see how it works.🤗
-          </NunitoText>
-        }
-        overlayColor="transparent"
-        backgroundColor={COLORS.blackBg}
-        width={300}
-        height={125}
-        containerStyle={{ padding: SPACING.spacing10 }}
-        highlightColor={COLORS.blackBg}
-      >
-        <View style={styles.contentContainer}>
-          <NunitoText
-            type="bold"
-            customStyles={isPressed ? styles.pressedText : styles.needInspText}
-            onPressIn={() => setIsPressed(true)}
-            onPressOut={() => setIsPressed(false)}
-          >
-            Need some inspiration?
-          </NunitoText>
-          {/* <CustomIcon
-            library="AntDesign"
-            name="infocirlce"
-            size={24}
-            color={COLORS.black}
-          /> */}
-        </View>
-      </Tooltip>
+      <View style={styles.contentContainer}>
+        <NunitoText type="bold" customStyles={styles.needInspText}>
+          Need inspiration?
+        </NunitoText>
+        <CustomIcon
+          library="AntDesign"
+          name="infocirlce"
+          size={24}
+          color={COLORS.white}
+          onPress={toggle}
+        />
+
+        {isTooltipOpened && (
+          <View style={styles.tooltip}>
+            <CustomIcon
+              library="Entypo"
+              name="circle-with-cross"
+              size={ICON_SIZE.small}
+              color={COLORS.cerulean}
+              customStyles={styles.tooltipCross}
+              onPress={toggle}
+            />
+            <NunitoText type="bold" customStyles={styles.tooltipText}>
+              In the app, you'll discover quotes aligned with your interests.
+              For now, just write anything to see how it looks. 🤗
+            </NunitoText>
+          </View>
+        )}
+      </View>
     </View>
   );
 };
@@ -54,9 +52,9 @@ export const DemoNeedInspiration = () => {
 const styles = StyleSheet.create({
   needInspText: {
     color: COLORS.ghostWhite,
-    textDecorationLine: "underline", // Añade subrayado
+    textDecorationLine: "underline",
     textTransform: "capitalize",
-    fontSize: 14,
+    fontSize: FONT_SIZE.default,
   },
   container: {
     flexDirection: "row",
@@ -64,7 +62,27 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "stretch",
     columnGap: SPACING.spacing5,
+    position: "relative",
+  },
+  tooltip: {
+    position: "absolute",
+    top: 0,
+    borderRadius: BORDER.border10,
+    left: 0,
+    width: "100%",
+    padding: SPACING.spacing10,
+    backgroundColor: COLORS.semiTransparentLight,
+  },
+  tooltipText: {
+    color: COLORS.cerulean,
+    fontSize: FONT_SIZE.tooltip,
+  },
+  tooltipCross: {
+    position: "absolute",
+    right: 0,
+    padding: SPACING.spacing5,
+    zIndex: 5,
   },
 });
