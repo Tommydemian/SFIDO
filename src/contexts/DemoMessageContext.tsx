@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext } from "react";
 import { COLORS } from "../../assets/theme";
 import { initialImagesArr } from "../../assets/constants/data";
+import { ImageItem } from "../types";
 
 // Definición del tipo para el contexto
 type DemoMessageContextType = {
@@ -8,6 +9,8 @@ type DemoMessageContextType = {
   setText: React.Dispatch<React.SetStateAction<string>>;
   selectedImage: string;
   setSelectedImage: React.Dispatch<React.SetStateAction<string>>;
+  imageList: ImageItem[];
+  setImageList: React.Dispatch<React.SetStateAction<ImageItem[]>>;
   videoId: string;
   setVideoId: React.Dispatch<React.SetStateAction<string>>;
   textColor: string;
@@ -30,8 +33,9 @@ export const DemoMessageProvider: React.FC<{ children: React.ReactNode }> = ({
   );
   const [fontSelected, setFontSelected] = useState("");
   const [selectedImage, setSelectedImage] = useState(initialImagesArr[0].uri);
+  const [imageList, setImageList] = useState<ImageItem[]>(initialImagesArr);
   const [videoId, setVideoId] = useState("");
-  const [textColor, setTextColor] = useState(COLORS.blackSecondaryText); // Color por defecto
+  const [textColor, setTextColor] = useState(COLORS.blackSecondaryText);
 
   return (
     <DemoMessageContext.Provider
@@ -40,6 +44,8 @@ export const DemoMessageProvider: React.FC<{ children: React.ReactNode }> = ({
         setText,
         selectedImage,
         setSelectedImage,
+        imageList,
+        setImageList,
         videoId,
         setVideoId,
         textColor,

@@ -32,8 +32,7 @@ import { useDemoMessageContext } from "../contexts/DemoMessageContext";
 import { DemoStackParams } from "../navigation/DemoStackNavigator";
 import { GalleryImageSelector } from "../components/GalleryImageSelector";
 
-import { initialImagesArr } from "../../assets/constants/data";
-import { CarouselItem, ImageItem, SpacerItem } from "../types";
+import { CarouselItem } from "../types";
 import { CarouselItemComponent } from "../components/Demo/CarouselItemComponent";
 import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
 import { DemoScreenTitle } from "../components/Demo/DemoScreenTitle";
@@ -45,38 +44,33 @@ type NavigationProps = NativeStackScreenProps<
   "DemoCreateMessageMediaScreen"
 >;
 
-const isSpacerItem = (item: CarouselItem): item is SpacerItem => {
-  return (item as SpacerItem).key !== undefined;
-};
-
 export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
   navigation,
 }) => {
   const { width: SCREEN_WIDTH } = useWindowDimensions();
   const SIZE = SCREEN_WIDTH * 0.7;
   const SPACER = (SCREEN_WIDTH - SIZE) / 2;
-
   const x = useSharedValue(0);
-  const [initialImagesArrState, setInitialImagesArrState] =
-    useState<ImageItem[]>(initialImagesArr);
-  const [data, setData] = useState<CarouselItem[]>([]);
+
+  const {
+    videoId,
+    text,
+    selectedImage,
+    setSelectedImage,
+    imageList,
+    setImageList,
+  } = useDemoMessageContext();
 
   const flatListRef = useRef<FlatList>(null);
 
-  useEffect(() => {
-    setData([
-      { key: "space-left" },
-      ...initialImagesArrState,
-      { key: "space-right" },
-    ]);
-
-    // if (initialImagesArrState.length > 1) {
-    //   flatListRef.current?.scrollToIndex({
-    //     index: initialImagesArrState.length,
-    //     animated: true,
-    //   });
-    // }
-  }, [initialImagesArrState]);
+  // useEffect(() => {
+  //   if (imageList.length > 1) {
+  //     flatListRef.current?.scrollToIndex({
+  //       index: imageList.length - 1,
+  //       animated: true,
+  //     });
+  //   }
+  // }, [imageList]);
 
   const onScroll = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -84,12 +78,15 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
     },
   });
 
-  const { videoId, text, selectedImage, setSelectedImage } =
-    useDemoMessageContext();
-
   const handleSelectImage = (uri: string) => {
     setSelectedImage(uri);
   };
+
+  // const getItemLayout = (_data, index: number) => ({
+  //   length: SIZE * 1.1, // El largo de cada ítem es SIZE
+  //   offset: SIZE * index, // El desplazamiento de cada ítem es su índice multiplicado por SIZE
+  //   index,
+  // });
 
   // const onImageSelected = (uri: string) => {
   //   initialImagesArr.push(uri);
@@ -126,10 +123,8 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
 
           <Animated.FlatList
             ref={flatListRef}
-            data={data}
-            keyExtractor={(item) =>
-              "id" in item ? item.id.toString() : item.key
-            }
+            data={imageList}
+            keyExtractor={(item) => item.id.toString()}
             horizontal={true}
             bounces={false}
             showsHorizontalScrollIndicator={false}
@@ -138,6 +133,7 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
             onScroll={onScroll}
             snapToInterval={SIZE}
             snapToAlignment={"start"}
+            // getItemLayout={getItemLayout}
             scrollEventThrottle={16}
             renderItem={({ item, index }) => {
               return (
@@ -153,13 +149,15 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
                 />
               );
             }}
+            ListHeaderComponent={<View style={{ width: SPACER }} />}
+            ListFooterComponent={<View style={{ width: SPACER }} />}
           />
 
           <View style={styles.cameraAndVideoContainer}>
             <GalleryImageSelector
               onImageSelected={handleSelectImage}
-              initialImagesArrState={initialImagesArrState}
-              setInitialImagesArrState={setInitialImagesArrState}
+              imageList={imageList}
+              setImageList={setImageList}
             />
             {/* <VideoLinkInput /> */}
             <Pressable style={styles.videoIconContainer}>

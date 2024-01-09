@@ -65,8 +65,4 @@ export type ImageItem = {
   uri: string;
 };
 
-export type SpacerItem = {
-  key: string;
-};
-
-export type CarouselItem = ImageItem | SpacerItem;
+export type CarouselItem = ImageItem;

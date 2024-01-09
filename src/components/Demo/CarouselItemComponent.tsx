@@ -12,7 +12,7 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import { CarouselItem, SpacerItem } from "../../types";
+import { CarouselItem } from "../../types";
 import { BORDER, COLORS, SPACING } from "../../../assets/theme";
 
 type Props = {
@@ -36,24 +36,16 @@ export const CarouselItemComponent: React.FC<Props> = ({
   selectedImage,
   handleSelectImage,
 }) => {
-  const isSpacerItem = (item: CarouselItem): item is SpacerItem => {
-    return (item as SpacerItem).key !== undefined;
-  };
-
   const scaleAnimation = useAnimatedStyle(() => {
     const scale = interpolate(
       x.value,
-      [(index - 2) * SIZE, (index - 1) * SIZE, index * SIZE],
+      [(index - 1.5) * SIZE, (index - 0.5) * SIZE, (index + 0.5) * SIZE],
       [0.8, 1, 0.8],
     );
     return {
       transform: [{ scale }],
     };
   });
-
-  if (isSpacerItem(item)) {
-    return <View style={{ width: SPACER }} />;
-  }
 
   return (
     <View

@@ -6,18 +6,18 @@ import { CustomIcon } from "./CustomIcon";
 import * as ImagePicker from "expo-image-picker";
 
 import { COLORS, SPACING } from "../../assets/theme";
-import { ImageItem } from "../types";
+import { CarouselItem, ImageItem } from "../types";
 
 type Props = {
   onImageSelected: (uri: string) => void;
-  initialImagesArrState: ImageItem[];
-  setInitialImagesArrState: React.Dispatch<React.SetStateAction<ImageItem[]>>;
+  imageList: CarouselItem[];
+  setImageList: React.Dispatch<React.SetStateAction<ImageItem[]>>;
 };
 
 export const GalleryImageSelector: React.FC<Props> = ({
   onImageSelected,
-  initialImagesArrState,
-  setInitialImagesArrState,
+  imageList,
+  setImageList,
 }) => {
   const pickImage = async () => {
     // Request media library permissions
@@ -39,7 +39,7 @@ export const GalleryImageSelector: React.FC<Props> = ({
         const newUri = result.assets[0].uri;
         onImageSelected(newUri);
         const newImageItem = { id: Date.now(), uri: newUri };
-        setInitialImagesArrState([...initialImagesArrState, newImageItem]);
+        setImageList([...imageList, newImageItem]);
       }
     }
   };
