@@ -62,7 +62,7 @@ export type ActiveBottomSheet = {
 // DemoSection Image FlatList
 export type ImageItem = {
   id: number;
-  uri: any;
+  uri: string;
 };
 
 export type SpacerItem = {

@@ -1,6 +1,13 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import {
+  StyleSheet,
+  Pressable,
+  View,
+  TouchableOpacity,
+  Image,
+} from "react-native";
+import React, { useEffect } from "react";
 import Animated, {
+  withTiming,
   SharedValue,
   interpolate,
   useAnimatedStyle,
@@ -15,7 +22,8 @@ type Props = {
   SCREEN_WIDTH: number;
   index: number;
   item: CarouselItem;
-  handleImageSelect: (uri: string) => void;
+  selectedImage: string;
+  handleSelectImage: (uri: string) => void;
 };
 
 export const CarouselItemComponent: React.FC<Props> = ({
@@ -25,7 +33,8 @@ export const CarouselItemComponent: React.FC<Props> = ({
   item,
   SPACER,
   SCREEN_WIDTH,
-  handleImageSelect,
+  selectedImage,
+  handleSelectImage,
 }) => {
   const isSpacerItem = (item: CarouselItem): item is SpacerItem => {
     return (item as SpacerItem).key !== undefined;
@@ -57,17 +66,25 @@ export const CarouselItemComponent: React.FC<Props> = ({
       ]}
     >
       <Animated.View
-        style={[styles.imageContainer, scaleAnimation, { width: SIZE }]}
+        style={[
+          scaleAnimation,
+          { width: SIZE },
+          item.uri === selectedImage && styles.selectedImageStyle,
+        ]}
       >
-        <TouchableOpacity onPress={() => handleImageSelect(item.uri)}>
+        <Pressable onPress={() => handleSelectImage(item.uri)}>
           <Image
-            source={item.uri}
+            source={{ uri: item.uri }}
             style={[
               styles.modalselectedImage,
-              { width: SIZE, height: SCREEN_WIDTH * 1.1 },
+              {
+                width: SIZE,
+                height: SCREEN_WIDTH * 1.1,
+                borderRadius: BORDER.border30,
+              },
             ]}
           />
-        </TouchableOpacity>
+        </Pressable>
       </Animated.View>
     </View>
   );
@@ -79,12 +96,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.ghostWhite,
     borderRadius: BORDER.border30,
     overflow: "hidden",
-    shadowColor: "#fff",
+    shadowColor: COLORS.white,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.3,
     shadowRadius: 20,
-    elevation: 15, // Solo para Android
+    elevation: 15,
   },
+  normalShadowStyle: {},
   modalselectedImage: {
     resizeMode: "cover",
   },
@@ -94,5 +112,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25, // Opacity of the shadow
     shadowRadius: 4, // Blur radius of the shadow
     elevation: 4, // For Android elevation of the shadow
+  },
+  // TODO:ANimated shadow
+  selectedImageStyle: {
+    alignItems: "center",
+    backgroundColor: COLORS.ghostWhite,
+    borderRadius: BORDER.border30,
+    shadowColor: COLORS.white,
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 8,
+    shadowOpacity: 1,
+    elevation: 3,
   },
 });

@@ -9,7 +9,6 @@ import {
 import React, { useEffect, useState } from "react";
 import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContainer";
 import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
-import { YungJakesText } from "../components/Fonts/YungJakesText";
 import { TouchableOpacity } from "react-native";
 import { useAuthContext } from "../contexts/AuthContext";
 import { S3Image } from "../components/S3Image";
@@ -38,7 +37,7 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
   navigation,
 }) => {
   const { image, text, videoId } = route.params;
-  const { textColor } = useDemoMessageContext();
+  const { textColor, fontSelected } = useDemoMessageContext();
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(true);
 
   const { appState } = useAppState();
@@ -83,16 +82,19 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
           color={COLORS.semiTransparent}
           customStyles={[styles.actionButton, styles.backButton]}
         />
-        <S3Image imgKey="doberman.jpeg" style={styles.backgroundImage} />
+        {/* <S3Image imgKey="doberman.jpeg" style={styles.backgroundImage} /> */}
         <Image source={{ uri: image }} style={styles.backgroundImage} />
         <AbsoluteFillBgImage imageKey="demobg" />
         <OnBoardingContainer>
           <View style={styles.quoteBodyContainer}>
-            <YungJakesText
-              customStyles={[styles.quoteBody, { color: textColor }]}
+            <Text
+              style={[
+                styles.quoteBody,
+                { color: textColor, fontFamily: fontSelected },
+              ]}
             >
               {text}
-            </YungJakesText>
+            </Text>
           </View>
           <TouchableOpacity onPress={signOutUser}>
             <Text>Sign out</Text>

@@ -1,4 +1,4 @@
-import { ImageProps } from "react-native";
+import { Image, ImageProps } from "react-native";
 
 export type OnBoardingData = {
   id: number;
@@ -44,7 +44,7 @@ export const categoryIcons: CategoryIcons = {
 
 export const bgImages = {
   authbg: require("../../assets/images/authbg.png"),
-  // demobg: require("../../assets/images/demoshades.png"),
+  demobg: require("../../assets/images/demoshades.png"),
   // demoprepbg: require("../../assets/images/demoprepbg.png"),
   // categoriebg: require("../../assets/images/categorybg.png"),
   vector: require("../../assets/images/vector.png"),
@@ -60,9 +60,9 @@ const initialImages = {
 };
 
 export const initialImagesArr = [
-  { id: 1, uri: initialImages.image1 },
-  { id: 2, uri: initialImages.image2 },
-  { id: 3, uri: initialImages.image3 },
-  { id: 4, uri: initialImages.image4 },
-  { id: 5, uri: initialImages.image5 },
+  { id: 1, uri: Image.resolveAssetSource(initialImages.image1).uri },
+  { id: 2, uri: Image.resolveAssetSource(initialImages.image2).uri },
+  { id: 3, uri: Image.resolveAssetSource(initialImages.image3).uri },
+  { id: 4, uri: Image.resolveAssetSource(initialImages.image4).uri },
+  { id: 5, uri: Image.resolveAssetSource(initialImages.image5).uri },
 ];

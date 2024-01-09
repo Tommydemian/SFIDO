@@ -8,8 +8,6 @@ type DemoMessageContextType = {
   setText: React.Dispatch<React.SetStateAction<string>>;
   selectedImage: string;
   setSelectedImage: React.Dispatch<React.SetStateAction<string>>;
-  modalSelectedImage: string;
-  setModalSelectedImage: React.Dispatch<React.SetStateAction<string>>;
   videoId: string;
   setVideoId: React.Dispatch<React.SetStateAction<string>>;
   textColor: string;
@@ -32,9 +30,6 @@ export const DemoMessageProvider: React.FC<{ children: React.ReactNode }> = ({
   );
   const [fontSelected, setFontSelected] = useState("");
   const [selectedImage, setSelectedImage] = useState(initialImagesArr[0].uri);
-  const [modalSelectedImage, setModalSelectedImage] = useState(
-    initialImagesArr[0].uri,
-  );
   const [videoId, setVideoId] = useState("");
   const [textColor, setTextColor] = useState(COLORS.blackSecondaryText); // Color por defecto
 
@@ -45,8 +40,6 @@ export const DemoMessageProvider: React.FC<{ children: React.ReactNode }> = ({
         setText,
         selectedImage,
         setSelectedImage,
-        modalSelectedImage,
-        setModalSelectedImage,
         videoId,
         setVideoId,
         textColor,

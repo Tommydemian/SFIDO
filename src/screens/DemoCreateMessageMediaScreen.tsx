@@ -24,8 +24,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { SubmitButton } from "../components/SubmitButton";
 import { NunitoText } from "../components/Fonts/NunitoText";
-import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContainer";
-import { DemoImageModal } from "../components/Demo/DemoImageModal";
 import { VideoLinkInput } from "../components/VideoLinkInput";
 
 import { BORDER, COLORS, ICON_SIZE, SPACING, WIDTH } from "../../assets/theme";
@@ -56,17 +54,29 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
 }) => {
   const { width: SCREEN_WIDTH } = useWindowDimensions();
   const SIZE = SCREEN_WIDTH * 0.7;
-  const SPACER = SPACING.spacing15;
+  const SPACER = (SCREEN_WIDTH - SIZE) / 2;
 
   const x = useSharedValue(0);
+  const [initialImagesArrState, setInitialImagesArrState] =
+    useState<ImageItem[]>(initialImagesArr);
+  const [data, setData] = useState<CarouselItem[]>([]);
 
-  const [data, setData] = useState<CarouselItem[]>([
-    { key: "space-left" },
-    ...initialImagesArr,
-    { key: "space-right" },
-  ]);
+  const flatListRef = useRef<FlatList>(null);
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  useEffect(() => {
+    setData([
+      { key: "space-left" },
+      ...initialImagesArrState,
+      { key: "space-right" },
+    ]);
+
+    // if (initialImagesArrState.length > 1) {
+    //   flatListRef.current?.scrollToIndex({
+    //     index: initialImagesArrState.length,
+    //     animated: true,
+    //   });
+    // }
+  }, [initialImagesArrState]);
 
   const onScroll = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -74,29 +84,20 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
     },
   });
 
-  const {
-    videoId,
-    text,
-    modalSelectedImage,
-    setModalSelectedImage,
-    selectedImage,
-    setSelectedImage,
-  } = useDemoMessageContext();
+  const { videoId, text, selectedImage, setSelectedImage } =
+    useDemoMessageContext();
 
-  const isFromGallery = typeof modalSelectedImage === "string";
-
-  const handleModalSelectedImage = (selectedImage: string) => {
-    setModalSelectedImage(selectedImage);
-    setIsModalVisible(false);
-  };
-
-  // Llamado cuando se selecciona una imagen
-  const handleImageSelect = (uri: string) => {
+  const handleSelectImage = (uri: string) => {
     setSelectedImage(uri);
-    setIsModalVisible(true); // Abre el modal
   };
 
-  useEffect(() => {}, [selectedImage]);
+  // const onImageSelected = (uri: string) => {
+  //   initialImagesArr.push(uri);
+  // };
+
+  useEffect(() => {
+    console.log(selectedImage);
+  }, [selectedImage]);
 
   return (
     <GestureHandlerRootView style={styles.flex1}>
@@ -124,6 +125,7 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
           </View>
 
           <Animated.FlatList
+            ref={flatListRef}
             data={data}
             keyExtractor={(item) =>
               "id" in item ? item.id.toString() : item.key
@@ -131,7 +133,7 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
             horizontal={true}
             bounces={false}
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ paddingTop: 20 }}
+            contentContainerStyle={{ paddingTop: SPACING.spacing20 }}
             decelerationRate={0}
             onScroll={onScroll}
             snapToInterval={SIZE}
@@ -146,25 +148,19 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
                   index={index}
                   item={item}
                   SCREEN_WIDTH={SCREEN_WIDTH}
-                  handleImageSelect={handleImageSelect}
+                  handleSelectImage={handleSelectImage}
+                  selectedImage={selectedImage}
                 />
               );
             }}
           />
-          {/* {modalSelectedImage && (
-        <View style={styles.modalSelectedImageContainer}>
-        <Image
-        source={
-          isFromGallery
-          ? { uri: modalSelectedImage }
-          : modalSelectedImage
-        }
-        style={styles.modalselectedImage}
-        />
-        </View>
-      )} */}
+
           <View style={styles.cameraAndVideoContainer}>
-            <GalleryImageSelector onImageSelected={handleImageSelect} />
+            <GalleryImageSelector
+              onImageSelected={handleSelectImage}
+              initialImagesArrState={initialImagesArrState}
+              setInitialImagesArrState={setInitialImagesArrState}
+            />
             {/* <VideoLinkInput /> */}
             <Pressable style={styles.videoIconContainer}>
               <CustomIcon
@@ -174,28 +170,24 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
                 color={COLORS.whiteText}
               />
             </Pressable>
-
-            {/* <DemoImageModal
-              selectedImage={selectedImage}
-              isModalVisible={isModalVisible}
-              setIsModalVisible={setIsModalVisible}
-              handleModalSelectedImage={handleModalSelectedImage}
-            /> */}
           </View>
-          <SubmitButton
-            customStyles={styles.nextButton}
-            onPress={() =>
-              navigation.navigate("DemoPreviewMessageScreen", {
-                image: modalSelectedImage,
-                text: text,
-                videoId: videoId,
-              })
-            }
-          >
-            <NunitoText type="bold" customStyles={styles.textButton}>
-              Next
-            </NunitoText>
-          </SubmitButton>
+
+          <View style={styles.nextButtonContainer}>
+            <SubmitButton
+              customStyles={styles.nextButton}
+              onPress={() =>
+                navigation.navigate("DemoPreviewMessageScreen", {
+                  image: selectedImage,
+                  text: text,
+                  videoId: videoId,
+                })
+              }
+            >
+              <NunitoText type="bold" customStyles={styles.textButton}>
+                Next
+              </NunitoText>
+            </SubmitButton>
+          </View>
         </SafeAreaView>
       </TouchableOpacity>
     </GestureHandlerRootView>
@@ -209,6 +201,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: SPACING.spacing40,
     paddingHorizontal: SPACING.spacing40,
+  },
+  nextButtonContainer: {
+    paddingBottom: SPACING.spacing20,
   },
   nextButton: {
     shadowColor: "rgba(0, 0, 0, 0.25)",
