@@ -2,6 +2,7 @@ export const COLORS = {
   blackSecondaryText: "#252A34",
   inputGrayText: "#a9a9a9",
   grayText: "#c0c0c0",
+  silver: "#ccc",
   blackBg: "#2C2929",
   white: "#FFFFFF",
   whiteText: "#F8F1F3",
@@ -29,6 +30,7 @@ export const COLORS = {
   shadow: "#000",
   onBoardingDot: "#D9D9D9",
   cerulean: "#1D779D",
+  dimGrey: "rgba(108, 108, 108, 0.15),",
 };
 
 export const SPACING = {

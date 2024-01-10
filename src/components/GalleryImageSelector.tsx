@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 
 import { DemoIconButton } from "./Demo/DemoIconButton";
 import { CustomIcon } from "./CustomIcon";
 import * as ImagePicker from "expo-image-picker";
 
-import { COLORS, SPACING } from "../../assets/theme";
+import { COLORS, ICON_SIZE, SPACING } from "../../assets/theme";
 import { CarouselItem, ImageItem } from "../types";
+import { useSharedValue } from "react-native-reanimated";
 
 type Props = {
   onImageSelected: (uri: string) => void;
@@ -19,6 +20,9 @@ export const GalleryImageSelector: React.FC<Props> = ({
   imageList,
   setImageList,
 }) => {
+  const wasPressed = useSharedValue(false);
+  const [wasPressedJs, setWasPressedJs] = useState(false);
+
   const pickImage = async () => {
     // Request media library permissions
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -40,18 +44,20 @@ export const GalleryImageSelector: React.FC<Props> = ({
         onImageSelected(newUri);
         const newImageItem = { id: Date.now(), uri: newUri };
         setImageList([...imageList, newImageItem]);
+        setWasPressedJs(true);
+        wasPressed.value = true;
       }
     }
   };
 
   return (
     <View style={styles.imagePickerContainer}>
-      <DemoIconButton onPress={pickImage}>
+      <DemoIconButton wasPressed={wasPressed}>
         <CustomIcon
-          library="Entypo"
-          name="camera"
-          size={SPACING.spacing30}
-          color={COLORS.whiteText}
+          library="Feather"
+          name="image"
+          size={ICON_SIZE.default}
+          color={wasPressedJs ? COLORS.white : COLORS.folly}
           onPress={pickImage}
         />
       </DemoIconButton>

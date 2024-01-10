@@ -3,8 +3,10 @@ import {
   Entypo,
   AntDesign,
   FontAwesome,
+  FontAwesome5,
   Ionicons,
   MaterialIcons,
+  Feather,
 } from "@expo/vector-icons";
 import { ActiveBottomSheet } from "../types";
 
@@ -16,6 +18,8 @@ type Props = {
     | "Entypo"
     | "AntDesign"
     | "FontAwesome"
+    | "FontAwesome5"
+    | "Feather"
     | "Ionicons"
     | "MaterialIcons";
   customStyles?: object;
@@ -64,6 +68,26 @@ export const CustomIcon: React.FC<Props> = ({
     case "FontAwesome":
       return (
         <FontAwesome
+          onPress={handlePress}
+          style={customStyles}
+          name={name}
+          size={size}
+          color={color}
+        />
+      );
+    case "FontAwesome5":
+      return (
+        <FontAwesome5
+          onPress={handlePress}
+          style={customStyles}
+          name={name}
+          size={size}
+          color={color}
+        />
+      );
+    case "Feather":
+      return (
+        <Feather
           onPress={handlePress}
           style={customStyles}
           name={name}

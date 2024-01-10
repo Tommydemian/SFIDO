@@ -1,11 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  useWindowDimensions,
-  AppState,
-} from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContainer";
 import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
@@ -24,6 +17,7 @@ import { CustomIcon } from "../components/CustomIcon";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 
 import { useAppState } from "../hooks/useAppState";
+import { useBottomSheet } from "../hooks/useBottomSheet";
 
 type NavigationProps = NativeStackScreenProps<
   DemoStackParams,
@@ -36,9 +30,10 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
 }) => {
   const { image, text, videoId } = route.params;
   const { textColor, fontSelected } = useDemoMessageContext();
-  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(true);
   const [snapPoint] = useState("30%");
   const bottomSheetRef = useRef<BottomSheetMethods>(null);
+  const { handleOpen, isBottomSheetVisible, setIsBottomSheetVisible } =
+    useBottomSheet(videoId === "" ? false : true);
 
   const { appState } = useAppState();
 
@@ -47,12 +42,6 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
       ? [styles.invisibleButton]
       : [...baseStyles, styles.actionButton];
   };
-
-  useEffect(() => {
-    console.log(videoId, "VIDEOID");
-  }, []);
-
-  const { signOutUser } = useAuthContext();
 
   const handleGoBack = () => {
     navigation.goBack();
@@ -88,9 +77,6 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
               {text}
             </Text>
           </View>
-          <TouchableOpacity onPress={signOutUser}>
-            <Text>Sign out</Text>
-          </TouchableOpacity>
 
           <CustomIcon
             library="MaterialIcons"
@@ -102,30 +88,21 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
             ])}
             onPress={() => navigation.navigate("BottomTabs")}
           />
-          {/* <CustomIcon
-            library="AntDesign"
-            name="totop"
-            size={30}
-            color={COLORS.semiTransparent}
-            customStyles={[styles.showBottomSheetButton, styles.actionButton]}
-          /> */}
+          {videoId !== "" && (
+            <CustomIcon
+              library="Entypo"
+              name="video"
+              size={28}
+              color={videoId === "" ? COLORS.folly : COLORS.white}
+              onPress={handleOpen}
+            />
+          )}
+
           <CustomBottomSheet
             setIsBottomSheetVisible={setIsBottomSheetVisible}
             isBottomSheetVisible={isBottomSheetVisible}
             closeIconPresent={true}
             ref={bottomSheetRef}
-            renderIcon={(handleOpenPress) => (
-              <CustomIcon
-                library="AntDesign"
-                name="totop"
-                size={30}
-                color={COLORS.semiTransparent}
-                customStyles={getIconStyles(isBottomSheetVisible, [
-                  styles.showBottomSheetButton,
-                ])}
-                onPress={handleOpenPress}
-              />
-            )}
           >
             <View style={styles.videoContainer}>
               <YoutubeVideo videoId={videoId!} />

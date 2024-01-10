@@ -16,7 +16,6 @@ import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 
 type Props = {
   children: React.ReactNode;
-  renderIcon?: (handleOpenPress: () => void) => React.ReactNode;
   isBottomSheetVisible?: boolean;
   setIsBottomSheetVisible: React.Dispatch<React.SetStateAction<boolean>>;
   snapPoint?: string;
@@ -27,7 +26,6 @@ export const CustomBottomSheet = forwardRef<BottomSheetMethods, Props>(
   (
     {
       children,
-      renderIcon,
       setIsBottomSheetVisible,
       isBottomSheetVisible,
       closeIconPresent,
@@ -42,10 +40,10 @@ export const CustomBottomSheet = forwardRef<BottomSheetMethods, Props>(
       setIsBottomSheetVisible(false);
     };
 
-    const handleOpenPress = () => {
-      ref?.current?.snapToIndex(0);
-      setIsBottomSheetVisible(true);
-    };
+    // const handleOpenPress = () => {
+    //   ref?.current?.snapToIndex(0);
+    //   setIsBottomSheetVisible(true);
+    // };
 
     const handleSheetChanges = useCallback(
       (index: number) => {
@@ -58,13 +56,12 @@ export const CustomBottomSheet = forwardRef<BottomSheetMethods, Props>(
 
     return (
       <>
-        {renderIcon && renderIcon(handleOpenPress)}
         {isBottomSheetVisible && (
           <BottomSheet
             enablePanDownToClose={true}
             onChange={handleSheetChanges}
             style={styles.bottomSheet}
-            backgroundStyle={{ backgroundColor: COLORS.semiTransparent }}
+            backgroundStyle={{ backgroundColor: COLORS.dimGrey }}
             ref={ref}
             snapPoints={snapPoints}
             index={0}

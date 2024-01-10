@@ -15,6 +15,8 @@ import Animated, {
   useAnimatedStyle,
   useAnimatedScrollHandler,
   interpolate,
+  withTiming,
+  useDerivedValue,
 } from "react-native-reanimated";
 
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -66,6 +68,25 @@ export const DemoCreateMessageMediaScreen: React.FC<
   } = useDemoMessageContext();
 
   const flatListRef = useRef<FlatList<CarouselItem>>(null);
+  const isVideoIdPresent = useSharedValue(false);
+
+  useEffect(() => {
+    videoId === ""
+      ? (isVideoIdPresent.value = false)
+      : (isVideoIdPresent.value = true);
+  }, [videoId, isVideoIdPresent]);
+
+  const backgroundColor = useDerivedValue(() => {
+    return isVideoIdPresent.value ? COLORS.folly : COLORS.white;
+  });
+
+  const iConContainerStyle = useAnimatedStyle(() => {
+    return {
+      backgroundColor: withTiming(backgroundColor.value, {
+        duration: 300,
+      }),
+    };
+  });
 
   // useEffect(() => {
   //   if (imageList.length > 1) {
@@ -97,8 +118,8 @@ export const DemoCreateMessageMediaScreen: React.FC<
   // };
 
   useEffect(() => {
-    console.log(selectedImage);
-  }, [selectedImage]);
+    console.log(videoId !== "");
+  }, [videoId]);
 
   return (
     <GestureHandlerRootView style={styles.flex1}>
@@ -165,15 +186,17 @@ export const DemoCreateMessageMediaScreen: React.FC<
               setImageList={setImageList}
             />
 
-            <Pressable onPress={handleOpen} style={styles.videoIconContainer}>
+            <Animated.View
+              style={[styles.videoIconContainer, iConContainerStyle]}
+            >
               <CustomIcon
                 library="Entypo"
                 name="video"
                 size={28}
-                color={COLORS.folly}
+                color={videoId === "" ? COLORS.folly : COLORS.white}
                 onPress={handleOpen}
               />
-            </Pressable>
+            </Animated.View>
           </View>
 
           <DemoNextButton
@@ -225,11 +248,11 @@ const styles = StyleSheet.create({
     height: 45,
     backgroundColor: COLORS.white,
     borderRadius: BORDER.circle,
-    shadowColor: "rgba(27, 30, 54, 0.25)",
-    shadowOffset: { width: 0, height: 3 },
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 4,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   continueTextButton: {
     textAlign: "center",

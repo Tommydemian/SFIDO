@@ -6,21 +6,45 @@ import {
 import React from "react";
 
 import { COLORS, SPACING } from "../../../assets/theme";
+import Animated, {
+  SharedValue,
+  useDerivedValue,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
+import { ViewProps } from "react-native-svg/lib/typescript/fabric/utils";
 
-type Props = TouchableOpacityProps & {
+type Props = ViewProps & {
   children: React.ReactNode;
   customStyles?: object;
+  wasPressed: SharedValue<boolean>;
 };
 
 export const DemoIconButton: React.FC<Props> = ({
   children,
   customStyles,
+  wasPressed,
   ...rest
 }) => {
+  const backgroundColor = useDerivedValue(() => {
+    return wasPressed.value ? COLORS.folly : COLORS.white;
+  });
+
+  const iconContainerStyle = useAnimatedStyle(() => {
+    return {
+      backgroundColor: withTiming(backgroundColor.value, {
+        duration: 300,
+      }),
+    };
+  });
+
   return (
-    <TouchableOpacity {...rest} style={[styles.iconButton, customStyles]}>
+    <Animated.View
+      {...rest}
+      style={[styles.iconButton, customStyles, iconContainerStyle]}
+    >
       {children}
-    </TouchableOpacity>
+    </Animated.View>
   );
 };
 
