@@ -4,7 +4,7 @@ import { DemoIconButton } from "./Demo/DemoIconButton";
 import { CustomIcon } from "./CustomIcon";
 import { useVideoLink } from "../hooks/useVideoLink";
 import { PasteButton } from "./PasteButton";
-import { SPACING, COLORS } from "../../assets/theme";
+import { SPACING, COLORS, BORDER } from "../../assets/theme";
 import { NunitoText } from "./Fonts/NunitoText";
 
 export const VideoLinkInput = () => {
@@ -24,17 +24,6 @@ export const VideoLinkInput = () => {
   return (
     <>
       <View style={styles.videoLinkContainer}>
-        <View>
-          <DemoIconButton customStyles={styles.videoButton}>
-            <CustomIcon
-              library="Entypo"
-              name="video"
-              size={SPACING.spacing30}
-              color={COLORS.whiteText}
-            />
-          </DemoIconButton>
-        </View>
-
         {/* YoutubeLink */}
         <View
           style={[
@@ -49,7 +38,7 @@ export const VideoLinkInput = () => {
           <TextInput
             style={styles.videoLinkInput}
             value={videoLink}
-            multiline={true}
+            multiline={false}
             //returnKeyType='done'
             numberOfLines={2}
             placeholder={"https://youtu.be/fnGcsc4Wrr0?si=Dn0H_4OHf3gmlx-u"}
@@ -96,11 +85,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     columnGap: SPACING.spacing10,
-    width: "100%",
+    paddingTop: SPACING.spacing20,
+    width: "80%",
+    alignSelf: "center",
   },
   videoLinkInput: {
-    flexGrow: 1,
-    minHeight: SPACING.spacing50, // Ajusta este valor según sea necesario
+    alignSelf: "center",
     paddingRight: SPACING.spacing20,
   },
   videoLinkInputContainer: {
@@ -108,7 +98,7 @@ const styles = StyleSheet.create({
     minHeight: SPACING.spacing50, // Ajusta este valor según sea necesario
     paddingHorizontal: SPACING.spacing10,
     paddingVertical: SPACING.spacing10,
-    borderRadius: 10, // Aumenta para más redondez
+    borderRadius: BORDER.border30, // Aumenta para más redondez
     marginBottom: 10,
     width: "100%",
     flex: 1,
@@ -141,6 +131,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 5, // Añade un pequeño margen en la parte superior para separarlo del TextInput
     width: "100%",
+    textAlign: "center",
   },
   videoButton: {
     backgroundColor: COLORS.claret,

@@ -6,7 +6,7 @@ import {
   useWindowDimensions,
   AppState,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContainer";
 import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
 import { TouchableOpacity } from "react-native";
@@ -19,11 +19,9 @@ import { CustomBottomSheet } from "../components/CustomBottomSheet";
 import { DemoStackParams } from "../navigation/DemoStackNavigator";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useDemoMessageContext } from "../contexts/DemoMessageContext";
-import { useBottomSheet } from "../hooks/useBottomSheet";
 import { NunitoText } from "../components/Fonts/NunitoText";
 import { CustomIcon } from "../components/CustomIcon";
-
-import { CustomVideoBottomSheet } from "../components/CustomVideoBottomSheet";
+import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 
 import { useAppState } from "../hooks/useAppState";
 
@@ -39,6 +37,8 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
   const { image, text, videoId } = route.params;
   const { textColor, fontSelected } = useDemoMessageContext();
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(true);
+  const [snapPoint] = useState("30%");
+  const bottomSheetRef = useRef<BottomSheetMethods>(null);
 
   const { appState } = useAppState();
 
@@ -47,14 +47,6 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
       ? [styles.invisibleButton]
       : [...baseStyles, styles.actionButton];
   };
-  // const {
-  //   bottomSheetRef,
-  //   isBottomSheetVisible,
-  //   handleBottomSheetClose,
-  //   handleBottomSheetOpen,
-  //   setIsBottomSheetVisible,
-  //   handleRefClose,
-  // } = useBottomSheet();
 
   useEffect(() => {
     console.log(videoId, "VIDEOID");
@@ -117,8 +109,11 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
             color={COLORS.semiTransparent}
             customStyles={[styles.showBottomSheetButton, styles.actionButton]}
           /> */}
-          <CustomVideoBottomSheet
+          <CustomBottomSheet
             setIsBottomSheetVisible={setIsBottomSheetVisible}
+            isBottomSheetVisible={isBottomSheetVisible}
+            closeIconPresent={true}
+            ref={bottomSheetRef}
             renderIcon={(handleOpenPress) => (
               <CustomIcon
                 library="AntDesign"
@@ -135,7 +130,7 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
             <View style={styles.videoContainer}>
               <YoutubeVideo videoId={videoId!} />
             </View>
-          </CustomVideoBottomSheet>
+          </CustomBottomSheet>
         </OnBoardingContainer>
       </View>
     </GestureHandlerRootView>

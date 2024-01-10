@@ -4,8 +4,6 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
-  Dimensions,
-  Image,
   Keyboard,
   FlatList,
   Pressable,
@@ -22,11 +20,9 @@ import Animated, {
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import { SubmitButton } from "../components/SubmitButton";
-import { NunitoText } from "../components/Fonts/NunitoText";
 import { VideoLinkInput } from "../components/VideoLinkInput";
 
-import { BORDER, COLORS, ICON_SIZE, SPACING, WIDTH } from "../../assets/theme";
+import { BORDER, COLORS, SPACING } from "../../assets/theme";
 
 import { useDemoMessageContext } from "../contexts/DemoMessageContext";
 import { DemoStackParams } from "../navigation/DemoStackNavigator";
@@ -35,22 +31,30 @@ import { GalleryImageSelector } from "../components/GalleryImageSelector";
 import { CarouselItem } from "../types";
 import { CarouselItemComponent } from "../components/Demo/CarouselItemComponent";
 import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
-import { DemoScreenTitle } from "../components/Demo/DemoScreenTitle";
-import { CollageSvg } from "../components/CollageSvg";
 import { CustomIcon } from "../components/CustomIcon";
+import { CustomBottomSheet } from "../components/CustomBottomSheet";
+import { useBottomSheet } from "../hooks/useBottomSheet";
+import { DemoScreenHeader } from "../components/Demo/DemoScreenHeader";
+import { ImageCarouselComponent } from "../components/Demo/ImageCarouselComponent";
+import { DemoNextButton } from "../components/Demo/DemoNextButton";
 
-type NavigationProps = NativeStackScreenProps<
+export type DemoMediaNavigationProps = NativeStackScreenProps<
   DemoStackParams,
   "DemoCreateMessageMediaScreen"
 >;
 
-export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
-  navigation,
-}) => {
+export const DemoCreateMessageMediaScreen: React.FC<
+  DemoMediaNavigationProps
+> = ({ navigation }) => {
   const { width: SCREEN_WIDTH } = useWindowDimensions();
   const SIZE = SCREEN_WIDTH * 0.7;
   const SPACER = (SCREEN_WIDTH - SIZE) / 2;
   const x = useSharedValue(0);
+
+  const [snapPoint] = useState("20%");
+
+  const { handleOpen, isBottomSheetVisible, setIsBottomSheetVisible } =
+    useBottomSheet();
 
   const {
     videoId,
@@ -61,7 +65,7 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
     setImageList,
   } = useDemoMessageContext();
 
-  const flatListRef = useRef<FlatList>(null);
+  const flatListRef = useRef<FlatList<CarouselItem>>(null);
 
   // useEffect(() => {
   //   if (imageList.length > 1) {
@@ -107,19 +111,20 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
           <AbsoluteFillBgImage imageKey="vector" />
 
           <View style={styles.spacer} />
-          <View style={styles.headerContainer}>
-            <CustomIcon
-              library="Ionicons"
-              name="chevron-back"
-              size={ICON_SIZE.goBack}
-              color={COLORS.white}
-              onPress={() => navigation.goBack()}
-              customStyles={styles.goBack}
-            />
-            <DemoScreenTitle title="Include a Picture">
-              <CollageSvg />
-            </DemoScreenTitle>
-          </View>
+          <DemoScreenHeader
+            navigation={navigation}
+            title="Include a Picture"
+            type="media"
+          />
+
+          {/* <ImageCarouselComponent
+            imageList={imageList}
+            SIZE={SIZE}
+            SPACER={SPACER}
+            handleSelectImage={handleSelectImage}
+            selectedImage={selectedImage}
+            x={x}
+          /> */}
 
           <Animated.FlatList
             ref={flatListRef}
@@ -159,33 +164,34 @@ export const DemoCreateMessageMediaScreen: React.FC<NavigationProps> = ({
               imageList={imageList}
               setImageList={setImageList}
             />
-            {/* <VideoLinkInput /> */}
-            <Pressable style={styles.videoIconContainer}>
+
+            <Pressable onPress={handleOpen} style={styles.videoIconContainer}>
               <CustomIcon
                 library="Entypo"
                 name="video"
                 size={28}
-                color={COLORS.whiteText}
+                color={COLORS.folly}
+                onPress={handleOpen}
               />
             </Pressable>
           </View>
 
-          <View style={styles.nextButtonContainer}>
-            <SubmitButton
-              customStyles={styles.nextButton}
-              onPress={() =>
-                navigation.navigate("DemoPreviewMessageScreen", {
-                  image: selectedImage,
-                  text: text,
-                  videoId: videoId,
-                })
-              }
-            >
-              <NunitoText type="bold" customStyles={styles.textButton}>
-                Next
-              </NunitoText>
-            </SubmitButton>
-          </View>
+          <DemoNextButton
+            navigation={navigation}
+            type="media"
+            selectedImage={selectedImage}
+            text={text}
+            videoId={videoId}
+          />
+
+          <CustomBottomSheet
+            snapPoint={snapPoint}
+            setIsBottomSheetVisible={setIsBottomSheetVisible}
+            isBottomSheetVisible={isBottomSheetVisible}
+            closeIconPresent={false}
+          >
+            <VideoLinkInput />
+          </CustomBottomSheet>
         </SafeAreaView>
       </TouchableOpacity>
     </GestureHandlerRootView>
@@ -200,33 +206,6 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.spacing40,
     paddingHorizontal: SPACING.spacing40,
   },
-  nextButtonContainer: {
-    paddingBottom: SPACING.spacing20,
-  },
-  nextButton: {
-    shadowColor: "rgba(0, 0, 0, 0.25)",
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    elevation: 5, // Para Android
-    position: "absolute",
-    bottom: SPACING.nextButtonBottom,
-    width: 111,
-    alignSelf: "center",
-  },
-  textButton: {
-    textAlign: "center",
-    color: "#fff",
-  },
-  continueButtonText: {
-    color: "white",
-    fontSize: 18,
-  },
-  previewImage: {
-    width: "100%",
-    height: "80%", // Ajusta según sea necesario
-    resizeMode: "contain",
-  },
   cameraAndVideoContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -236,14 +215,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 180,
   },
-  headerContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  goBack: {
-    position: "absolute",
-    left: SPACING.spacing40,
-  },
   spacer: {
     padding: 22,
   },
@@ -252,7 +223,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 45,
     height: 45,
-    backgroundColor: COLORS.folly,
+    backgroundColor: COLORS.white,
     borderRadius: BORDER.circle,
     shadowColor: "rgba(27, 30, 54, 0.25)",
     shadowOffset: { width: 0, height: 3 },
@@ -260,16 +231,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
   },
-
-  //   modalSelectedImageContainer: {
-  //     shadowColor: "#000",
-  //     shadowOffset: { width: 0, height: 2 },
-  //     shadowOpacity: 0.25,
-  //     shadowRadius: 3.84,
-  //     width: "100%",
-  //     justifyContent: "center",
-  //     alignItems: "center",
-  //   },
   continueTextButton: {
     textAlign: "center",
   },

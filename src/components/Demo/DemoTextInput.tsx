@@ -13,6 +13,7 @@ import {
 import { ActiveBottomSheet } from "../../types";
 import { useDemoMessageContext } from "../../contexts/DemoMessageContext";
 import { useFontsLoader } from "../../hooks/useLoadFonts";
+import Spinner from "react-native-loading-spinner-overlay";
 
 type Props = {
   placeholder: string;
@@ -50,7 +51,7 @@ export const DemoTextInput: React.FC<Props> = ({
   if (!fontsLoaded) {
     return (
       <View>
-        <Text>Loading Fonts...</Text>
+        <Spinner visible={!fontsLoaded} />
       </View>
     );
   }
