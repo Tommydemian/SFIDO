@@ -7,16 +7,20 @@ import { CollageSvg } from "../CollageSvg";
 import { DemoMediaNavigationProps } from "../../screens/DemoCreateMessageMediaScreen";
 import { HandWithPenSvg } from "../HandWithPenSvg";
 import { DemoTextNavigationProps } from "../../screens/DemoCreateMessageTextScreen";
+import { PostTextNavigationProps } from "../../screens/PostMessageTextScreen";
+import { PostMediaNavigationProps } from "../../screens/PostMessageMediaScreen";
 
 type Props = {
   navigation:
     | DemoMediaNavigationProps["navigation"]
-    | DemoTextNavigationProps["navigation"];
+    | DemoTextNavigationProps["navigation"]
+    | PostTextNavigationProps["navigation"]
+    | PostMediaNavigationProps["navigation"];
   title: string;
   type: "text" | "media";
 };
 
-export const DemoScreenHeader: React.FC<Props> = ({
+export const CraftMessageHeader: React.FC<Props> = ({
   navigation,
   title,
   type,

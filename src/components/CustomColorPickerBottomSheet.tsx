@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { ColorBox } from "./ColorBox";
 import { BORDER, BOX_COLORS, COLORS, SPACING } from "../../assets/theme";
-import { useDemoMessageContext } from "../contexts/DemoMessageContext";
+import { useCraftMessageContext } from "../contexts/CraftMessageContext";
 
 type Props = {
   handleBottomSheetClose?: () => void;
@@ -11,7 +11,7 @@ type Props = {
 
 const CustomColorPickerBottomSheet = forwardRef<BottomSheet, Props>(
   ({ handleBottomSheetClose }, ref) => {
-    const { setTextColor } = useDemoMessageContext();
+    const { setText } = useCraftMessageContext();
 
     const snapPoints = useMemo(() => ["30%", "40%"], []);
 
@@ -24,7 +24,7 @@ const CustomColorPickerBottomSheet = forwardRef<BottomSheet, Props>(
     ));
 
     function handleColorSelect(color: string) {
-      setTextColor(color);
+      setText((prevState) => ({ ...prevState, color: color }));
       if (handleBottomSheetClose) {
         handleBottomSheetClose();
       }

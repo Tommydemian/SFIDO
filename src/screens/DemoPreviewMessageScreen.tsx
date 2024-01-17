@@ -1,9 +1,7 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
-import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContainer";
+import { MainContainer } from "../components/MainContainer";
 import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
-import { TouchableOpacity } from "react-native";
-import { useAuthContext } from "../contexts/AuthContext";
 import { S3Image } from "../components/S3Image";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { COLORS } from "../../assets/theme";
@@ -11,7 +9,7 @@ import { YoutubeVideo } from "../components/YoutubeVideo";
 import { CustomBottomSheet } from "../components/CustomBottomSheet";
 import { DemoStackParams } from "../navigation/DemoStackNavigator";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { useDemoMessageContext } from "../contexts/DemoMessageContext";
+import { useCraftMessageContext } from "../contexts/CraftMessageContext";
 import { NunitoText } from "../components/Fonts/NunitoText";
 import { CustomIcon } from "../components/CustomIcon";
 import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
@@ -24,12 +22,13 @@ type NavigationProps = NativeStackScreenProps<
   "DemoPreviewMessageScreen"
 >;
 
+const SCREEN_HEIGHT = Dimensions.get("window").height;
+
 export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
-  route,
   navigation,
 }) => {
-  const { image, text, videoId } = route.params;
-  const { textColor, fontSelected } = useDemoMessageContext();
+  const { text, videoId, selectedImage } = useCraftMessageContext();
+  const [playing, setPlaying] = useState(false);
   const [snapPoint] = useState("30%");
   const bottomSheetRef = useRef<BottomSheetMethods>(null);
   const { handleOpen, isBottomSheetVisible, setIsBottomSheetVisible } =
@@ -64,17 +63,17 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
           customStyles={[styles.actionButton, styles.backButton]}
         />
         {/* <S3Image imgKey="doberman.jpeg" style={styles.backgroundImage} /> */}
-        <Image source={{ uri: image }} style={styles.backgroundImage} />
+        <Image source={{ uri: selectedImage }} style={styles.backgroundImage} />
         <AbsoluteFillBgImage imageKey="demobg" />
-        <OnBoardingContainer>
+        <MainContainer>
           <View style={styles.quoteBodyContainer}>
             <Text
               style={[
                 styles.quoteBody,
-                { color: textColor, fontFamily: fontSelected },
+                { color: text.color, fontFamily: text.fontFamily },
               ]}
             >
-              {text}
+              {text.content}
             </Text>
           </View>
 
@@ -105,10 +104,14 @@ export const DemoPreviewMessageScreen: React.FC<NavigationProps> = ({
             ref={bottomSheetRef}
           >
             <View style={styles.videoContainer}>
-              <YoutubeVideo videoId={videoId!} />
+              <YoutubeVideo
+                videoId={videoId!}
+                playing={playing}
+                setPlaying={setPlaying}
+              />
             </View>
           </CustomBottomSheet>
-        </OnBoardingContainer>
+        </MainContainer>
       </View>
     </GestureHandlerRootView>
   );
@@ -124,7 +127,8 @@ const styles = StyleSheet.create({
     color: COLORS.blackSecondaryText,
   },
   quoteBodyContainer: {
-    flex: 1,
+    height: SCREEN_HEIGHT * 0.9,
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
   },

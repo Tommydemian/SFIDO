@@ -1,4 +1,5 @@
 import { Image, ImageProps } from "react-native";
+import { UserProfileData } from "../../src/types";
 
 export type OnBoardingData = {
   id: number;
@@ -65,4 +66,39 @@ export const initialImagesArr = [
   { id: 3, uri: Image.resolveAssetSource(initialImages.image3).uri },
   { id: 4, uri: Image.resolveAssetSource(initialImages.image4).uri },
   { id: 5, uri: Image.resolveAssetSource(initialImages.image5).uri },
+];
+
+// userProfile data
+
+export const userProfileData: UserProfileData[] = [
+  {
+    id: 1,
+    title: "User Information",
+    icon: "user",
+  },
+  {
+    id: 2,
+    title: "Contact Information",
+    icon: "envelope",
+  },
+  {
+    id: 3,
+    title: "Settings",
+    icon: "cog",
+  },
+  {
+    id: 4,
+    title: "Password Reset",
+    icon: "key",
+  },
+  {
+    id: 5,
+    title: "Security and Privacy",
+    icon: "lock",
+  },
+  {
+    id: 6,
+    title: "Feedback and Support",
+    icon: "comments",
+  },
 ];

@@ -18,7 +18,7 @@ import { CategorieCard } from "../components/Categories/CategorieCard";
 import { SubmitButton } from "../components/SubmitButton";
 import { NunitoText } from "../components/Fonts/NunitoText";
 import { CategorieCardIcon } from "../components/Categories/CategorieCardIcon";
-import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContainer";
+import { MainContainer } from "../components/MainContainer";
 // Custom Hooks imports
 import { useHandleCategories } from "../hooks/useHandleCategories";
 // types and resources
@@ -61,7 +61,7 @@ export const CategoriesSelectionScreen: React.FC<CategoriesNavigationProps> = ({
 
   return (
     <SafeAreaView style={styles.container}>
-      <OnBoardingContainer>
+      <MainContainer>
         <NunitoText type="bold" customStyles={styles.title}>
           Pick Your Categories
         </NunitoText>
@@ -104,7 +104,7 @@ export const CategoriesSelectionScreen: React.FC<CategoriesNavigationProps> = ({
             Confirm
           </NunitoText>
         </SubmitButton>
-      </OnBoardingContainer>
+      </MainContainer>
     </SafeAreaView>
   );
 };

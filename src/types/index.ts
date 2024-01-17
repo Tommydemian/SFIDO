@@ -66,3 +66,12 @@ export type ImageItem = {
 };
 
 export type CarouselItem = ImageItem;
+
+// User Profile data
+export type UserProfileData = {
+  id: number;
+  title: string;
+  icon: string;
+};
+
+export type MotivationalMessage = {};

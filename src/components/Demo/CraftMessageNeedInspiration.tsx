@@ -1,5 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { CustomIcon } from "../CustomIcon";
 import { NunitoText } from "../Fonts/NunitoText";
 import {
@@ -11,8 +12,13 @@ import {
 } from "../../../assets/theme";
 import { useToggle } from "../../hooks/useToggle";
 
-export const DemoNeedInspiration = () => {
+type Props = {
+  section: "Demo" | "Post";
+};
+
+export const CraftMessageNeedInspiration: React.FC<Props> = ({ section }) => {
   const [isTooltipOpened, toggle] = useToggle();
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -25,10 +31,14 @@ export const DemoNeedInspiration = () => {
           name="infocirlce"
           size={24}
           color={COLORS.white}
-          onPress={toggle}
+          onPress={
+            section === "Demo"
+              ? toggle
+              : () => navigation.navigate("InspirationScreen")
+          }
         />
 
-        {isTooltipOpened && (
+        {isTooltipOpened && section === "Demo" && (
           <View style={styles.tooltip}>
             <CustomIcon
               library="Entypo"

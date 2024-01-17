@@ -9,12 +9,12 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { DemoIntroductionModal } from "../components/Demo/DemoIntroductionModal";
-import { OnBoardingContainer } from "../components/OnBoarding/OnBoardingContainer";
-import { DemoTextInput } from "../components/Demo/DemoTextInput";
-import { DemoTextActions } from "../components/Demo/DemoTextActions";
+import { MainContainer } from "../components/MainContainer";
+import { CraftMessageTextInput } from "../components/Demo/CraftMessageTextInput";
+import { CraftMessageTextActions } from "../components/Demo/CraftMessageTextActions";
 import { DemoNextButton } from "../components/Demo/DemoNextButton";
 
-import { DemoScreenHeader } from "../components/Demo/DemoScreenHeader";
+import { CraftMessageHeader } from "../components/Demo/CraftMessageHeader";
 
 import { COLORS } from "../../assets/theme";
 
@@ -45,29 +45,28 @@ export const DemoCreateMessageTextScreen: React.FC<DemoTextNavigationProps> = ({
         <SafeAreaView style={styles.container}>
           <AbsoluteFillBgImage imageKey="vector" />
           <DemoIntroductionModal />
-          <OnBoardingContainer>
-            <DemoScreenHeader
+          <MainContainer>
+            <CraftMessageHeader
               navigation={navigation}
               title="Craft a Message"
               type="text"
             />
 
-            <DemoTextInput
+            <CraftMessageTextInput
               placeholder="Write what you need to listen..."
               handleFontPickerOpen={handleFontPickerOpen}
               render={({ handleWriteMyOwn }) => {
                 return (
-                  <DemoTextActions
-                    handleFontPickerOpen={handleFontPickerOpen}
+                  <CraftMessageTextActions
                     handleWriteMyOwn={handleWriteMyOwn}
-                    isFontPickerOpen={isFontPickerOpen}
+                    section="Demo"
                   />
                 );
               }}
             />
 
             <DemoNextButton navigation={navigation} type="text" />
-          </OnBoardingContainer>
+          </MainContainer>
         </SafeAreaView>
       </TouchableOpacity>
     </GestureHandlerRootView>

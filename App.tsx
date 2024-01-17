@@ -40,7 +40,7 @@ export default function App() {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
-      background: COLORS.indigoDye,
+      background: COLORS.blueNCS,
     },
   };
 

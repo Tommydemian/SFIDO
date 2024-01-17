@@ -1,24 +1,24 @@
 import React from "react";
 import { TextInput, StyleSheet, Dimensions } from "react-native";
-import { useDemoMessageContext } from "../../contexts/DemoMessageContext";
+import { useCraftMessageContext } from "../../contexts/CraftMessageContext";
 import { BORDER, COLORS, FONT_SIZE, SPACING } from "../../../assets/theme";
 
 const { width } = Dimensions.get("window");
 
 export const DemoTextPreview: React.FC = () => {
-  const { text, textColor, fontSelected } = useDemoMessageContext();
+  const { text } = useCraftMessageContext();
 
   return (
     <TextInput
       style={[
         styles.textPreview,
         {
-          color: textColor,
+          color: text.color,
           backgroundColor: COLORS.semiTransparent,
-          fontFamily: fontSelected,
+          fontFamily: text.fontFamily,
         },
       ]}
-      value={text}
+      value={text.content}
       multiline={true}
       editable={false} // read-only
     />

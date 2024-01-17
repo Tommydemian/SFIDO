@@ -2,7 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { DemoPreviewMessageScreen } from "../screens/DemoPreviewMessageScreen";
 
-import { DemoMessageProvider } from "../contexts/DemoMessageContext";
+import { CraftMessageProvider } from "../contexts/CraftMessageContext";
 import { BottomTabsNavigator } from "./BottomTabsNavigator";
 import { DemoCreateMessageTextScreen } from "../screens/DemoCreateMessageTextScreen";
 import { DemoCreateMessageMediaScreen } from "../screens/DemoCreateMessageMediaScreen";
@@ -10,11 +10,7 @@ import { DemoCreateMessageMediaScreen } from "../screens/DemoCreateMessageMediaS
 export type DemoStackParams = {
   DemoCreateMessageTextScreen: undefined;
   DemoCreateMessageMediaScreen: undefined;
-  DemoPreviewMessageScreen: {
-    image: string;
-    text: string;
-    videoId?: string;
-  };
+  DemoPreviewMessageScreen: undefined;
   BottomTabs: undefined;
 };
 
@@ -22,7 +18,7 @@ const Stack = createNativeStackNavigator<DemoStackParams>();
 
 export const DemoStackNavigator = () => {
   return (
-    <DemoMessageProvider>
+    <CraftMessageProvider>
       <Stack.Navigator
         initialRouteName="DemoCreateMessageTextScreen"
         screenOptions={{ headerShown: false }}
@@ -37,7 +33,6 @@ export const DemoStackNavigator = () => {
           component={DemoCreateMessageMediaScreen}
           options={{ headerShown: false }}
         />
-
         <Stack.Screen
           name="DemoPreviewMessageScreen"
           component={DemoPreviewMessageScreen}
@@ -49,6 +44,6 @@ export const DemoStackNavigator = () => {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
-    </DemoMessageProvider>
+    </CraftMessageProvider>
   );
 };

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { extractIdFromYoutubeLink } from "../utils/extractIdFromYoutubeLink";
-import { useDemoMessageContext } from "../contexts/DemoMessageContext";
+import { useCraftMessageContext } from "../contexts/CraftMessageContext";
 
 export const useVideoLink = () => {
-  const { setVideoId, videoId } = useDemoMessageContext();
+  const { setVideoId, videoId } = useCraftMessageContext();
 
   const [videoLink, setVideoLink] = useState("");
   const [isLinkValid, setIsLinkValid] = useState<boolean | undefined>(

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useDemoMessageContext } from "../contexts/DemoMessageContext";
+import { useCraftMessageContext } from "../contexts/CraftMessageContext";
 
 export const useIterateAndSelectFont = () => {
   const [fontIndex, setFontIndex] = useState(0);
-  const { setFontSelected } = useDemoMessageContext();
+  const { setText } = useCraftMessageContext();
 
   const fonts = [
     "NunitoRegular",
@@ -24,7 +24,7 @@ export const useIterateAndSelectFont = () => {
   };
 
   useEffect(() => {
-    setFontSelected(fonts[fontIndex]);
+    setText((prevState) => ({ ...prevState, fontFamily: fonts[fontIndex] }));
   }, [fontIndex]);
 
   return { fontIndexIncrease };

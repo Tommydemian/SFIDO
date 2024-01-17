@@ -26,7 +26,7 @@ import { VideoLinkInput } from "../components/VideoLinkInput";
 
 import { BORDER, COLORS, SPACING } from "../../assets/theme";
 
-import { useDemoMessageContext } from "../contexts/DemoMessageContext";
+import { useCraftMessageContext } from "../contexts/CraftMessageContext";
 import { DemoStackParams } from "../navigation/DemoStackNavigator";
 import { GalleryImageSelector } from "../components/GalleryImageSelector";
 
@@ -36,7 +36,7 @@ import { AbsoluteFillBgImage } from "../components/AbsoluteFillBgImage";
 import { CustomIcon } from "../components/CustomIcon";
 import { CustomBottomSheet } from "../components/CustomBottomSheet";
 import { useBottomSheet } from "../hooks/useBottomSheet";
-import { DemoScreenHeader } from "../components/Demo/DemoScreenHeader";
+import { CraftMessageHeader } from "../components/Demo/CraftMessageHeader";
 import { ImageCarouselComponent } from "../components/Demo/ImageCarouselComponent";
 import { DemoNextButton } from "../components/Demo/DemoNextButton";
 
@@ -65,7 +65,7 @@ export const DemoCreateMessageMediaScreen: React.FC<
     setSelectedImage,
     imageList,
     setImageList,
-  } = useDemoMessageContext();
+  } = useCraftMessageContext();
 
   const flatListRef = useRef<FlatList<CarouselItem>>(null);
   const isVideoIdPresent = useSharedValue(false);
@@ -132,7 +132,7 @@ export const DemoCreateMessageMediaScreen: React.FC<
           <AbsoluteFillBgImage imageKey="vector" />
 
           <View style={styles.spacer} />
-          <DemoScreenHeader
+          <CraftMessageHeader
             navigation={navigation}
             title="Include a Picture"
             type="media"
@@ -199,13 +199,7 @@ export const DemoCreateMessageMediaScreen: React.FC<
             </Animated.View>
           </View>
 
-          <DemoNextButton
-            navigation={navigation}
-            type="media"
-            selectedImage={selectedImage}
-            text={text}
-            videoId={videoId}
-          />
+          <DemoNextButton navigation={navigation} type="media" />
 
           <CustomBottomSheet
             snapPoint={snapPoint}

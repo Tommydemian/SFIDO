@@ -43,6 +43,7 @@ export const SPACING = {
   spacing40: 40,
   spacing50: 50,
   nextButtonBottom: 72,
+  nextButtonWidth: 111,
 };
 
 export const BORDER = {

@@ -6,7 +6,7 @@ type Props = ViewProps & {
   customStyles?: object;
 };
 
-export const OnBoardingContainer: React.FC<Props> = ({
+export const MainContainer: React.FC<Props> = ({
   children,
   customStyles,
   ...rest

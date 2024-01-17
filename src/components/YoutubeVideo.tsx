@@ -1,15 +1,26 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { View, Alert } from "react-native";
 import YoutubePlayer, { YoutubeIframeRef } from "react-native-youtube-iframe";
 
 type Props = {
   videoId: string;
+  isVisible: boolean;
+  playing: boolean;
+  setPlaying: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const YoutubeVideo: React.FC<Props> = ({ videoId }) => {
-  const [playing, setPlaying] = useState(false);
-
+export const YoutubeVideo: React.FC<Props> = ({
+  videoId,
+  isVisible,
+  playing,
+  setPlaying,
+}) => {
+  // const [playing, setPlaying] = useState(false);
   const playerRef = useRef<YoutubeIframeRef>(null);
+
+  useEffect(() => {
+    console.log(playing, "playing");
+  }, [playing, setPlaying]);
 
   const onStateChange = useCallback((state: string) => {
     if (state === "ended") {

@@ -1,5 +1,5 @@
-import { StyleSheet, TouchableOpacity, StatusBar, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import { StyleSheet, StatusBar, View } from "react-native";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SubmitButton } from "../components/SubmitButton";
 import { NunitoText } from "../components/Fonts/NunitoText";
@@ -23,10 +23,17 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
       <View style={{ width: "50%", alignSelf: "center" }}>
         <SubmitButton
-          style={{ flexDirection: "row", justifyContent: "center" }}
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
           onPress={signOutUser}
         >
-          <NunitoText type="bold" style={{ alignSelf: "center" }}>
+          <NunitoText
+            type="bold"
+            style={{ textAlign: "center", alignSelf: "center" }}
+          >
             Sign out
           </NunitoText>
         </SubmitButton>
@@ -38,5 +45,6 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.blueNCS,
   },
 });

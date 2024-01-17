@@ -2,10 +2,10 @@
 import { useRef, useCallback } from "react";
 import { TextInput } from "react-native";
 import { useSharedValue, withSpring } from "react-native-reanimated";
-import { useDemoMessageContext } from "../contexts/DemoMessageContext";
+import { useCraftMessageContext } from "../contexts/CraftMessageContext";
 
-export const useDemoTextInput = () => {
-  const { text, setText } = useDemoMessageContext();
+export const useCraftMessageTextInput = () => {
+  const { text, setText } = useCraftMessageContext();
   const textInputRef = useRef<TextInput>(null);
   const scale = useSharedValue(1);
 
@@ -13,7 +13,7 @@ export const useDemoTextInput = () => {
     scale.value = withSpring(1.1, { damping: 2 }, () => {
       scale.value = withSpring(1);
     });
-    setText("");
+    setText((prevState) => ({ ...prevState, content: "" }));
     textInputRef.current?.focus();
   }, [setText, scale, textInputRef]);
 

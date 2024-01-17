@@ -1,10 +1,8 @@
 import { Pressable, StyleSheet, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import { SubmitButton } from "../SubmitButton";
-import { NunitoText } from "../Fonts/NunitoText";
+import React, { useEffect } from "react";
 import { CustomIcon } from "../CustomIcon";
-import { useDemoMessageContext } from "../../contexts/DemoMessageContext";
-import { DemoNeedInspiration } from "./DemoNeedInspiration";
+import { useCraftMessageContext } from "../../contexts/CraftMessageContext";
+import { CraftMessageNeedInspiration } from "./CraftMessageNeedInspiration";
 import { ColorBox } from "../ColorBox";
 import { useToggle } from "../../hooks/useToggle";
 import Animated, {
@@ -13,6 +11,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useIterateAndSelectFont } from "../../hooks/useIterateAndSelectFont";
+import { PostMessageNavigationProps } from "../../screens/PostMessageTextScreen";
 import {
   COLORS,
   ICON_SIZE,
@@ -23,13 +22,15 @@ import {
 
 type Props = {
   handleWriteMyOwn: () => void;
-  isFontPickerOpen: boolean;
-  handleFontPickerOpen: () => void;
+  navigation?: PostMessageNavigationProps["navigation"];
+  section: "Demo" | "Post";
 };
 
-export const DemoTextActions: React.FC<Props> = ({ handleWriteMyOwn }) => {
-  const { fontSelected, setFontSelected, setTextColor } =
-    useDemoMessageContext();
+export const CraftMessageTextActions: React.FC<Props> = ({
+  handleWriteMyOwn,
+  section,
+}) => {
+  const { setText } = useCraftMessageContext();
   const [isColorPickerOpen, toggle] = useToggle();
   const { fontIndexIncrease } = useIterateAndSelectFont();
   const colorPickerHeight = useSharedValue(0);
@@ -48,7 +49,7 @@ export const DemoTextActions: React.FC<Props> = ({ handleWriteMyOwn }) => {
   });
 
   function handleColorSelect(color: string) {
-    setTextColor(color);
+    setText((prevState) => ({ ...prevState, color }));
     toggle();
   }
 
@@ -85,18 +86,7 @@ export const DemoTextActions: React.FC<Props> = ({ handleWriteMyOwn }) => {
           />
         </Pressable>
       </View>
-      <DemoNeedInspiration />
-      {/* <SubmitButton 
-        customStyles={styles.writeOwnMssgButton}
-        onPress={handleWriteMyOwn}
-        >
-        <NunitoText customStyles={styles.writeOwnMssgButtonText} type="bold">
-        Write My Message
-        </NunitoText>
-        </SubmitButton>
-        {isFontPickerOpen && (
-          <FontPicker handleFontPickerOpen={handleFontPickerOpen} />
-        )}   */}
+      <CraftMessageNeedInspiration section={section} />
     </View>
   );
 };

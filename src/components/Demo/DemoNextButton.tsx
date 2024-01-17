@@ -4,34 +4,21 @@ import { NunitoText } from "../Fonts/NunitoText";
 import { SubmitButton } from "../SubmitButton";
 import { DemoMediaNavigationProps } from "../../screens/DemoCreateMessageMediaScreen";
 import { DemoTextNavigationProps } from "../../screens/DemoCreateMessageTextScreen";
-import { SPACING } from "../../../assets/theme";
+import { COLORS, SPACING } from "../../../assets/theme";
 
 type Props = {
   type: "text" | "media";
   navigation:
     | DemoMediaNavigationProps["navigation"]
     | DemoTextNavigationProps["navigation"];
-  selectedImage?: string;
-  text?: string;
-  videoId?: string;
 };
 
-export const DemoNextButton: React.FC<Props> = ({
-  type,
-  navigation,
-  selectedImage,
-  videoId,
-  text,
-}) => {
+export const DemoNextButton: React.FC<Props> = ({ type, navigation }) => {
   const handlePress = () => {
     if (type === "text") {
       navigation.navigate("DemoCreateMessageMediaScreen");
     } else {
-      navigation.navigate("DemoPreviewMessageScreen", {
-        image: selectedImage!,
-        text: text!,
-        videoId: videoId!,
-      });
+      navigation.navigate("DemoPreviewMessageScreen");
     }
   };
   return type === "text" ? (
@@ -63,11 +50,11 @@ const styles = StyleSheet.create({
     elevation: 5,
     position: "absolute",
     bottom: SPACING.nextButtonBottom,
-    width: 111,
+    width: SPACING.nextButtonWidth,
     alignSelf: "center",
   },
   nextButtonText: {
     textAlign: "center",
-    color: "#fff",
+    color: COLORS.white,
   },
 });
